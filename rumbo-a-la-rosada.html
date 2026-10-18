@@ -1,0 +1,1135 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rumbo a la Rosada</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fdf6e3; --ink:#15152e; --card:#ffffff; --muted:#5f5d78; --line:#15152e;
+  --cel:#6ec6f5; --cel2:#2f8fe0; --sol:#ffd23f; --rosa:#ff5c8a; --verde:#20c997; --rojo:#ef3b3b;
+  --soft:#f3eddc; --shadow:4px 4px 0 var(--ink);
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.45}
+h1,h2,h3,.disp{font-family:"Bricolage Grotesque",Inter,sans-serif;letter-spacing:-.01em;margin:0}
+button{font:inherit;color:inherit;cursor:pointer}
+button:disabled{cursor:not-allowed}
+.hidden{display:none!important}
+
+/* ---------- header ---------- */
+.top{background:linear-gradient(100deg,var(--cel) 0%,#8fd6ff 45%,#ffe58a 100%);border-bottom:3px solid var(--ink)}
+.top-in{max-width:1320px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px}
+.sun{width:38px;height:38px;border-radius:50%;background:var(--sol);border:3px solid var(--ink);display:grid;place-items:center;font-size:18px;box-shadow:0 0 0 4px rgba(255,210,63,.45)}
+.logo h1{font-size:22px;font-weight:800}
+.logo small{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
+.who{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:5px 14px 5px 6px;box-shadow:3px 3px 0 var(--ink)}
+.dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--ink);flex:none}
+.who b{font-size:14px}.who span{font-size:12px;color:var(--muted)}
+.spacer{flex:1}
+.hbtn{background:#fff;border:2px solid var(--ink);border-radius:10px;padding:7px 12px;font-weight:700;font-size:13px;box-shadow:3px 3px 0 var(--ink)}
+.hbtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.weekchip{background:var(--ink);color:#fff;border-radius:10px;padding:6px 12px;font-weight:700;font-size:13px}
+.weekchip em{font-style:normal;color:var(--sol)}
+
+/* ---------- resource bar ---------- */
+.resbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:3px solid var(--ink)}
+.resbar-in{max-width:1320px;margin:auto;padding:10px 16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto auto;gap:14px;align-items:center}
+.res{display:grid;grid-template-columns:auto 1fr auto;gap:2px 8px;align-items:center;position:relative}
+.res .ic{grid-row:span 2;font-size:22px}
+.res .lb{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.res .val{font-weight:800;font-size:16px;font-variant-numeric:tabular-nums}
+.meter{grid-column:2/4;height:10px;border-radius:99px;background:var(--soft);border:2px solid var(--ink);overflow:hidden}
+.meter i{display:block;height:100%;border-radius:99px;transition:width .4s}
+.res.warn .val{color:var(--rojo)}
+.res .q{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--muted);font-size:10px;margin-left:4px;cursor:help;vertical-align:1px}
+.tip{position:absolute;top:calc(100% + 8px);left:0;width:260px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:500;padding:10px 12px;border-radius:10px;z-index:40;display:none;text-transform:none;letter-spacing:0;line-height:1.4}
+.res:hover .tip,.res:focus-within .tip{display:block}
+.mini{display:flex;gap:10px;align-items:center}
+.pill{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--ink);border-radius:999px;padding:4px 10px;font-weight:700;font-size:13px;background:var(--soft);white-space:nowrap}
+.apdots{display:inline-flex;gap:4px}
+.apdots i{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink);background:#fff}
+.apdots i.on{background:var(--rosa)}
+
+/* ---------- layout ---------- */
+.layout{max-width:1320px;margin:auto;padding:20px 16px 60px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px;align-items:start}
+aside{position:sticky;top:78px;display:flex;flex-direction:column;gap:18px}
+main{display:flex;flex-direction:column;gap:18px;min-width:0}
+.card{background:var(--card);border:2.5px solid var(--ink);border-radius:18px;box-shadow:var(--shadow);padding:18px}
+.card h2{font-size:20px;font-weight:800}
+.card h3{font-size:16px;font-weight:800}
+.eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+
+/* ---------- stepper ---------- */
+.stepper{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.step{border:2.5px solid var(--ink);border-radius:14px;padding:10px 12px;background:#fff;display:flex;gap:10px;align-items:center;opacity:.55}
+.step .n{width:30px;height:30px;border-radius:50%;border:2.5px solid var(--ink);display:grid;place-items:center;font-weight:800;flex:none;background:#fff}
+.step b{display:block;font-size:14px}.step span{font-size:12px;color:var(--muted)}
+.step.cur{opacity:1;background:var(--sol);box-shadow:var(--shadow)}
+.step.cur .n{background:var(--ink);color:var(--sol)}
+.step.done{opacity:1;background:#e6f8f1}
+.step.done .n{background:var(--verde);color:#fff}
+.hint{margin-top:12px;display:flex;gap:10px;align-items:center;background:var(--ink);color:#fff;border-radius:12px;padding:10px 14px;font-weight:600}
+.hint .em{font-size:20px}
+
+/* ---------- event ---------- */
+.event{position:relative;overflow:hidden}
+.event::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:repeating-linear-gradient(90deg,var(--rosa) 0 24px,var(--sol) 24px 48px,var(--cel) 48px 72px)}
+.ev-head{display:flex;align-items:center;gap:10px;margin:6px 0 6px;flex-wrap:wrap}
+.tag{background:var(--rosa);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:2px 10px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.ev-title{font-size:26px;font-weight:800;line-height:1.15;margin:4px 0 8px}
+.ev-txt{font-size:15.5px;color:#2c2b45;margin:0 0 14px;max-width:70ch}
+.opts{display:grid;gap:10px}
+.opt{display:grid;grid-template-columns:40px 1fr;gap:12px;text-align:left;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;box-shadow:3px 3px 0 var(--ink);transition:transform .08s,background .15s}
+.opt:hover:not(:disabled){background:#fff8d6;transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.opt:disabled{opacity:.45}
+.opt .k{width:36px;height:36px;border-radius:10px;background:var(--cel);border:2.5px solid var(--ink);display:grid;place-items:center;font-weight:800;font-size:16px}
+.opt b{font-size:15.5px}
+.opt p{margin:2px 0 6px;color:var(--muted);font-size:13.5px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{font-size:12px;font-weight:700;border-radius:8px;padding:2px 8px;border:1.5px solid currentColor;white-space:nowrap}
+.chip.pos{color:#0b7a55;background:#e3f8ef}
+.chip.neg{color:#c0262f;background:#ffe9ea}
+.chip.neu{color:#4b4a66;background:#f1eff7}
+.chip.risk{color:#7a4b00;background:#fff1c7}
+.riskrow{display:flex;gap:6px;align-items:center;flex-wrap:wrap;font-size:12px;color:var(--muted);margin-top:4px}
+.resolved{border:2.5px dashed var(--ink);border-radius:14px;padding:12px 14px;background:#f6fff9}
+.resolved.bad{background:#fff3f3}
+.resolved b{font-size:15px}
+
+/* ---------- agenda ---------- */
+.agenda.locked{position:relative}
+.agenda.locked .blk{filter:grayscale(.8);opacity:.35;pointer-events:none}
+.lockmsg{position:absolute;inset:60px 20px auto 20px;z-index:3;text-align:center;background:var(--ink);color:#fff;border-radius:14px;padding:14px;font-weight:700}
+.sub{display:flex;align-items:baseline;gap:10px;margin:16px 0 10px}
+.sub .num{width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.sub h3{font-size:16px;white-space:nowrap}
+.sub span{color:var(--muted);font-size:13px}
+.regions{display:grid;grid-template-columns:repeat(3,1fr);grid-template-areas:"norte norte caba" "cuyo centro pba" "pata pata pba";gap:8px}
+.rt{border:2.5px solid var(--ink);border-radius:14px;padding:10px 12px;background:#fff;text-align:left;position:relative;overflow:hidden;min-height:78px}
+.rt .bar{position:absolute;left:0;top:0;bottom:0;width:8px}
+.rt .nm{font-weight:800;font-size:14px;padding-left:6px}
+.rt .meta{font-size:12px;color:var(--muted);padding-left:6px}
+.rt .yours{font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif;font-weight:800;font-size:22px;padding-left:6px}
+.rt .w{position:absolute;right:8px;top:8px;font-size:11px;font-weight:800;background:var(--soft);border-radius:6px;padding:1px 6px}
+.rt.sel{background:#fff6c8;box-shadow:0 0 0 3px var(--rosa) inset,3px 3px 0 var(--ink)}
+.rt:hover{background:#fffbe8}
+.acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.act{text-align:left;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:12px;box-shadow:3px 3px 0 var(--ink);display:flex;flex-direction:column;gap:5px;transition:transform .08s,background .15s;position:relative}
+.act:hover:not(:disabled){background:#eaf7ff;transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.act:disabled{opacity:.42;box-shadow:none}
+.act .t{display:flex;gap:8px;align-items:center;font-weight:800;font-size:14.5px}
+.act .t .i{font-size:20px}
+.act p{margin:0;font-size:12.5px;color:var(--muted)}
+.act .pv{font-weight:800;font-size:13px;color:#0b6b4b}
+.act .pv.neg{color:#b02a2a}
+.act .why{font-size:11.5px;font-weight:700;color:var(--rojo)}
+.act .loc{position:absolute;right:8px;top:8px;font-size:11px;font-weight:800;background:#ffe3ec;border:1.5px solid var(--rosa);color:#b0204c;border-radius:6px;padding:0 6px}
+.closebar{margin-top:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.big{background:var(--rosa);color:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:13px 22px;font-weight:800;font-size:16px;box-shadow:var(--shadow)}
+.big:hover:not(:disabled){filter:brightness(1.05);transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--ink)}
+.big:disabled{opacity:.4}
+.big.pulse{animation:pulse 1.4s infinite}
+@keyframes pulse{0%,100%{box-shadow:var(--shadow)}50%{box-shadow:4px 4px 0 var(--ink),0 0 0 8px rgba(255,92,138,.3)}}
+.big.alt{background:var(--sol);color:var(--ink)}
+.big.ghost{background:#fff;color:var(--ink)}
+
+/* ---------- sidebar ---------- */
+.count{background:var(--ink);color:#fff;border-radius:18px;padding:16px 18px;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--rosa)}
+.count .d{font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif;font-size:54px;font-weight:800;line-height:1;color:var(--sol)}
+.count .lbl{font-size:13px;opacity:.85}
+.track{display:flex;gap:4px;margin-top:14px}
+.track i{flex:1;height:20px;border-radius:5px;background:rgba(255,255,255,.14);display:grid;place-items:center;font-size:11px;font-style:normal}
+.track i.past{background:var(--cel2)}
+.track i.now{background:var(--sol);color:var(--ink);font-weight:800}
+.mile{display:flex;justify-content:space-between;font-size:12px;opacity:.85;margin-top:8px;gap:8px;flex-wrap:wrap}
+.legend{display:flex;flex-wrap:wrap;gap:4px 10px;font-size:12px;margin:6px 0 2px}
+.legend span{display:inline-flex;align-items:center;gap:5px}
+.legend i{width:12px;height:4px;border-radius:2px;display:inline-block}
+.legend b{font-weight:800}
+svg text{font-family:Inter,sans-serif}
+.polls{display:flex;flex-direction:column;gap:7px;margin-top:8px}
+.prow{display:grid;grid-template-columns:96px 1fr 46px;gap:8px;align-items:center;font-size:13px}
+.prow .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.prow .tr{height:16px;background:var(--soft);border-radius:6px;overflow:hidden;border:1.5px solid var(--ink)}
+.prow .tr i{display:block;height:100%}
+.prow .v{font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
+.prow.me .nm::after{content:" ◀ vos";color:var(--rosa);font-size:11px}
+.verdict{margin-top:12px;border-radius:12px;padding:10px 12px;font-weight:700;font-size:13.5px;border:2px solid var(--ink)}
+.rule{font-size:12px;color:var(--muted);margin-top:8px}
+
+/* ---------- log ---------- */
+.log{max-height:340px;overflow:auto;display:flex;flex-direction:column;gap:10px}
+.lw{border-left:4px solid var(--cel2);padding:2px 0 2px 12px}
+.lw b{font-size:13px}
+.lw ul{margin:4px 0 0;padding-left:18px;font-size:13px;color:#3a3955}
+
+/* ---------- modal & toasts ---------- */
+.modal{position:fixed;inset:0;background:rgba(21,21,46,.55);z-index:60;display:grid;place-items:center;padding:16px;overflow:auto}
+.mbox{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--ink);max-width:640px;width:100%;padding:24px;max-height:92vh;overflow:auto}
+.mbox h2{font-size:26px;font-weight:800;margin-bottom:6px}
+.cmp{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
+.cmp td{padding:6px 4px;border-bottom:1.5px solid #eee6d3}
+.cmp td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.up{color:#0b7a55}.dn{color:#c0262f}
+.mlist{margin:6px 0 0;padding-left:18px;font-size:14px}
+.mlist li{margin:3px 0}
+#toasts{position:fixed;right:16px;bottom:16px;z-index:70;display:flex;flex-direction:column;gap:8px}
+.toast{background:var(--ink);color:#fff;border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px;box-shadow:4px 4px 0 var(--rosa);animation:tin .25s ease-out}
+@keyframes tin{from{transform:translateY(12px);opacity:0}}
+
+/* ---------- start ---------- */
+.start{max-width:1100px;margin:auto;padding:28px 16px 60px}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;margin-bottom:24px}
+.hero h2{font-size:48px;font-weight:800;line-height:1.02}
+.hero h2 span{background:var(--sol);padding:0 8px;border:3px solid var(--ink);border-radius:12px;display:inline-block;transform:rotate(-1.5deg)}
+.hero p{font-size:16px;color:#2c2b45;max-width:58ch}
+.how{display:grid;gap:10px}
+.how>div{display:flex;gap:12px;align-items:flex-start;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:10px 12px;box-shadow:3px 3px 0 var(--ink)}
+.how .n{width:30px;height:30px;border-radius:50%;background:var(--rosa);color:#fff;border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;flex:none}
+.how b{display:block}
+.how span{font-size:13px;color:var(--muted)}
+.cands{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.cand{text-align:left;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:0;overflow:hidden;box-shadow:3px 3px 0 var(--ink);display:flex;flex-direction:column}
+.cand .hd{padding:12px 14px;color:#fff;border-bottom:2.5px solid var(--ink)}
+.cand .hd small{font-weight:800;letter-spacing:.1em;font-size:11px;text-transform:uppercase;opacity:.9}
+.cand .hd b{display:block;font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif;font-size:20px;font-weight:800;line-height:1.1}
+.cand .bd{padding:10px 14px 14px;font-size:13px;display:flex;flex-direction:column;gap:6px}
+.cand .bd .df{font-weight:800;font-size:12px}
+.cand.sel{box-shadow:0 0 0 4px var(--rosa),6px 6px 0 var(--ink);transform:translate(-2px,-2px)}
+.seg{display:inline-flex;border:2.5px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:3px 3px 0 var(--ink)}
+.seg button{border:0;background:#fff;padding:9px 14px;font-weight:700;font-size:13.5px;border-right:2px solid var(--ink)}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--ink);color:var(--sol)}
+.row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:20px}
+.note{font-size:12.5px;color:var(--muted);margin-top:18px}
+
+
+.seg.scen{flex-wrap:wrap}
+.scintro{font-size:14px;color:#2c2b45;margin:12px 0 0;max-width:80ch}
+.custom .crows{display:flex;flex-direction:column;gap:8px}
+.crow{display:grid;grid-template-columns:auto 44px 80px minmax(0,1.3fr) minmax(0,1.3fr) 92px 150px 38px;gap:8px;align-items:center}
+.crow input,.crow select,.pctin input{font:inherit;font-size:14px;border:2px solid var(--ink);border-radius:10px;padding:7px 9px;background:#fff;min-width:0;width:100%}
+.crow input[type=color]{padding:2px;height:38px;cursor:pointer}
+.pctin{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:14px}
+.pctin input{width:76px}
+.me-pick{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;white-space:nowrap}
+.hbtn.x{padding:6px 10px}
+.realbox{margin-top:10px;background:#eef6ff;border:2px solid var(--ink);border-radius:12px;padding:10px 12px;font-size:13.5px}
+@media (max-width:900px){.crow{grid-template-columns:auto 44px 1fr 38px;padding-bottom:12px;border-bottom:2px dashed #d9d1bd}.crow .x{grid-row:1;grid-column:4}.crow input:not([type=color]):not(.sm),.crow select,.crow .pctin{grid-column:1/-1}.crow .pctin input{width:100%}}
+@media (max-width:1000px){
+  .layout{grid-template-columns:1fr}
+  aside{position:static}
+  .acts{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .hero{grid-template-columns:1fr}
+}
+@media (max-width:640px){
+  .resbar-in{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .resbar-in .mini{grid-column:1/-1;justify-content:space-between;flex-wrap:wrap}
+  .res .ic{display:none}.res{grid-template-columns:1fr auto}.meter{grid-column:1/3}
+  .stepper{grid-template-columns:1fr}
+  .step{padding:7px 10px}.step span{display:none}
+  .acts{grid-template-columns:1fr}
+  .regions{grid-template-columns:repeat(2,1fr);grid-template-areas:"norte caba" "cuyo centro" "pata pba"}
+  .ev-title{font-size:22px}
+  .hero h2{font-size:36px}
+  .weekchip{order:5}
+}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="modal" class="modal hidden"></div>
+<div id="toasts"></div>
+
+<script>
+/* =========================================================
+   DATOS
+   ========================================================= */
+const REG = [
+  {k:'PBA',  n:'Provincia de Bs. As.', w:.37, area:'pba'},
+  {k:'CABA', n:'Ciudad de Bs. As.',    w:.08, area:'caba'},
+  {k:'Centro',n:'Córdoba · Santa Fe · Entre Ríos', w:.21, area:'centro'},
+  {k:'Cuyo', n:'Mendoza · San Juan · San Luis', w:.07, area:'cuyo'},
+  {k:'Norte',n:'NOA y NEA', w:.20, area:'norte'},
+  {k:'Patagonia', n:'Del Colorado al Fuego', w:.07, area:'pata'},
+];
+const TRAITS = {
+  aparato:    'Aparato: «Organizar el territorio» rinde 40% más.',
+  billetera:  'Billetera: +10 fondos al inicio y +3 extra por semana.',
+  viral:      'Viral: entrevistas y redes rinden 40% más, pero los golpes a la imagen pegan 30% más.',
+  militancia: 'Militancia: descansar recupera 35 de energía en vez de 25.',
+  territorial:'Territorial: las acciones en tus bastiones rinden 25% más.',
+  prestigio:  'Prestigio: todo lo que suma imagen suma 50% más.',
+};
+const COL = {pj:'#1d8cf0', amarillo:'#f0b400', violeta:'#7b2cbf', rojo:'#e5383b', verde:'#12b886', naranja:'#f2711c', marron:'#9c5b2e', azul:'#1f3a93', coral:'#ff6f61', turquesa:'#14a3a0'};
+
+/* Perfiles regionales: multiplicador relativo [PBA, CABA, Centro, Cuyo, Norte, Patagonia].
+   lean: eje ideológico aproximado (−1 izquierda, +1 derecha) para el traspaso de votos en el balotaje. */
+const SCEN = {
+  2027:{y:2027, e1:[2027,9,24], und:13, hypo:true,
+    intro:'Escenario hipotético. Las candidaturas no están confirmadas: el punto de partida usa como referencia encuestas publicadas a mediados de 2026.',
+    real:null,
+    cands:[
+      {sig:'LLA', party:'La Libertad Avanza', name:'Javier Milei', short:'Milei', vp:'fórmula a definir', color:COL.violeta, pct:35, win:true, trait:'viral', lean:.9,
+       prof:[.9,.95,1.1,1.3,1.05,1], pitch:'Presidente que busca la reelección.'},
+      {sig:'FP', party:'Fuerza Patria', name:'Axel Kicillof', short:'Kicillof', vp:'fórmula a definir', color:COL.pj, pct:29, win:true, trait:'aparato', lean:-.5,
+       prof:[1.3,.65,.7,.7,1.05,.95], pitch:'Gobernador bonaerense y posible referente del peronismo.'},
+      {sig:'PRO', party:'PRO', name:'Mauricio Macri', short:'Macri', vp:'fórmula a definir', color:COL.amarillo, pct:9, trait:'billetera', lean:.5,
+       prof:[.9,1.9,1.1,1,.7,.8], pitch:'Expresidente; posible candidatura propia del PRO.'},
+      {sig:'PU', party:'Provincias Unidas', name:'Maximiliano Pullaro', short:'Pullaro', vp:'fórmula a definir', color:COL.verde, pct:8, trait:'territorial', lean:.2,
+       prof:[.5,.7,2.6,.9,.6,1], pitch:'Gobernador de Santa Fe; posible cara de la alianza de gobernadores.'},
+      {sig:'FIT-U', party:'Frente de Izquierda', name:'Myriam Bregman', short:'Bregman', vp:'fórmula a definir', color:COL.rojo, pct:8, trait:'militancia', lean:-1,
+       prof:[1.1,1.5,.8,.9,.7,1.2], pitch:'Diputada de la izquierda con buena imagen en las encuestas.'},
+    ]},
+  2023:{y:2023, e1:[2023,9,22], und:12,
+    intro:'Recreación de 2023: arrancás después de las PASO, con tres fuerzas casi empatadas.',
+    real:'Massa 36,8% · Milei 30,0% · Bullrich 23,8% · Schiaretti 6,8% · Bregman 2,7%. Balotaje: Milei 55,7% – Massa 44,3%.',
+    cands:[
+      {sig:'UxP', party:'Unión por la Patria', name:'Sergio Massa', short:'Massa', vp:'Agustín Rossi', color:COL.pj, pct:27, win:true, trait:'aparato', lean:-.3,
+       prof:[1.2,.6,.75,.75,1.1,1], pitch:'Ministro de Economía y candidato del oficialismo, con la inflación en contra.'},
+      {sig:'LLA', party:'La Libertad Avanza', name:'Javier Milei', short:'Milei', vp:'Victoria Villarruel', color:COL.violeta, pct:30, win:true, trait:'viral', lean:.9,
+       prof:[.85,.65,1.1,1.45,1.15,1.1], pitch:'Ganó las PASO por sorpresa con un discurso antisistema.'},
+      {sig:'JxC', party:'Juntos por el Cambio', name:'Patricia Bullrich', short:'Bullrich', vp:'Luis Petri', color:COL.amarillo, pct:25, win:true, trait:'billetera', lean:.6,
+       prof:[.95,1.7,1.1,1.1,.75,.85], pitch:'Ganó la interna de Juntos por el Cambio con una propuesta de orden.'},
+      {sig:'HxNP', party:'Hacemos por Nuestro País', name:'Juan Schiaretti', short:'Schiaretti', vp:'Florencio Randazzo', color:COL.verde, pct:4, trait:'territorial', lean:.2,
+       prof:[.45,.6,3,.6,.4,.5], pitch:'Gobernador de Córdoba; propuesta federal con bastión en el Centro.'},
+      {sig:'FIT-U', party:'Frente de Izquierda', name:'Myriam Bregman', short:'Bregman', vp:'Nicolás del Caño', color:COL.rojo, pct:2.7, trait:'militancia', lean:-1,
+       prof:[1.1,1.4,.8,.9,.8,1.2], pitch:'Diputada de la izquierda, con base en los grandes centros urbanos.'},
+    ]},
+  2019:{y:2019, e1:[2019,9,27], und:12,
+    intro:'Recreación de 2019: el Frente de Todos llega con amplia ventaja tras las PASO.',
+    real:'Fernández 48,2% · Macri 40,3% · Lavagna 6,1% · Del Caño 2,2% · Gómez Centurión 1,7% · Espert 1,5%. Sin balotaje.',
+    cands:[
+      {sig:'FdT', party:'Frente de Todos', name:'Alberto Fernández', short:'Fernández', vp:'Cristina Fernández de Kirchner', color:COL.pj, pct:47.8, win:true, trait:'aparato', lean:-.4,
+       prof:[1.1,.7,.8,.85,1.15,1.1], pitch:'Ganó las PASO con amplitud y llega como favorito.'},
+      {sig:'JxC', party:'Juntos por el Cambio', name:'Mauricio Macri', short:'Macri', vp:'Miguel Ángel Pichetto', color:COL.amarillo, pct:32.1, win:true, trait:'billetera', lean:.5,
+       prof:[.88,1.3,1.35,1.25,.8,.85], pitch:'Presidente que busca la reelección con la economía bajo presión.'},
+      {sig:'CF', party:'Consenso Federal', name:'Roberto Lavagna', short:'Lavagna', vp:'Juan Manuel Urtubey', color:COL.turquesa, pct:8.2, trait:'prestigio', lean:0,
+       prof:[.9,1.3,1.35,.9,.7,1], pitch:'Exministro de Economía; tercera opción entre las dos grandes coaliciones.'},
+      {sig:'FIT-U', party:'Frente de Izquierda', name:'Nicolás del Caño', short:'Del Caño', vp:'Romina Del Plá', color:COL.rojo, pct:2.9, trait:'militancia', lean:-1,
+       prof:[1.1,1.2,.8,1.2,.7,1.3], pitch:'Agenda de trabajadores y jóvenes, con base militante.'},
+      {sig:'NOS', party:'Frente NOS', name:'Juan José Gómez Centurión', short:'Gómez Centurión', vp:'Cynthia Hotton', color:COL.azul, pct:2.6, trait:'territorial', lean:.9,
+       prof:[.9,.8,1.2,1.3,1.1,.9], pitch:'Agenda conservadora, con más peso en el interior.'},
+      {sig:'UNITE', party:'Unite por la Libertad y la Dignidad', name:'José Luis Espert', short:'Espert', vp:'Luis Rosales', color:COL.naranja, pct:2.2, trait:'viral', lean:.8,
+       prof:[1,1.6,1.2,1.1,.6,.8], pitch:'Economista liberal con un programa de reformas pro mercado.'},
+    ]},
+  2015:{y:2015, e1:[2015,9,25], und:12,
+    intro:'Recreación de 2015: el oficialismo llega primero tras las PASO, pero sin margen para evitar el balotaje.',
+    real:'Scioli 37,1% · Macri 34,2% · Massa 21,4% · Del Caño 3,2% · Stolbizer 2,5% · Rodríguez Saá 1,6%. Balotaje: Macri 51,3% – Scioli 48,7%.',
+    cands:[
+      {sig:'FPV', party:'Frente para la Victoria', name:'Daniel Scioli', short:'Scioli', vp:'Carlos Zannini', color:COL.pj, pct:38.7, win:true, trait:'aparato', lean:-.4,
+       prof:[1,.6,.75,.9,1.35,1.1], pitch:'Gobernador bonaerense y candidato del oficialismo.'},
+      {sig:'CAM', party:'Cambiemos', name:'Mauricio Macri', short:'Macri', vp:'Gabriela Michetti', color:COL.amarillo, pct:30.1, win:true, trait:'billetera', lean:.5,
+       prof:[.85,1.45,1.35,1.3,.75,.85], pitch:'Jefe de Gobierno porteño al frente de Cambiemos.'},
+      {sig:'UNA', party:'Unidos por una Nueva Alternativa', name:'Sergio Massa', short:'Massa', vp:'Gustavo Sáenz', color:COL.turquesa, pct:20.6, trait:'territorial', lean:.1,
+       prof:[1.3,.7,1,.8,.7,.95], pitch:'Tercera vía desde el Frente Renovador, fuerte en la provincia de Buenos Aires.'},
+      {sig:'FIT', party:'Frente de Izquierda', name:'Nicolás del Caño', short:'Del Caño', vp:'Myriam Bregman', color:COL.rojo, pct:3.3, trait:'militancia', lean:-1,
+       prof:[1,1.2,.8,1.6,.8,1.2], pitch:'Diputado mendocino de la izquierda.'},
+      {sig:'PROG', party:'Progresistas', name:'Margarita Stolbizer', short:'Stolbizer', vp:'Miguel Ángel Olaviaga', color:COL.coral, pct:3.5, trait:'prestigio', lean:-.1,
+       prof:[1.2,1.4,1.3,.6,.5,.7], pitch:'Progresismo y transparencia, con base bonaerense.'},
+      {sig:'CF', party:'Compromiso Federal', name:'Adolfo Rodríguez Saá', short:'Rodríguez Saá', vp:'Liliana Negre de Alonso', color:COL.marron, pct:2.1, trait:'territorial', lean:0,
+       prof:[.5,.4,.5,4,.8,.6], pitch:'Exgobernador puntano; peronismo federal con bastión en San Luis.'},
+    ]},
+};
+const SCEN_ORDER = ['2027','2023','2019','2015','custom'];
+const DIFF = {
+  facil:  {l:'Viento a favor', d:'Rivales más lentos y más fondos.', riv:.85, f:70, inc:8, bonus:1.5},
+  normal: {l:'Realista',       d:'Sin ventajas para nadie.',        riv:1.25, f:55, inc:6, bonus:0},
+  dificil:{l:'Contra viento y marea', d:'Rivales agresivos y poca plata.', riv:1.45, f:45, inc:5, bonus:-1.5},
+};
+const T1 = 12, DEB1 = 8, T2 = 4, DEB2 = 3;
+const MES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
+const UND_COLOR = '#b9b3a3';
+
+/* Escenario personalizado por defecto */
+const CUSTOM_DEFAULT = {und:12, cands:[
+  {sig:'AZ', party:'Partido Azul', name:'Candidata Azul', color:'#1d8cf0', pct:34, base:5},
+  {sig:'AM', party:'Partido Amarillo', name:'Candidato Amarillo', color:'#f0b400', pct:30, base:2},
+  {sig:'VI', party:'Partido Violeta', name:'Candidata Violeta', color:'#7b2cbf', pct:16, base:4},
+  {sig:'VE', party:'Partido Verde', name:'Candidato Verde', color:'#12b886', pct:8, base:3},
+]};
+
+/* ---------- variables del escenario activo ---------- */
+let SC = null;   // escenario armado
+let C = [];      // candidaturas del escenario
+let U = 0;       // índice de indecisos (= C.length)
+
+function buildScenario(key){
+  let src, compress=true, custom=key==='custom';
+  if(custom){
+    const cc=setup.custom; compress=false;
+    src={y:2027, e1:[2027,9,24], und:cc.und, custom:true, intro:'Tu propia elección: partidos, colores y porcentajes iniciales a tu gusto.', real:null,
+      cands:cc.cands.map((c,i)=>({sig:(c.sig||'P'+(i+1)).slice(0,6), party:c.party||'Partido '+(i+1), name:c.name||'Candidatura '+(i+1), short:(()=>{const w=(c.name||'').trim().split(' ').slice(-1)[0];return (w.length>2&&isNaN(w))?w:(c.sig||'P'+(i+1))})(),
+        vp:null, color:c.color, pct:Math.max(.5,+c.pct||0), lean:0, trait:['aparato','billetera','viral','militancia','territorial','prestigio'][i%6],
+        prof:REG.map((_,r)=>c.base>0&&r===c.base-1?1.9:(c.base>0?.88:1)), pitch:c.base>0?`Bastión: ${REG[c.base-1].k}.`:'Votos repartidos en todo el país.'}))};
+  } else src=SCEN[key];
+  const und=clamp(+src.und||0,0,40);
+  let t=src.cands.map(c=>compress?c.pct*.85+2:c.pct);
+  const tot=t.reduce((a,b)=>a+b,0); t=t.map(v=>v/tot*(100-und));
+  const sorted=t.slice().sort((a,b)=>b-a);
+  const cands=src.cands.map((c,i)=>{
+    const valid=t[i]/(100-und)*100;
+    const win=custom?valid>=Math.min(20,sorted[1]/(100-und)*100*.8):!!c.win;
+    const goal=win?{type:'win'}:{type:"pct",v:Math.round((valid+4.5)*2)/2};
+    let diff;
+    if(!win) diff='Desafío propio';
+    else if(t[i]>=sorted[0]-.01) diff='Accesible'; else if(sorted[0]-t[i]<6) diff='Parejo'; else if(sorted[0]-t[i]<14) diff='Cuesta arriba'; else diff='Muy difícil';
+    return {...c, start:t[i], goal, diff, str:clamp(.3+t[i]/45,.4,1.1),
+      aff:c.prof.map(p=>clamp(.55+.45*p,.7,1.45)), traitTxt:TRAITS[c.trait]};
+  });
+  // reparto regional (ajuste proporcional iterativo para respetar el total nacional)
+  const n=cands.length;
+  let sh=REG.map((_,r)=>cands.map((c,i)=>t[i]*c.prof[r]));
+  for(let it=0;it<60;it++){
+    sh=sh.map(row=>{const s=row.reduce((a,b)=>a+b,0);return row.map(v=>v/s*(100-und))});
+    const nat=Array(n).fill(0); sh.forEach((row,r)=>row.forEach((v,i)=>nat[i]+=v*REG[r].w));
+    sh=sh.map(row=>row.map((v,i)=>v*t[i]/nat[i]));
+  }
+  sh=sh.map(row=>{const s=row.reduce((a,b)=>a+b,0);return row.map(v=>v/s*(100-und)).concat([und])});
+  const [Y,M,D]=src.e1; const e1=new Date(Y,M,D);
+  return {key, y:src.y, hypo:!!src.hypo, custom, intro:src.intro, real:src.real, cands, base:sh,
+    e1, e2:new Date(e1.getTime()+28*86400000), s1:new Date(e1.getTime()-83*86400000), s2:new Date(e1.getTime()+86400000)};
+}
+function loadScenario(key){ SC=buildScenario(key); C=SC.cands; U=C.length; }
+
+/* ---------- eventos ---------- */
+const EV_START = {id:'start', tag:'Lanzamiento', t:'Arranca la campaña',
+  txt:()=>`Faltan doce semanas para la primera vuelta y todavía hay muchos indecisos. ¿Cómo lanzás la candidatura de ${esc(C[S.p].name)}?`,
+  opts:[
+    {l:'Acto de lanzamiento en tu bastión', d:'Un estadio lleno donde ya te quieren.', eff:{f:-10,e:-8,best:2.2}},
+    {l:'Presentar el plan de gobierno', d:'Equipos técnicos, cifras y un libro de propuestas.', eff:{f:-5,i:6,nat:.3}},
+    {l:'Gira federal relámpago', d:'Seis provincias en cuatro días.', eff:{e:-16,nat:.7}},
+  ]};
+const EV_CIERRE = {id:'cierre', tag:'Última semana', t:'Cierre de campaña',
+  txt:()=>`Última semana antes de la veda. Todos los equipos juegan sus últimas cartas.`,
+  opts:[
+    {l:'Cierre masivo en el conurbano', d:'El acto más grande de la campaña.', eff:{f:-14,e:-10,reg:[[0,2.2]]}},
+    {l:'Caravana por todo el país', d:'Una última recorrida federal.', eff:{e:-18,nat:.8}},
+    {l:'Ejército de fiscales', d:'Cuidar cada voto en cada mesa.', eff:{f:-12,fiscal:4}},
+  ]};
+const EV_BAL = {id:'bal', tag:'Segunda vuelta', t:'Empieza el balotaje',
+  txt:()=>`Quedaron ${esc(C[S.p].name)} y ${esc(C[opp()].name)}. Hay cuatro semanas para seducir a los votantes de los que quedaron afuera.`,
+  opts:[
+    {l:'Acuerdo con el tercero', d:'Sumar dirigentes, aunque parezca un rejunte.', eff:{f:-8,nat:1.5,i:-3}},
+    {l:'Hablarle al votante, no a los dirigentes', d:'Una carta abierta a los indecisos.', eff:{i:4,nat:.6}},
+    {l:'Agitar el miedo al otro', d:'Campaña negativa a pleno.', eff:{riv:1.3,i:-5}},
+  ]};
+const POOL = [
+ {id:'dolar', tag:'Economía', t:'Corrida cambiaria', txt:'El dólar paralelo salta 12% en dos días. Los mercados miran a los candidatos.',
+  opts:[{l:'Presentar un plan de estabilización', d:'Detalle técnico y equipo económico a la vista.', eff:{f:-6,i:5,nat:.4}},
+        {l:'Culpar al gobierno saliente', d:'Capitalizar el enojo.', eff:{nat:.9,i:-3}},
+        {l:'Una promesa económica audaz', d:'Prende o te destrozan.', risk:{p:.5, ok:{nat:1.6}, ko:{nat:-.8,i:-6}, okT:'La promesa prende en la calle.', koT:'Los economistas la destrozan en televisión.'}}]},
+ {id:'inunda', tag:'Emergencia', t:'Inundaciones en el Litoral', txt:'El Paraná desborda y miles de familias son evacuadas en Chaco y Corrientes.',
+  opts:[{l:'Viajar a la zona con ayuda', d:'Botas de goma y presencia.', eff:{f:-6,e:-10,reg:[[4,2.4]],i:2}},
+        {l:'Donar fondos de campaña', d:'Menos foto, más plata.', eff:{f:-14,reg:[[4,1.4]],i:3}},
+        {l:'Mandar un comunicado', d:'Seguir con la agenda.', eff:{reg:[[4,-.8]]}}]},
+ {id:'audio', tag:'Escándalo', t:'Se filtra un audio de tu asesor', txt:'Un asesor cercano aparece hablando de "los negocios después de ganar". Los canales lo repiten en loop.',
+  opts:[{l:'Echarlo en el día', d:'Cortar por lo sano.', eff:{e:-4,i:2,nat:-.2}},
+        {l:'Negar todo', d:'Esperar que pase.', risk:{p:.45, ok:{}, ko:{i:-8,nat:-1.2}, okT:'El tema se apaga solo.', koT:'Aparece un segundo audio. Peor.'}},
+        {l:'Pedir disculpas en público', d:'Hacerte cargo.', eff:{i:-3,nat:.2}}]},
+ {id:'paro', tag:'Gremial', t:'Paro de colectivos en el AMBA', txt:'Tres millones de personas sin transporte. La pregunta llega a todos los candidatos.',
+  opts:[{l:'Respaldar a los choferes', d:'Gesto al conurbano trabajador.', eff:{reg:[[0,1.8],[1,-1]]}},
+        {l:'Exigir que se levante el paro', d:'Gesto al votante porteño.', eff:{reg:[[1,1.6],[0,-1.1]]}},
+        {l:'Ofrecerte como mediador', d:'Desgastante, pero presidencial.', eff:{e:-8,i:4}}]},
+ {id:'streamer', tag:'Redes', t:'Un streamer famoso quiere apoyarte', txt:'Tiene 4 millones de seguidores y un historial de polémicas.',
+  opts:[{l:'Aceptar y hacer un vivo juntos', d:'Llegar a los jóvenes.', viral:true, risk:{p:.6, ok:{nat:1.2}, ko:{nat:-.4,i:-6}, okT:'Explota en redes: los jóvenes te descubren.', koT:'Desentierran sus tuits viejos. Te salpica.'}},
+        {l:'Agradecer y mantener distancia', d:'Prudencia.', eff:{i:2}}]},
+ {id:'gober', tag:'Territorio', t:'Los gobernadores del Centro piden reunión', txt:'Córdoba, Santa Fe y Entre Ríos ofrecen estructura a cambio de compromisos fiscales.',
+  opts:[{l:'Firmar un pacto federal', d:'Estructura a cambio de promesas.', eff:{f:-8,reg:[[2,2.2],[3,.8]],i:-2}},
+        {l:'Reunirte sin firmar nada', d:'Foto sin compromiso.', eff:{e:-6,reg:[[2,.8]]}},
+        {l:'Mantener la independencia', d:'Que nadie te condicione.', eff:{i:3}}]},
+ {id:'empresas', tag:'Fondos', t:'Empresarios ofrecen financiar la campaña', txt:'Un grupo de empresas ofrece un aporte grande. Parte no sería declarado.',
+  opts:[{l:'Aceptar todo', d:'Mucha plata, mucho riesgo.', risk:{p:.65, ok:{f:30}, ko:{f:30,i:-10,nat:-.8}, okT:'La plata entra sin ruido.', koT:'Un periodista publica los aportes. Escándalo.'}},
+        {l:'Solo aportes declarados', d:'Menos, pero limpio.', eff:{f:12}},
+        {l:'Rechazar y contarlo', d:'Bandera de transparencia.', eff:{i:5}}]},
+ {id:'fake', tag:'Redes', t:'Una fake news te tiene de protagonista', txt:'Circula un video editado donde parecés prometer cerrar escuelas. Ya tiene millones de vistas.',
+  opts:[{l:'Desmentir con el video completo', d:'Pagar para que circule.', risk:{p:.7, ok:{f:-4,i:3}, ko:{f:-4,nat:-.6}, okT:'El desmentido se viraliza más que la fake.', koT:'Nadie mira el desmentido.'}},
+        {l:'Ignorarla', d:'No darle entidad.', eff:{nat:-.7}},
+        {l:'Denunciarla en la Justicia electoral', d:'Lento, pero serio.', eff:{f:-8,i:2,nat:-.2}}]},
+ {id:'segur', tag:'Seguridad', t:'Ola de inseguridad en el conurbano', txt:'Una serie de robos violentos domina la agenda. Te preguntan qué harías.',
+  opts:[{l:'Mano dura y más policías', d:'Mensaje claro.', eff:{reg:[[0,1.8],[1,-.6]],i:-1}},
+        {l:'Prevención, empleo y urbanización', d:'Mensaje de largo plazo.', eff:{reg:[[0,.8]],i:3}},
+        {l:'Visitar a las familias de las víctimas', d:'Empatía, sin promesas.', eff:{e:-8,reg:[[0,1.2]],i:1}}]},
+ {id:'regalias', tag:'Energía', t:'Pelea por las regalías de Vaca Muerta', txt:'Neuquén exige más regalías; el resto del país mira los subsidios.',
+  opts:[{l:'Prometer más regalías a las provincias', d:'Ganar el Sur.', eff:{reg:[[5,2.6]],i:-2}},
+        {l:'Plan energético nacional', d:'Un poco para todos.', eff:{f:-5,reg:[[5,1],[3,.8]],i:2}},
+        {l:'No meterte', d:'Tema espinoso.', eff:{reg:[[5,-.6]]}}]},
+ {id:'tarifas', tag:'Economía', t:'Llegan facturas de luz con 80% de aumento', txt:'El tema explota en todas las mesas familiares.',
+  opts:[{l:'Prometer congelar tarifas', d:'Popular, poco creíble.', eff:{nat:1.1,i:-4}},
+        {l:'Tarifa social segmentada', d:'Intermedio.', eff:{nat:.5,i:2}},
+        {l:'Defender el sinceramiento', d:'Impopular, coherente.', eff:{nat:-.4,i:4,reg:[[1,.6]]}}]},
+ {id:'sondeo', tag:'Clima', t:'Una encuesta te da por muerto', txt:'Una consultora te ubica mucho más abajo que el resto. Tu equipo está golpeado.',
+  opts:[{l:'Redoblar la agenda', d:'Mostrar que estás vivo.', eff:{e:-12,nat:.6}},
+        {l:'Bajar un cambio y reagrupar', d:'Recuperar aire.', eff:{e:12,i:1}},
+        {l:'Encargar tu propio sondeo', d:'Saber dónde estás parado.', eff:{f:-8,precise:3}}]},
+ {id:'stream', tag:'Medios', t:'Te invitan al stream más visto del país', txt:'Formato descontracturado, preguntas filosas, cero guion.',
+  opts:[{l:'Ir y jugarse', d:'Alto riesgo, mucha exposición.', viral:true, risk:{p:.6, ok:{nat:1.1}, ko:{i:-6}, okT:'Te muestran humano. Clips por todos lados.', koT:'Un furcio se vuelve meme nacional.'}},
+        {l:'Mandar a tu vocera', d:'Sin riesgos.', eff:{nat:.2}}]},
+ {id:'interna', tag:'Interna', t:'Un aliado critica tu programa', txt:'Un dirigente de tu propio espacio dice en televisión que tus propuestas "no cierran".',
+  opts:[{l:'Cena de reconciliación', d:'Coser la interna.', eff:{e:-8,f:-4,i:2}},
+        {l:'Romper con él', d:'Autoridad, aunque perdés apoyo.', eff:{nat:-.6,i:2}},
+        {l:'Ceder en el programa', d:'Unidad a cualquier precio.', eff:{i:-4,nat:.4}}]},
+ {id:'campo', tag:'Campo', t:'Cosecha récord y reclamo del campo', txt:'Las entidades rurales piden bajar las retenciones a cambio de apoyo.',
+  opts:[{l:'Prometer bajar retenciones', d:'Gana el interior productivo.', eff:{reg:[[2,2.2],[0,-.6]],i:-1}},
+        {l:'Hablar de industrializar el agro', d:'Puente entre campo y ciudad.', eff:{reg:[[2,.9],[0,.6]]}},
+        {l:'Mantener las retenciones', d:'Defender la recaudación.', eff:{reg:[[2,-1.2],[0,.9]]}}]},
+ {id:'escandalo', tag:'Oportunidad', t:'Interna a la vista en un espacio rival',
+  txt:()=>`Dirigentes de ${esc(C[topRival()].party)} se cruzan en público sobre cómo debería seguir la campaña de ${esc(C[topRival()].name)}. Todos esperan tu reacción.`,
+  opts:[{l:'Salir a pegar fuerte', d:'Aprovechar el desorden ajeno.', eff:{riv:1.8,nat:.3,i:-3}},
+        {l:'Mostrar tu equipo unido', d:'Contraste sin agresión.', eff:{riv:.8,i:2}},
+        {l:'No hablar del tema', d:'Quedar por encima.', eff:{i:3}}]},
+ {id:'vendimia', tag:'Cuyo', t:'Fiesta de la Vendimia', txt:'Toda Cuyo mira el desfile de carros. Los candidatos se pelean por un lugar en el palco.',
+  opts:[{l:'Ir al palco', d:'Presencia en Mendoza.', eff:{e:-8,f:-4,reg:[[3,2.4]]}},
+        {l:'Mandar un saludo en redes', d:'Cumplir.', eff:{reg:[[3,.4]]}}]},
+ {id:'uni', tag:'Educación', t:'Marcha universitaria masiva', txt:'Cientos de miles marchan por el presupuesto universitario.',
+  opts:[{l:'Marchar con los estudiantes', d:'Foto potente.', eff:{e:-6,reg:[[1,2],[2,.6]],nat:.2}},
+        {l:'Proponer reformar el financiamiento', d:'Respuesta técnica.', eff:{i:3,reg:[[1,.6]]}},
+        {l:'Criticar la marcha', d:'Hablarle a otro votante.', eff:{reg:[[1,-1.4]],nat:.3}}]},
+ {id:'spoterr', tag:'Campaña', t:'Tu spot tiene un error grosero', txt:'El spot de campaña muestra la bandera de otro país. Las redes no perdonan.',
+  opts:[{l:'Retirarlo y rehacerlo', d:'Caro, pero prolijo.', eff:{f:-10,i:1}},
+        {l:'Reírte de vos mismo', d:'Autocrítica con humor.', risk:{p:.55, ok:{nat:.8,i:2}, ko:{i:-4}, okT:'La autocrítica cae simpática.', koT:'Parece que no te importa.'}}]},
+ {id:'frio', tag:'Emergencia', t:'Ola polar y cortes de gas en el Sur', txt:'Quince grados bajo cero y barrios enteros sin gas en la Patagonia.',
+  opts:[{l:'Plan de emergencia y viaje al Sur', d:'Presencia y propuestas.', eff:{f:-6,e:-10,reg:[[5,2.4]]}},
+        {l:'Reclamar a las distribuidoras', d:'Desde Buenos Aires.', eff:{reg:[[5,.9]]}}]},
+ {id:'volunt', tag:'Militancia', t:'Brota una red espontánea de voluntarios', txt:'Miles de personas se anotan para ayudar sin que nadie las convoque.',
+  opts:[{l:'Organizarlos como fiscales', d:'Cuidar los votos.', eff:{f:-4,fiscal:3}},
+        {l:'Sumarlos al puerta a puerta', d:'Contagio y entusiasmo.', eff:{nat:.6,e:6}}]},
+ {id:'humo', tag:'Ambiente', t:'Incendios en el Delta', txt:'El humo de las quemas cubre Rosario y Buenos Aires durante días.',
+  opts:[{l:'Ley de humedales ya', d:'Agenda verde.', eff:{reg:[[1,1.2],[2,.8],[4,-.4]]}},
+        {l:'Más brigadistas, sin nueva ley', d:'Gestión.', eff:{f:-4,i:2,nat:.2}}]},
+ {id:'jubil', tag:'Social', t:'Jubilados reclaman frente al Congreso', txt:'La jubilación mínima no cubre la canasta. Las imágenes de la represión indignan.',
+  opts:[{l:'Prometer un aumento de emergencia', d:'Popular, difícil de pagar.', eff:{nat:1,i:-3}},
+        {l:'Reunirte con ellos', d:'Escuchar.', eff:{e:-6,nat:.4,i:2}}]},
+ {id:'final', tag:'Fútbol', t:'La Selección juega la final', txt:'Todo el país se frena para ver el partido. Ningún candidato quiere quedar mal.',
+  opts:[{l:'Verlo en un club de barrio', d:'Uno más.', eff:{e:-4,nat:.4}},
+        {l:'Suspender la campaña ese día', d:'Respeto y descanso.', eff:{e:10,i:1}},
+        {l:'Publicar un spot futbolero', d:'Oportunismo.', risk:{p:.5, ok:{nat:.7}, ko:{i:-5}, okT:'Golazo de marketing.', koT:'Te acusan de usar a la Selección.'}}]},
+];
+
+
+/* =========================================================
+   UTILIDADES
+   ========================================================= */
+let S = null;
+let setup = {scen:'2023', cand:1, diff:'normal', tut:true, custom:loadCustom(), customPlayer:0};
+function loadCustom(){try{const v=JSON.parse(localStorage.getItem('rosada_custom'));if(v&&v.cands&&v.cands.length>=2)return v}catch(e){}return JSON.parse(JSON.stringify(CUSTOM_DEFAULT))}
+function saveCustom(){try{localStorage.setItem('rosada_custom',JSON.stringify(setup.custom))}catch(e){}}
+const $ = s => document.querySelector(s);
+const fmt = (x,d=1) => (Math.round(x*10**d)/10**d).toFixed(d).replace('.',',');
+const sgn = (x,d=1) => (x>0?'+':x<0?'−':'±')+fmt(Math.abs(x),d);
+const clamp = (x,a,b) => Math.max(a,Math.min(b,x));
+const rnd = Math.random;
+const esc = t => String(t??'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function randn(){let u=0,v=0;while(!u)u=rnd();while(!v)v=rnd();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}
+function wpick(w){const t=w.reduce((a,b)=>a+b,0);let x=rnd()*t;for(let i=0;i<w.length;i++){x-=w[i];if(x<=0)return i}return w.length-1}
+const val = (v,s) => typeof v==='function'?v(s):v;
+const fdate = d => `${d.getDate()} ${MES[d.getMonth()]}`;
+const sn = c => C[c].short || C[c].name.split(' ').slice(-1)[0];
+const trait = k => C[S.p].trait===k;
+
+function national(sh=S.sh){const n=Array(U+1).fill(0);REG.forEach((r,i)=>sh[i].forEach((v,c)=>n[c]+=v*r.w));return n}
+const rivals = () => S.active.filter(c=>c!==S.p);
+function topRival(){const n=national();return rivals().sort((a,b)=>n[b]-n[a])[0]}
+const opp = () => rivals()[0];
+function bestRegion(){const a=C[S.p].aff;let b=0;a.forEach((v,i)=>{if(v+REG[i].w*.3>a[b]+REG[b].w*.3)b=i});return b}
+const power = () => (0.55+S.res.i*0.009)*(S.res.e<20?0.6:1);
+const totalTurns = () => S.round===1?T1:T2;
+const debateTurn = () => S.round===1?DEB1:DEB2;
+const weekDate = () => new Date((S.round===1?SC.s1:SC.s2).getTime()+7*86400000*(S.turn-1));
+const elecDate = () => S.round===1?SC.e1:SC.e2;
+const daysLeft = () => Math.round((elecDate()-weekDate())/86400000);
+const regMult = r => (trait('territorial')&&C[S.p].aff[r]>=1.15)?1.25:1;
+
+/* mover votos: g>0 suma al candidato c en la región r (60% de indecisos, resto de rivales) */
+function shift(r,c,g){
+  const s=S.sh[r]; const others=S.active.filter(o=>o!==c);
+  if(g>0){
+    let got=0, take=Math.min(g*.6,s[U]); s[U]-=take; got+=take; let rest=g-take;
+    const tot=others.reduce((a,o)=>a+s[o],0);
+    if(tot>0){const t=Math.min(rest,tot*.5);others.forEach(o=>s[o]-=t*s[o]/tot);got+=t;rest-=t}
+    if(rest>0){const t=Math.min(rest,s[U]);s[U]-=t;got+=t}
+    s[c]+=got;
+  } else if(g<0){
+    const amt=Math.min(-g,s[c]); s[c]-=amt; s[U]+=amt*.5;
+    const tot=others.reduce((a,o)=>a+s[o],0);
+    if(tot>0) others.forEach(o=>s[o]+=amt*.5*s[o]/tot); else s[U]+=amt*.5;
+  }
+}
+const natShift = (c,g) => REG.forEach((_,r)=>shift(r,c,g));
+
+function makePoll(){
+  const n=national(), sd=S.precise>0?.5:1.6, p=Array(U+1).fill(null); let sum=0;
+  S.active.forEach(c=>{p[c]=Math.max(.3,n[c]+randn()*sd);sum+=p[c]});
+  p[U]=clamp(n[U]+randn()*sd*.5,.5,45);
+  const k=(100-p[U])/sum; S.active.forEach(c=>p[c]*=k); return p;
+}
+const lastPoll = () => S.hist[S.hist.length-1].poll;
+
+/* =========================================================
+   EFECTOS
+   ========================================================= */
+function imgDelta(d){ if(d<0&&trait('viral'))d*=1.3; if(d>0&&trait('prestigio'))d*=1.5; return d; }
+function applyEff(e,opt={}){
+  if(!e) return;
+  const m=power(), viral=(opt.viral&&trait('viral'))?1.4:1;
+  if(e.f) S.res.f=clamp(S.res.f+e.f,0,100);
+  if(e.e) S.res.e=clamp(S.res.e+e.e,0,100);
+  if(e.i) S.res.i=clamp(S.res.i+imgDelta(e.i),0,100);
+  if(e.nat) natShift(S.p, e.nat>0?e.nat*m*viral:e.nat);
+  if(e.reg) e.reg.forEach(([r,a])=>shift(r,S.p,a>0?a*m*C[S.p].aff[r]*regMult(r):a));
+  if(e.best) shift(bestRegion(),S.p,e.best*m);
+  if(e.riv) natShift(topRival(),-e.riv*m);
+  if(e.prep) S.prep=clamp(S.prep+e.prep,0,100);
+  if(e.precise) S.precise=Math.max(S.precise,e.precise);
+  if(e.fiscal) S.fiscal+=e.fiscal;
+}
+function chips(e){
+  if(!e) return '';
+  const out=[]; const c=(cls,t)=>out.push(`<span class="chip ${cls}">${t}</span>`);
+  if(e.f) c(e.f>0?'pos':'neg',`${sgn(e.f,0)} 💰 fondos`);
+  if(e.e) c(e.e>0?'pos':'neg',`${sgn(e.e,0)} ⚡ energía`);
+  if(e.i) c(e.i>0?'pos':'neg',`${sgn(e.i,0)} ⭐ imagen`);
+  if(e.nat) c(e.nat>0?'pos':'neg',`${sgn(e.nat)} pts en todo el país`);
+  if(e.reg) e.reg.forEach(([r,a])=>c(a>0?'pos':'neg',`${sgn(a)} pts en ${REG[r].k}`));
+  if(e.best) c('pos',`${sgn(e.best)} pts en ${REG[bestRegion()].k}`);
+  if(e.riv) c('pos',`−${fmt(e.riv)} pts a ${esc(sn(topRival()))}`);
+  if(e.prep) c('pos',`+${e.prep} preparación debate`);
+  if(e.precise) c('neu','📊 encuestas precisas');
+  if(e.fiscal) c('pos',`+${e.fiscal} 🛡️ fiscales`);
+  if(!out.length) c('neu','sin efectos');
+  return out.join('');
+}
+function affordable(e){return !e || !e.f || e.f>=0 || S.res.f>=-e.f}
+
+/* =========================================================
+   INICIO DE PARTIDA
+   ========================================================= */
+function newGame(){
+  loadScenario(setup.scen);
+  const p=setup.scen==='custom'?setup.customPlayer:setup.cand;
+  const d=DIFF[setup.diff];
+  S={p:Math.min(p,C.length-1), dk:setup.diff, d, round:1, turn:1, phase:'event',
+     sh:SC.base.map(r=>r.slice()), active:C.map((_,i)=>i),
+     res:{f:d.f, e:85, i:55}, prep:0, fiscal:0, precise:0,
+     ap:2, sel:0, recent:[], hist:[], log:[], used:new Set(),
+     ev:null, evRes:null, weekLog:[], r1:null, over:false};
+  if(trait('billetera')) S.res.f+=10;
+  S.sel=bestRegion();
+  if(d.bonus) natShift(S.p,d.bonus);
+  S.hist.push({lbl:'Inicio', poll:makePoll()});
+  S.ev=pickEvent();
+  render(); window.scrollTo({top:0});
+  if(setup.tut) showHelp(true);
+}
+
+function pickEvent(){
+  if(S.round===1){
+    if(S.turn===1) return EV_START;
+    if(S.turn===DEB1) return debateEvent();
+    if(S.turn===T1) return EV_CIERRE;
+  } else {
+    if(S.turn===1) return EV_BAL;
+    if(S.turn===DEB2) return debateEvent();
+    if(S.turn===T2) return EV_CIERRE;
+  }
+  const pool=POOL.filter(e=>!S.used.has(e.id));
+  const ev=pool[Math.floor(rnd()*pool.length)]; S.used.add(ev.id); return ev;
+}
+
+/* ---------- debate ---------- */
+function debateScore(style,r=rnd()){
+  let s=S.prep*.45+S.res.i*.3+S.res.e*.1;
+  if(style==='ataque') s+=-8+r*55;
+  else if(style==='propuesta') s+=S.prep*.12+r*36;
+  else s+=8+r*22;
+  return s;
+}
+const DEB_FX = {
+  ataque:{b:{nat:2.4,riv:1.2,i:3}, c:{nat:.6,i:-2}, f:{nat:-1.4,i:-8}},
+  propuesta:{b:{nat:2,i:5}, c:{nat:.8,i:2}, f:{nat:-.8,i:-4}},
+  calma:{b:{nat:1.2,i:4}, c:{nat:.4,i:2}, f:{nat:-.5,i:-2}},
+};
+function debateOdds(style){let b=0,f=0;for(let k=0;k<400;k++){const s=debateScore(style,(k+.5)/400);if(s>=62)b++;else if(s<42)f++}return {b:Math.round(b/4),f:Math.round(f/4)}}
+function debateEvent(){
+  return {id:'debate', tag:'🎤 Debate', t:S.round===1?'Debate presidencial':'Debate del balotaje', debate:true,
+    txt:()=>`Cámaras, atriles y millones de personas mirando. Tu preparación: <b>${S.prep}/100</b>. Cuanto más preparación, imagen y energía, mejor te va.`,
+    opts:[
+      {l:'Salir a confrontar', d:'Alto riesgo, alto impacto. Si sale bien, también golpea al rival.', style:'ataque'},
+      {l:'Propuestas y datos', d:'Es la opción que más aprovecha la preparación.', style:'propuesta'},
+      {l:'Tono presidencial', d:'Pocos riesgos, poca ganancia.', style:'calma'},
+    ]};
+}
+
+/* =========================================================
+   RESOLVER NOTICIA
+   ========================================================= */
+function chooseOpt(i){
+  if(S.phase!=='event') return;
+  const ev=S.ev, o=ev.opts[i];
+  let res={opt:o.l, good:true};
+  if(ev.debate){
+    S.res.e=clamp(S.res.e-8,0,100);
+    const s=debateScore(o.style); const tier=s>=62?'b':s>=42?'c':'f';
+    const fx=DEB_FX[o.style][tier]; applyEff(fx);
+    res.title=tier==='b'?'🌟 ¡Ganaste el debate!':tier==='c'?'👍 Debate correcto':'😬 Debate flojo';
+    res.text=tier==='b'?'Los clips de tu mejor momento dominan las redes.':tier==='c'?'Sin grandes errores ni grandes momentos.':'Te trabaste en la pregunta clave y los rivales lo aprovecharon.';
+    res.chips=chips(fx); res.good=tier!=='f'; S.prep=0;
+  } else if(o.risk){
+    let p=clamp(o.risk.p+(S.res.i-50)/250,.1,.9);
+    const ok=rnd()<p; const fx=ok?o.risk.ok:o.risk.ko; applyEff(fx,o);
+    res.title=ok?'🎲 ¡Salió bien!':'🎲 Salió mal'; res.text=ok?o.risk.okT:o.risk.koT; res.chips=chips(fx); res.good=ok;
+  } else {
+    applyEff(o.eff,o); res.title='✅ Decisión tomada'; res.text=''; res.chips=chips(o.eff);
+  }
+  S.evRes=res; S.phase='agenda';
+  S.weekLog.push(`Noticia «${ev.t}»: ${o.l}. ${res.title.replace(/^[^\wÁÉÍÓÚ¡]+/,'')}`);
+  render();
+}
+
+/* =========================================================
+   ACCIONES
+   ========================================================= */
+const ACT = [
+  {id:'acto', ico:'📣', n:'Acto en la región', d:'Llenás una plaza. Gana votos en la región elegida.', f:12, e:15, reg:true},
+  {id:'spot', ico:'📺', n:'Pauta publicitaria', d:'Spots locales y redes. Cansa poco, cuesta caro. Algo de alcance nacional.', f:20, e:4, reg:true},
+  {id:'org',  ico:'🧭', n:'Organizar el territorio', d:'Voluntarios y fiscales: suma votos en la región y fiscales para el día de la elección.', f:9, e:8, reg:true},
+  {id:'entrevista', ico:'🎙️', n:'Entrevista nacional', d:'Alcance en todo el país y mejora tu imagen. 15% de riesgo de furcio.', f:3, e:10},
+  {id:'contraste', ico:'⚔️', n:'Contraste con el rival', d:'Golpeás al rival mejor ubicado. Le resta votos, pero te cuesta imagen.', f:6, e:12},
+  {id:'recaudar', ico:'💰', n:'Cena de recaudación', d:'Recuperás 22 de fondos.', f:0, e:12},
+  {id:'descanso', ico:'😴', n:'Descansar', d:'Recuperás energía. Con poca energía todo rinde menos.', f:0, e:0},
+  {id:'debate', ico:'🎯', n:'Preparar el debate', d:'Ensayos y asesores: +30 de preparación para el próximo debate.', f:6, e:8},
+  {id:'encuesta', ico:'📊', n:'Encuesta propia', d:'Durante 3 semanas, tus encuestas tienen margen ±0,5 en vez de ±1,6.', f:10, e:2},
+];
+function repFactor(r){const n=S.recent.filter(x=>x.r===r&&x.t>=S.turn-1&&x.round===S.round).length;return Math.pow(.6,n)}
+function actGain(a,r=S.sel){
+  const m=power(), af=C[S.p].aff[r]*regMult(r), rep=repFactor(r);
+  if(a.id==='acto') return 1.3*af*m*rep;
+  if(a.id==='spot') return .95*af*m*rep;
+  if(a.id==='org')  return .65*af*m*rep*(trait('aparato')?1.4:1);
+  if(a.id==='entrevista') return .45*m*(trait('viral')?1.4:1);
+  if(a.id==='contraste') return 1*m;
+  return 0;
+}
+const restAmt = () => trait('militancia')?35:25;
+function actPreview(a){
+  const g=actGain(a), r=REG[S.sel];
+  switch(a.id){
+    case 'acto': case 'org': return `≈ ${sgn(g)} pts en ${r.k} (${sgn(g*r.w,2)} país)`+(a.id==='org'?' · +1 🛡️':'');
+    case 'spot': return `≈ ${sgn(g)} pts en ${r.k} + ${fmt(.15*power(),2)} país`;
+    case 'entrevista': return `≈ ${sgn(g)} pts país · +${fmt(imgDelta(3),0)} ⭐`;
+    case 'contraste': return `≈ −${fmt(g)} pts a ${esc(sn(topRival()))} · +${fmt(g*.3)} vos · ${fmt(imgDelta(-4),0)} ⭐`;
+    case 'recaudar': return '+22 💰';
+    case 'descanso': return `+${restAmt()} ⚡`;
+    case 'debate': return `Preparación ${S.prep} → ${Math.min(100,S.prep+30)}`;
+    case 'encuesta': return S.precise>0?`Activa: ${S.precise} sem. más`:'Margen ±0,5 por 3 semanas';
+  }
+}
+function actBlock(a){
+  if(S.phase!=='agenda') return 'Primero respondé la noticia';
+  if(S.ap<=0) return 'Sin acciones esta semana';
+  if(a.id==='debate' && (S.turn>=debateTurn())) return 'El debate es esta semana';
+  if(S.res.f<a.f) return `Faltan fondos (${a.f})`;
+  if(a.e && S.res.e<a.e) return `Falta energía (${a.e})`;
+  return '';
+}
+function doAction(id){
+  const a=ACT.find(x=>x.id===id); if(actBlock(a)) return;
+  const g=actGain(a), r=S.sel; let msg='';
+  S.res.f-=a.f; S.res.e=clamp(S.res.e-a.e,0,100);
+  switch(id){
+    case 'acto': shift(r,S.p,g); msg=`📣 Acto en ${REG[r].k}: ${sgn(g)} pts en la región`; break;
+    case 'spot': shift(r,S.p,g); natShift(S.p,.15*power()); msg=`📺 Pauta en ${REG[r].k}: ${sgn(g)} pts`; break;
+    case 'org': shift(r,S.p,g); S.fiscal+=1; msg=`🧭 Territorio en ${REG[r].k}: ${sgn(g)} pts y +1 fiscal`; break;
+    case 'entrevista':
+      if(rnd()<(S.res.i<35?.25:.15)){natShift(S.p,-.4);const d=imgDelta(-5);S.res.i=clamp(S.res.i+d,0,100);msg=`🎙️ ¡Furcio en la entrevista! −0,4 pts y ${fmt(d,0)} imagen`}
+      else {natShift(S.p,g);const d=imgDelta(3);S.res.i=clamp(S.res.i+d,0,100);msg=`🎙️ Buena entrevista: ${sgn(g)} pts y +${fmt(d,0)} imagen`} break;
+    case 'contraste': {const t=topRival(); natShift(t,-g); natShift(S.p,g*.3); S.res.i=clamp(S.res.i+imgDelta(-4),0,100); msg=`⚔️ Golpe a ${C[t].name}: −${fmt(g)} pts`; break;}
+    case 'recaudar': S.res.f=clamp(S.res.f+22,0,100); msg='💰 Recaudaste 22 de fondos'; break;
+    case 'descanso': {const v=restAmt(); S.res.e=clamp(S.res.e+v,0,100); msg=`😴 Recuperaste ${v} de energía`; break;}
+    case 'debate': S.prep=Math.min(100,S.prep+30); msg=`🎯 Preparación del debate: ${S.prep}/100`; break;
+    case 'encuesta': S.precise=3; msg='📊 Encuestas precisas por 3 semanas'; break;
+  }
+  if(a.reg) S.recent.push({r, t:S.turn, round:S.round});
+  S.ap--; S.weekLog.push(msg.replace(/^\S+\s/,'')); toast(msg); render();
+}
+
+/* =========================================================
+   CIERRE DE SEMANA
+   ========================================================= */
+function endWeek(){
+  if(S.phase!=='agenda') return;
+  const prev=lastPoll().slice(); const rivalLines=[];
+  rivals().forEach(c=>{
+    const str=C[c].str*S.d.riv*(S.round===2?1.35:1);
+    const w=REG.map((r,i)=>r.w*C[c].aff[i]**2); const r=wpick(w);
+    const g=(.6+rnd()*1.2)*str*1.8; shift(r,c,g);
+    natShift(c,randn()*.3);
+    const verbs=['hizo un acto en','recorrió','llenó de spots','caminó los barrios de'];
+    rivalLines.push(`<b style="color:${C[c].color}">${esc(C[c].name)}</b> ${verbs[Math.floor(rnd()*verbs.length)]} ${REG[r].k}`);
+    if(rnd()<.15*str){natShift(S.p,-.5*str);rivalLines.push(`<b style="color:${C[c].color}">${esc(C[c].name)}</b> te criticó en los medios (−${fmt(.5*str)} pts)`)}
+  });
+  const frac=S.round===1?.06+.04*S.turn/T1:.15;
+  S.sh.forEach(s=>{const mv=s[U]*frac;const tot=S.active.reduce((a,c)=>a+s[c],0);S.active.forEach(c=>s[c]+=mv*s[c]/tot);s[U]-=mv});
+  const inc=S.d.inc+(trait('billetera')?3:0); S.res.f=clamp(S.res.f+inc,0,100); S.res.e=clamp(S.res.e+4,0,100);
+  if(S.precise>0) S.precise--;
+  const poll=makePoll();
+  S.hist.push({lbl:(S.round===1?'S':'B')+S.turn, poll});
+  S.log.unshift({lbl:`${S.round===1?'Semana':'Balotaje · semana'} ${S.turn} · ${fdate(weekDate())}`, items:S.weekLog.slice()});
+  const myLines=S.weekLog.slice(); S.weekLog=[];
+  showSummary(prev,poll,rivalLines,myLines,inc,S.turn===totalTurns());
+}
+function nextWeek(){
+  closeModal();
+  if(S.turn>=totalTurns()){ election(); return; }
+  S.turn++; S.phase='event'; S.ap=2; S.evRes=null; S.ev=pickEvent(); render();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+/* =========================================================
+   ELECCIÓN
+   ========================================================= */
+function election(){
+  const n=national(); const res={}; let tot=0;
+  S.active.forEach(c=>{let v=n[c]+randn()*1.1+(c===S.p?Math.min(S.fiscal,10)*.12:0);v=Math.max(.3,v);res[c]=v;tot+=v});
+  S.active.forEach(c=>res[c]=res[c]/tot*100);
+  const order=S.active.slice().sort((a,b)=>res[b]-res[a]);
+  const me=res[S.p], top=order[0], second=order[1];
+  let head, body, bal=false;
+  if(S.round===1){
+    const first=res[top]>=45||(res[top]>=40&&res[top]-res[second]>=10);
+    S.r1={res,order};
+    if(C[S.p].goal.type==='pct'){
+      const win=me>=C[S.p].goal.v;
+      head=win?'🎉 ¡Objetivo cumplido!':'😞 No alcanzó';
+      body=`${esc(C[S.p].name)} sacó <b>${fmt(me)}%</b> (objetivo: ${fmt(C[S.p].goal.v)}%). `+(first?`${esc(C[top].name)} gana en primera vuelta.`:`Habrá balotaje entre ${esc(C[top].name)} y ${esc(C[second].name)}.`);
+    } else if(first){
+      const win=top===S.p;
+      head=win?'🏛️ ¡Ganaste en primera vuelta!':'😞 Derrota en primera vuelta';
+      body=win?`Con <b>${fmt(me)}%</b> no hace falta balotaje. ${esc(C[S.p].name)} va a la Casa Rosada.`:`${esc(C[top].name)} gana con ${fmt(res[top])}%. Vos sacaste ${fmt(me)}%.`;
+    } else if(top===S.p||second===S.p){
+      bal=true; head='⚖️ ¡Hay balotaje!';
+      body=`Nadie llegó al 45% (ni al 40% con 10 de ventaja). Vas a segunda vuelta contra <b>${esc(C[top===S.p?second:top].name)}</b>.`;
+    } else {
+      head='😞 Quedaste afuera'; body=`Salís ${order.indexOf(S.p)+1}º con ${fmt(me)}%. El balotaje será entre ${esc(C[top].name)} y ${esc(C[second].name)}.`;
+    }
+  } else {
+    const win=top===S.p;
+    head=win?'🏛️ ¡Ganaste el balotaje!':'😞 Perdiste el balotaje';
+    body=win?`Con <b>${fmt(me)}%</b>, ${esc(C[S.p].name)} gana la presidencia.`:`${esc(C[top].name)} gana con ${fmt(res[top])}%.`;
+  }
+  S.over=!bal;
+  const bars=order.map(c=>`<div class="prow ${c===S.p?'me':''}"><span class="nm">${esc(sn(c))}</span><span class="tr"><i style="width:${res[c]}%;background:${C[c].color}"></i></span><span class="v">${fmt(res[c])}%</span></div>`).join('');
+  const realTxt = (S.over && SC.real) ? `<div class="realbox"><b>📚 Lo que pasó en la realidad (${SC.y})</b><br>${SC.real}</div>` : '';
+  showModal(`<div class="eyebrow">${S.round===1?'Noche electoral · '+fdate(SC.e1)+' '+SC.y:'Balotaje · '+fdate(SC.e2)+' '+SC.y}</div>
+    <h2>${head}</h2><p>${body}</p>
+    <div class="polls" style="margin:14px 0">${bars}</div>
+    ${S.round===1?'<div class="rule">Victoria en primera vuelta: 45%, o 40% con 10 puntos de ventaja.</div>':''}
+    <p class="rule">Fiscales: ${S.fiscal} (cuidaron ≈ ${fmt(Math.min(S.fiscal,10)*.12)} pts). Los indecisos se repartieron el día de la elección.</p>
+    ${realTxt}
+    <div class="row">${bal?`<button class="big" onclick="startRunoff()">Ir al balotaje →</button>`:
+      `<button class="big" onclick="closeModal();newGame()">Revancha con ${esc(sn(S.p))}</button><button class="big ghost" onclick="closeModal();S=null;render()">Elegir otra elección</button>`}</div>`);
+  if(!bal) render();
+}
+function startRunoff(){
+  closeModal();
+  const [a,b]=S.r1.order;
+  const elim=S.active.filter(c=>c!==a&&c!==b);
+  const wt=(c,t)=>Math.exp(-2*Math.abs((C[c].lean||0)-(C[t].lean||0)));
+  S.sh.forEach(s=>{elim.forEach(c=>{const v=s[c];s[c]=0;const wa=wt(c,a),wb=wt(c,b);s[a]+=v*.5*wa/(wa+wb);s[b]+=v*.5*wb/(wa+wb);s[U]+=v*.5})});
+  S.active=[a,b]; S.round=2; S.turn=1; S.phase='event'; S.ap=2; S.evRes=null; S.prep=0; S.recent=[];
+  S.res.e=clamp(S.res.e+20,0,100); S.res.f=clamp(S.res.f+15,0,100);
+  S.hist.push({lbl:'B0', poll:makePoll(), sep:true});
+  S.ev=pickEvent(); render(); window.scrollTo({top:0,behavior:'smooth'});
+  toast('⚖️ Arranca el balotaje: +15 fondos, +20 energía');
+}
+
+/* =========================================================
+   RENDER
+   ========================================================= */
+function render(){
+  const app=$('#app');
+  if(!S){app.innerHTML=renderStart();custSum();return}
+  app.innerHTML=renderHeader()+renderRes()+`<div class="layout"><main>${renderStepper()}${renderEvent()}${renderAgenda()}${renderLog()}</main><aside>${renderCount()}${renderChart()}${renderPolls()}</aside></div>`;
+}
+
+function scenLabel(k){return k==='custom'?'✏️ Personalizada':k==='2027'?'2027 · hipotética':k}
+function renderStart(){
+  loadScenario(setup.scen);
+  const tabs=SCEN_ORDER.map(k=>`<button class="${setup.scen===k?'on':''}" onclick="pickScen('${k}')">${scenLabel(k)}</button>`).join('');
+  let cards;
+  if(SC.custom){ cards=renderCustomEditor(); }
+  else {
+    if(setup.cand>=C.length) setup.cand=0;
+    cards=`<div class="cands">`+C.map((c,i)=>`<button class="cand ${setup.cand===i?'sel':''}" onclick="setup.cand=${i};render()">
+     <div class="hd" style="background:${c.color}"><small>${c.sig}</small><b>${c.name}</b><span style="font-size:12px;font-weight:600">${c.party}</span></div>
+     <div class="bd">${c.vp?`<span style="color:var(--muted)">Fórmula con ${c.vp}</span>`:''}<span class="df">Arranca con ${fmt(c.start)}% · Dificultad: ${c.diff}</span><span>${c.pitch}</span><span style="color:var(--muted)"><b>Rasgo.</b> ${c.traitTxt}</span>
+     <span><b>Objetivo:</b> ${c.goal.type==='win'?'ganar la presidencia':'superar el '+fmt(c.goal.v)+'%'}</span></div></button>`).join('')+`</div>`;
+  }
+  const ds=Object.entries(DIFF).map(([k,d])=>`<button class="${setup.diff===k?'on':''}" onclick="setup.diff='${k}';render()" title="${d.d}">${d.l}</button>`).join('');
+  return `<header class="top"><div class="top-in"><div class="logo"><div class="sun">☀️</div><div><small>Simulador electoral · Argentina</small><h1>Rumbo a la Rosada</h1></div></div></div></header>
+  <div class="start">
+    <div class="hero"><div><h2>¿Llegás a la <span>Casa Rosada</span>?</h2>
+      <p>Doce semanas de campaña hasta la primera vuelta y cuatro más si hay balotaje. Cada semana respondés a una noticia, armás tu agenda y mirás cómo se mueven las encuestas.</p></div>
+      <div class="how">
+        <div><span class="n">1</span><div><b>📰 Noticia de la semana</b><span>Pasa algo en el país. Elegís cómo responder y ves el efecto antes de decidir.</span></div></div>
+        <div><span class="n">2</span><div><b>🗓️ Tu agenda: 2 acciones</b><span>Elegís región y actividades: actos, pauta, entrevistas, recaudar o descansar.</span></div></div>
+        <div><span class="n">3</span><div><b>📈 Cerrás la semana</b><span>Los rivales mueven, sale una encuesta nueva y el gráfico se actualiza.</span></div></div>
+      </div></div>
+    <h2 class="disp" style="font-size:24px;margin-bottom:10px">1. Elegí la elección</h2>
+    <div class="seg scen">${tabs}</div>
+    <p class="scintro">${SC.intro}${(SC.hypo||SC.custom)?'':' Las intenciones de voto iniciales parten de las PASO, con las distancias algo achicadas para que los partidos chicos tengan chances.'}</p>
+    <h2 class="disp" style="font-size:24px;margin:18px 0 12px">2. ${SC.custom?'Armá los partidos':'Elegí tu candidatura'}</h2>
+    ${cards}
+    <div class="row"><div><div class="eyebrow" style="margin-bottom:6px">Dificultad</div><div class="seg">${ds}</div></div>
+      <label style="display:flex;gap:8px;align-items:center;font-weight:600;font-size:14px"><input type="checkbox" ${setup.tut?'checked':''} onchange="setup.tut=this.checked"> Mostrar la guía al empezar</label>
+      <div class="spacer"></div>
+      <button class="big" onclick="startFromSetup()">Empezar la campaña →</button></div>
+    <p class="note">Es un juego. ${SC.custom?'':'Las candidaturas son reales, pero '}${SC.custom?'L':'l'}as encuestas, las noticias y los hechos de campaña son inventados. Las regiones y sus pesos electorales son aproximados.</p>
+  </div>`;
+}
+function pickScen(k){setup.scen=k;setup.cand=0;if(k!=='custom'){const s=SCEN[k];let b=0;s.cands.forEach((c,i)=>{if(c.win&&c.pct>s.cands[b].pct)b=i});setup.cand=b}render()}
+function startFromSetup(){
+  if(setup.scen==='custom'){const err=customErrors();if(err){alert(err);return}saveCustom()}
+  newGame();
+}
+
+/* ---------- editor personalizado ---------- */
+function customErrors(){
+  const cc=setup.custom; if(cc.cands.length<2) return 'Necesitás al menos dos partidos.';
+  const sum=cc.cands.reduce((a,c)=>a+(+c.pct||0),0)+(+cc.und||0);
+  if(Math.abs(sum-100)>.6) return `Los porcentajes (incluidos los indecisos) tienen que sumar 100. Hoy suman ${fmt(sum)}.`;
+  if(cc.cands.some(c=>!(+c.pct>0))) return 'Cada partido necesita un porcentaje mayor que cero.';
+  return '';
+}
+function renderCustomEditor(){
+  const cc=setup.custom;
+  const regOpts=b=>['Sin bastión'].concat(REG.map(r=>r.k)).map((t,i)=>`<option value="${i}" ${+b===i?'selected':''}>${i?'Bastión: ':''}${t}</option>`).join('');
+  const rows=cc.cands.map((c,i)=>`<div class="crow">
+    <label class="me-pick" title="Jugar con este partido"><input type="radio" name="me" ${setup.customPlayer===i?'checked':''} onchange="setup.customPlayer=${i}"> <span>Juego yo</span></label>
+    <input type="color" value="${esc(c.color)}" oninput="cust(${i},'color',this.value)" aria-label="Color">
+    <input class="sm" value="${esc(c.sig)}" maxlength="6" placeholder="Sigla" oninput="cust(${i},'sig',this.value)">
+    <input value="${esc(c.party)}" placeholder="Partido" oninput="cust(${i},'party',this.value)">
+    <input value="${esc(c.name)}" placeholder="Candidata o candidato" oninput="cust(${i},'name',this.value)">
+    <span class="pctin"><input type="number" min="0.5" max="90" step="0.5" value="${esc(c.pct)}" oninput="cust(${i},'pct',this.value)">%</span>
+    <select onchange="cust(${i},'base',this.value)">${regOpts(c.base)}</select>
+    <button class="hbtn x" onclick="custDel(${i})" ${cc.cands.length<=2?'disabled':''} title="Quitar">✕</button></div>`).join('');
+  return `<div class="card custom"><div class="crows">${rows}</div>
+    <div class="row" style="margin-top:12px">
+      <button class="hbtn" onclick="custAdd()" ${cc.cands.length>=6?'disabled':''}>＋ Agregar partido</button>
+      <span class="pctin">Indecisos <input type="number" min="0" max="40" step="0.5" value="${esc(cc.und)}" oninput="setup.custom.und=+this.value;custSum()">%</span>
+      <span id="custsum" class="pill"></span>
+      <button class="hbtn" onclick="custNormalize()">Ajustar a 100%</button>
+      <button class="hbtn" onclick="setup.custom=JSON.parse(JSON.stringify(CUSTOM_DEFAULT));setup.customPlayer=0;render()">Restablecer</button>
+    </div>
+    <p class="rule">Hasta 6 partidos. Quien arranque con al menos 20% de los votos válidos juega para ganar la presidencia; el resto tiene un objetivo de porcentaje. Los rasgos se asignan solos.</p></div>
+`;
+}
+function cust(i,k,v){setup.custom.cands[i][k]=k==='pct'||k==='base'?+v:v; if(k==='pct')custSum(); saveCustom()}
+function custSum(){const el=document.getElementById('custsum');if(!el)return;const cc=setup.custom;const s=cc.cands.reduce((a,c)=>a+(+c.pct||0),0)+(+cc.und||0);el.textContent=`Total: ${fmt(s)}%`;el.style.background=Math.abs(s-100)<=.6?'#dff7ec':'#ffe6ea'}
+function custAdd(){const pal=Object.values(COL);const cc=setup.custom;const i=cc.cands.length;cc.cands.push({sig:'P'+(i+1),party:'Partido '+(i+1),name:'Candidatura '+(i+1),color:pal[(i+4)%pal.length],pct:4,base:0});render()}
+function custDel(i){const cc=setup.custom;if(cc.cands.length<=2)return;cc.cands.splice(i,1);if(setup.customPlayer>=cc.cands.length)setup.customPlayer=0;render()}
+function custNormalize(){const cc=setup.custom;const s=cc.cands.reduce((a,c)=>a+(+c.pct||0),0);if(s<=0)return;const room=100-(+cc.und||0);cc.cands.forEach(c=>c.pct=Math.round((+c.pct||0)/s*room*10)/10);render()}
+
+function renderHeader(){
+  const c=C[S.p];
+  return `<header class="top"><div class="top-in">
+    <div class="logo"><div class="sun">☀️</div><div><small>Simulador electoral · ${SC.custom?'personalizado':SC.y+(SC.hypo?' (hipotético)':'')}</small><h1>Rumbo a la Rosada</h1></div></div>
+    <div class="who"><span class="dot" style="background:${c.color}"></span><div><b>${esc(c.name)}</b><br><span>${esc(c.party)} · ${S.d.l}</span></div></div>
+    <div class="spacer"></div>
+    <span class="weekchip">${S.round===1?'1ª vuelta':'Balotaje'} · Semana <em>${S.turn}</em> de ${totalTurns()} · ${fdate(weekDate())}</span>
+    <button class="hbtn" onclick="showHelp()">❓ Cómo jugar</button>
+    <button class="hbtn" onclick="if(confirm('¿Abandonar esta campaña?')){S=null;render()}">↺ Salir</button>
+  </div></header>`;
+}
+
+function renderRes(){
+  const r=S.res, low=r.e<20;
+  const item=(ic,lb,v,col,tip,warn)=>`<div class="res ${warn?'warn':''}" tabindex="0"><span class="ic">${ic}</span><span class="lb">${lb}<span class="q">?</span></span><span class="val">${Math.round(v)}</span><span class="meter"><i style="width:${v}%;background:${col}"></i></span><div class="tip">${tip}</div></div>`;
+  const dots=[0,1].map(i=>`<i class="${i<S.ap&&S.phase!=='event'?'on':''}"></i>`).join('');
+  const showPrep=S.turn<debateTurn()||(S.turn===debateTurn()&&S.phase==='event');
+  return `<div class="resbar"><div class="resbar-in">
+    ${item('💰','Fondos',r.f,'var(--sol)',`Pagan actos, pauta y algunas respuestas. Recibís ${S.d.inc+(trait('billetera')?3:0)} por semana; «Cena de recaudación» suma 22. Máximo 100.`)}
+    ${item('⚡','Energía',r.e,low?'var(--rojo)':'var(--verde)',`Cada actividad cansa. <b>Por debajo de 20 todo rinde 40% menos.</b> «Descansar» recupera ${restAmt()}. Sumás 4 por semana.`,low)}
+    ${item('⭐','Imagen',r.i,'var(--cel2)',`Multiplica todo lo que hacés: con 50 rendís normal, con 80 rendís 27% más, con 20 un 27% menos. También mejora las apuestas arriesgadas.`)}
+    <div class="mini"><span class="pill">Acciones <span class="apdots">${dots}</span></span>
+      ${showPrep?`<span class="pill" title="Preparación para el debate de la semana ${debateTurn()}">🎯 ${S.prep}</span>`:''}</div>
+    <div class="mini"><span class="pill" title="Fiscales: cuidan votos el día de la elección">🛡️ ${S.fiscal}</span>${S.precise>0?`<span class="pill" title="Encuestas precisas">📊 ${S.precise}</span>`:''}</div>
+  </div></div>`;
+}
+
+function renderStepper(){
+  const ph=S.phase;
+  const st=(n,t,s,state)=>`<div class="step ${state}"><span class="n">${state==='done'?'✓':n}</span><div><b>${t}</b><span>${s}</span></div></div>`;
+  const s1=ph==='event'?'cur':'done';
+  const s2=ph==='event'?'':(S.ap>0?'cur':'done');
+  const s3=ph==='agenda'&&S.ap===0?'cur':'';
+  let hint;
+  if(ph==='event') hint=`<span class="em">👇</span> Respondé a la noticia de la semana. Cada opción muestra su efecto antes de elegir.`;
+  else if(S.ap>0) hint=`<span class="em">🗓️</span> Elegí una región y usá ${S.ap===2?'tus 2 acciones':'tu última acción'}. Después cerrá la semana.`;
+  else hint=`<span class="em">✅</span> Ya usaste tus acciones. Cerrá la semana para ver la nueva encuesta.`;
+  return `<div><div class="stepper">${st(1,'Noticia','Respondé al hecho',s1)}${st(2,'Agenda',`${2-(ph==='event'?2:S.ap)}/2 acciones usadas`,s2)}${st(3,'Cerrar semana','Encuesta y rivales',s3)}</div><div class="hint">${hint}</div></div>`;
+}
+
+function renderEvent(){
+  const ev=S.ev;
+  let body;
+  if(S.phase==='event'){
+    body=`<div class="opts">`+ev.opts.map((o,i)=>{
+      let detail='', dis=false;
+      if(ev.debate){const od=debateOdds(o.style);detail=`<div class="chips"><span class="chip pos">🌟 brillante ${od.b}%</span><span class="chip neg">😬 flojo ${od.f}%</span><span class="chip neg">−8 ⚡ energía</span></div>`}
+      else if(o.risk){const p=Math.round(clamp(o.risk.p+(S.res.i-50)/250,.1,.9)*100);
+        detail=`<div class="chips"><span class="chip risk">🎲 ${p}% de que salga bien</span></div><div class="riskrow">Bien: <span class="chips">${chips(o.risk.ok)}</span></div><div class="riskrow">Mal: <span class="chips">${chips(o.risk.ko)}</span></div>`;
+        dis=!affordable(o.risk.ok)}
+      else {detail=`<div class="chips">${chips(o.eff)}</div>`;dis=!affordable(o.eff)}
+      return `<button class="opt" ${dis?'disabled title="No te alcanzan los fondos"':''} onclick="chooseOpt(${i})"><span class="k">${'ABC'[i]}</span><span><b>${o.l}</b><p>${o.d}</p>${detail}</span></button>`;
+    }).join('')+`</div><p class="rule">Atajo: teclas 1, 2, 3. Los puntos se multiplican por tu imagen y energía.</p>`;
+  } else {
+    const r=S.evRes;
+    body=`<div class="resolved ${r.good?'':'bad'}"><div class="eyebrow">Elegiste: ${r.opt}</div><b>${r.title}</b>${r.text?` — ${r.text}`:''}<div class="chips" style="margin-top:6px">${r.chips}</div></div>`;
+  }
+  return `<section class="card event"><div class="ev-head"><span class="tag">${ev.tag}</span><span class="eyebrow">📰 Noticia de la semana · ${fdate(weekDate())}</span></div>
+    <h2 class="ev-title">${ev.t}</h2>${S.phase==='event'?`<p class="ev-txt">${val(ev.txt)}</p>`:''}${body}</section>`;
+}
+
+function renderAgenda(){
+  const locked=S.phase==='event';
+  const tiles=REG.map((r,i)=>{
+    const s=S.sh[i]; const lead=S.active.slice().sort((a,b)=>s[b]-s[a])[0]; const rep=repFactor(i);
+    return `<button class="rt ${S.sel===i?'sel':''}" style="grid-area:${r.area}" onclick="S.sel=${i};render()">
+      <span class="bar" style="background:${C[lead].color}"></span><span class="w">${Math.round(r.w*100)}% padrón</span>
+      <div class="nm">${r.k}</div><div class="yours" style="color:${C[S.p].color}">${fmt(s[S.p])}%</div>
+      <div class="meta">Lidera ${lead===S.p?'<b>vos</b>':esc(C[lead].sig)+' '+fmt(s[lead])+'%'}${rep<1?' · <b style="color:var(--rojo)">ya fuiste: rinde menos</b>':''}${C[S.p].aff[i]>=1.15?' · 💪 bastión':C[S.p].aff[i]<=.8?' · 🥶 difícil':''}</div></button>`;
+  }).join('');
+  const acts=ACT.filter(a=>!(a.id==='debate'&&S.turn>debateTurn())).map(a=>{
+    const why=actBlock(a); const pv=actPreview(a);
+    return `<button class="act" ${why?'disabled':''} onclick="doAction('${a.id}')">${a.reg?`<span class="loc">📍 ${REG[S.sel].k}</span>`:''}
+      <span class="t"><span class="i">${a.ico}</span>${a.n}</span>
+      <div class="chips">${a.f?`<span class="chip neg">−${a.f} 💰</span>`:''}${a.e?`<span class="chip neg">−${a.e} ⚡</span>`:''}${!a.f&&!a.e?'<span class="chip pos">gratis</span>':''}</div>
+      <p>${a.d}</p><span class="pv">${pv}</span>${why&&!locked?`<span class="why">${why}</span>`:''}</button>`;
+  }).join('');
+  return `<section class="card agenda ${locked?'locked':''}">${locked?'<div class="lockmsg">🔒 Tu agenda se habilita cuando respondas la noticia de arriba</div>':''}
+    <div class="blk"><h2>🗓️ Tu agenda de la semana</h2>
+    <div class="sub"><span class="num">1</span><h3>Elegí la región</h3><span>Los actos, la pauta y la organización se hacen en la región marcada. El número grande es tu intención de voto ahí.</span></div>
+    <div class="regions">${tiles}</div>
+    <div class="sub"><span class="num">2</span><h3>Elegí hasta 2 acciones</h3><span>Se aplican al instante. Debajo de cada una ves cuánto rendiría ahora.</span></div>
+    <div class="acts">${acts}</div>
+    <div class="closebar"><button class="big ${S.ap===0&&!locked?'pulse':''}" ${locked?'disabled':''} onclick="endWeek()">${S.turn===totalTurns()?'Cerrar campaña e ir a votar 🗳️':'Cerrar la semana →'}</button>
+      <span style="font-size:13px;color:var(--muted)">${!locked&&S.ap>0?`Te ${S.ap===1?'queda 1 acción':'quedan 2 acciones'} sin usar.`:''} Al cerrar, los rivales hacen campaña y sale una encuesta nueva.</span></div></div>
+  </section>`;
+}
+
+function renderLog(){
+  if(!S.log.length) return '';
+  return `<section class="card"><h2>📒 Bitácora</h2><div class="log" style="margin-top:10px">${S.log.map(w=>`<div class="lw"><b>${w.lbl}</b><ul>${w.items.map(x=>`<li>${x}</li>`).join('')||'<li>Semana sin acciones</li>'}</ul></div>`).join('')}</div></section>`;
+}
+
+function renderCount(){
+  const tot=totalTurns(), deb=debateTurn();
+  const cells=Array.from({length:tot},(_,i)=>{const t=i+1;const cls=t<S.turn?'past':t===S.turn?'now':'';return `<i class="${cls}" title="Semana ${t}">${t===deb?'🎤':t===tot?'🗳️':''}</i>`}).join('');
+  const d=daysLeft(); const weeks=tot-S.turn+1;
+  return `<div class="count"><div class="eyebrow" style="color:#fff;opacity:.75">${S.round===1?'Cuenta regresiva · 1ª vuelta':'Cuenta regresiva · balotaje'}</div>
+    <div style="display:flex;align-items:baseline;gap:10px"><span class="d">${d}</span><span class="lbl">días para votar<br><b>dom ${fdate(elecDate())} ${SC.y}</b></span></div>
+    <div class="track">${cells}</div>
+    <div class="mile"><span>${weeks===1?'¡Última semana!':`Quedan ${weeks} semanas`}</span><span>${S.turn<deb?`🎤 Debate en la semana ${deb}`:S.turn===deb?'🎤 ¡Debate esta semana!':'🎤 Debate ya jugado'}</span></div></div>`;
+}
+
+function renderChart(){
+  const W=340,H=230,L=30,R=52,T=12,B=26;
+  const hist=S.hist; const maxX=Math.max(T1+(S.round===2?T2+1:0),hist.length-1);
+  const ids=[...new Set(hist.flatMap(h=>h.poll.map((v,c)=>v!=null&&c!==U?c:null)).filter(x=>x!=null))];
+  let maxV=0; hist.forEach(h=>h.poll.forEach((v,c)=>{if(v!=null&&c!==U)maxV=Math.max(maxV,v)}));
+  const yMax=Math.max(50,Math.ceil((maxV+4)/10)*10);
+  const x=i=>L+(W-L-R)*i/maxX, y=v=>T+(H-T-B)*(1-v/yMax);
+  let g='';
+  for(let v=0;v<=yMax;v+=10) g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e8e1cf" stroke-width="1"/><text x="${L-6}" y="${y(v)+4}" font-size="10" text-anchor="end" fill="#6b6985">${v}</text>`;
+  const gl=S.round===1?45:50;
+  g+=`<line x1="${L}" x2="${W-R}" y1="${y(gl)}" y2="${y(gl)}" stroke="#ff5c8a" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${L+4}" y="${y(gl)-4}" font-size="10" font-weight="700" fill="#d43a6a">${S.round===1?'45% gana en 1ª vuelta':'50%'}</text>`;
+  const db=S.round===1?DEB1:T1+1+DEB2; if(db<=maxX) g+=`<line x1="${x(db)}" x2="${x(db)}" y1="${T}" y2="${H-B}" stroke="#15152e" stroke-opacity=".15" stroke-width="10"/><text x="${x(db)}" y="${H-B+22}" font-size="10" text-anchor="middle">🎤</text>`;
+  if(S.round===2){const sx=x(T1+.5);g+=`<line x1="${sx}" x2="${sx}" y1="${T}" y2="${H-B}" stroke="#15152e" stroke-width="1.5" stroke-dasharray="3 3"/><text x="${sx+3}" y="${T+10}" font-size="9.5" font-weight="700">balotaje →</text>`}
+  for(let i=0;i<=maxX;i+=2){const lb=i===0?'0':i<=T1?'S'+i:'B'+(i-T1-1);g+=`<text x="${x(i)}" y="${H-B+13}" font-size="9.5" text-anchor="middle" fill="#6b6985">${lb}</text>`}
+  const labels=[];
+  ids.sort((a,b)=>a===S.p?1:b===S.p?-1:0).forEach(c=>{
+    const pts=hist.map((h,i)=>h.poll[c]!=null?[x(i),y(h.poll[c])]:null);
+    let d='',on=false; pts.forEach(p=>{if(p){d+=(on?'L':'M')+p[0].toFixed(1)+','+p[1].toFixed(1);on=true}else on=false});
+    const me=c===S.p;
+    g+=`<path d="${d}" fill="none" stroke="${C[c].color}" stroke-width="${me?4:2.4}" stroke-linejoin="round" stroke-linecap="round" opacity="${me?1:.85}"/>`;
+    if(me) pts.forEach(p=>{if(p)g+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.2" fill="#fff" stroke="${C[c].color}" stroke-width="2"/>`});
+    const li=hist.length-1; const lv=hist[li].poll[c];
+    if(lv!=null){g+=`<circle cx="${x(li)}" cy="${y(lv)}" r="${me?5.5:4}" fill="${C[c].color}" stroke="#15152e" stroke-width="1.5"/>`;labels.push({c,yy:y(lv),v:lv,xx:x(li)})}
+  });
+  labels.sort((a,b)=>a.yy-b.yy); for(let i=1;i<labels.length;i++) if(labels[i].yy-labels[i-1].yy<12) labels[i].yy=labels[i-1].yy+12;
+  labels.forEach(l=>g+=`<text x="${l.xx+8}" y="${l.yy+4}" font-size="11" font-weight="800" fill="${C[l.c].color}">${fmt(l.v)}</text>`);
+  const leg=ids.map(c=>`<span><i style="background:${C[c].color};${c===S.p?'height:6px':''}"></i>${c===S.p?'<b>'+esc(sn(c))+' (vos)</b>':esc(sn(c))}</span>`).join('');
+  return `<div class="card"><h3>📈 Intención de voto, semana a semana</h3><div class="legend">${leg}</div>
+    <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Evolución de la intención de voto">${g}</svg>
+    <div class="rule">Encuestas publicadas, margen ±${S.precise>0?'0,5 (encuesta propia activa)':'1,6'}. Los indecisos no se grafican.</div></div>`;
+}
+
+function renderPolls(){
+  const p=lastPoll(); const ids=S.active.slice().sort((a,b)=>p[b]-p[a]);
+  const rows=ids.map(c=>`<div class="prow ${c===S.p?'me':''}"><span class="nm">${esc(sn(c))}</span><span class="tr"><i style="width:${Math.min(100,p[c]*1.6)}%;background:${C[c].color}"></i></span><span class="v">${fmt(p[c])}%</span></div>`).join('')
+   +`<div class="prow"><span class="nm" style="color:var(--muted)">Indecisos</span><span class="tr"><i style="width:${p[U]*1.6}%;background:${UND_COLOR}"></i></span><span class="v">${fmt(p[U])}%</span></div>`;
+  const tot=ids.reduce((a,c)=>a+p[c],0); const v=c=>p[c]/tot*100;
+  const [a,b]=ids; let txt, bg;
+  const goal=C[S.p].goal;
+  if(S.round===2){ txt=a===S.p?`Si fuera hoy: <b>ganás</b> ${fmt(v(a))} a ${fmt(v(b))}.`:`Si fuera hoy: <b>perdés</b> ${fmt(v(S.p))} a ${fmt(v(a))}.`; bg=a===S.p?'#dff7ec':'#ffe6ea'; }
+  else if(goal.type==='pct'){ const ok=v(S.p)>=goal.v; txt=`Objetivo ${fmt(goal.v)}% · si fuera hoy sacarías <b>${fmt(v(S.p))}%</b> ${ok?'✅':'❌'}`; bg=ok?'#dff7ec':'#ffe6ea'; }
+  else { const first=v(a)>=45||(v(a)>=40&&v(a)-v(b)>=10);
+    if(first&&a===S.p){txt=`Si fuera hoy: <b>ganás en primera vuelta</b> (${fmt(v(a))}% de los votos válidos).`;bg='#dff7ec'}
+    else if(first){txt=`Si fuera hoy: <b>gana ${esc(C[a].name)}</b> en primera vuelta.`;bg='#ffe6ea'}
+    else if(a===S.p||b===S.p){txt=`Si fuera hoy: <b>balotaje</b> contra ${esc(C[a===S.p?b:a].name)}.`;bg='#fff4c9'}
+    else {txt=`Si fuera hoy: <b>quedás afuera</b>; el balotaje sería ${esc(C[a].sig)} vs ${esc(C[b].sig)}.`;bg='#ffe6ea'} }
+  return `<div class="card"><h3>🗳️ Última encuesta</h3><div class="polls">${rows}</div>
+    <div class="verdict" style="background:${bg}">${txt}</div>
+    <div class="rule">${S.round===1?'Gana en 1ª vuelta quien saca 45% de los votos válidos, o 40% con 10 puntos de ventaja sobre el segundo.':'En el balotaje gana quien saque más votos.'}</div></div>`;
+}
+
+/* =========================================================
+   MODALES
+   ========================================================= */
+function showModal(h){const m=$('#modal');m.innerHTML=`<div class="mbox">${h}</div>`;m.classList.remove('hidden')}
+function closeModal(){$('#modal').classList.add('hidden')}
+function toast(t){const el=document.createElement('div');el.className='toast';el.textContent=t;$('#toasts').appendChild(el);setTimeout(()=>el.remove(),2600)}
+
+function showSummary(prev,poll,rivalLines,myLines,inc,last){
+  const ids=S.active.slice().sort((a,b)=>poll[b]-poll[a]);
+  const rows=ids.map(c=>{const d=poll[c]-(prev[c]??0);return `<tr><td><span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid #15152e;vertical-align:-1px;background:${C[c].color}"></span> ${c===S.p?'<b>'+esc(C[c].name)+' (vos)</b>':esc(C[c].name)}</td><td class="n">${fmt(prev[c]??0)}%</td><td class="n">→ ${fmt(poll[c])}%</td><td class="n ${d>=0?'up':'dn'}">${d>=0?'▲':'▼'} ${fmt(Math.abs(d))}</td></tr>`}).join('');
+  showModal(`<div class="eyebrow">Cierre de la semana ${S.turn}${S.round===2?' del balotaje':''}</div>
+    <h2>📊 Nueva encuesta</h2>
+    <table class="cmp">${rows}<tr><td style="color:var(--muted)">Indecisos</td><td class="n">${fmt(prev[U])}%</td><td class="n">→ ${fmt(poll[U])}%</td><td></td></tr></table>
+    <h3 style="margin-top:12px">🧑‍💼 Tu semana</h3><ul class="mlist">${myLines.map(x=>`<li>${x}</li>`).join('')||'<li>No hiciste actividades.</li>'}<li>Ingresos: +${inc} 💰, +4 ⚡</li></ul>
+    <h3 style="margin-top:12px">👀 Lo que hicieron los rivales</h3><ul class="mlist">${rivalLines.map(x=>`<li>${x}</li>`).join('')}</ul>
+    <div class="row"><button class="big ${last?'alt':''}" onclick="nextWeek()">${last?'Ir a la noche electoral 🗳️':`Empezar la semana ${S.turn+1} →`}</button></div>`);
+}
+
+function showHelp(first){
+  showModal(`<div class="eyebrow">${first?'Antes de arrancar':'Ayuda'}</div><h2>Cómo se juega</h2>
+   <div class="how" style="margin:12px 0">
+     <div><span class="n">1</span><div><b>📰 Noticia de la semana</b><span>Cada semana pasa algo. Tenés que responder antes de seguir. Cada opción muestra su efecto; las que tienen 🎲 son apuestas (tu imagen mejora las chances).</span></div></div>
+     <div><span class="n">2</span><div><b>🗓️ Agenda: 2 acciones</b><span>Marcá una región en el mapa y elegí actividades. Debajo de cada tarjeta ves cuánto rendiría. Repetir la misma región dos semanas seguidas rinde menos.</span></div></div>
+     <div><span class="n">3</span><div><b>📈 Cerrar la semana</b><span>Los rivales hacen campaña, algunos indecisos se definen y sale una encuesta nueva en el gráfico de la derecha.</span></div></div>
+   </div>
+   <ul class="mlist">
+     <li><b>💰 Fondos</b> pagan la campaña. <b>⚡ Energía</b> baja con cada actividad: debajo de 20 todo rinde 40% menos. <b>⭐ Imagen</b> multiplica todo lo que hacés.</li>
+     <li>En la semana ${DEB1} hay <b>🎤 debate</b>: prepararlo antes mejora mucho tus chances.</li>
+     <li><b>🛡️ Fiscales</b> cuidan votos la noche de la elección.</li>
+     <li>Ganás en primera vuelta con <b>45%</b>, o con <b>40% y 10 de ventaja</b>. Si no, balotaje de 4 semanas entre los dos primeros.</li>
+   </ul>
+   <div class="row"><button class="big" onclick="closeModal()">${first?'¡A la campaña!':'Entendido'}</button></div>`);
+}
+
+document.addEventListener('keydown',e=>{
+  if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement?.tagName)) return;
+  if(!S||!$('#modal').classList.contains('hidden')){ if(e.key==='Enter'&&S&&!$('#modal').classList.contains('hidden')){const b=$('#modal .big');if(b)b.click()} return }
+  if(S.phase==='event'&&['1','2','3'].includes(e.key)){const i=+e.key-1;if(S.ev.opts[i]){const btn=document.querySelectorAll('.opt')[i];if(btn&&!btn.disabled)chooseOpt(i)}}
+  if(S.phase==='agenda'&&e.key==='Enter'&&S.ap===0) endWeek();
+});
+render();
+
+</script>
+</body>
+</html>
