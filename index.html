@@ -254,6 +254,14 @@ svg text{font-family:Inter,sans-serif}
 .dq.done{background:var(--soft);color:var(--ink)}
 .dlast{display:block;font-size:13.5px;color:var(--muted);margin-bottom:6px}
 .dlast .chip{margin-left:4px}
+.escprog{display:grid;gap:6px;font-size:14px}
+.escprog .meter{height:14px;grid-column:auto}
+.esctr{position:relative}.esc45{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink);opacity:.5}
+.escreg{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.er{border:2px solid var(--line);border-radius:12px;padding:8px 10px;display:flex;flex-direction:column;gap:2px;font-size:13px;opacity:.55;transition:opacity .3s,background .3s}
+.er span{color:var(--muted);font-size:12.5px}
+.er.on{opacity:1;background:var(--midbg)}.er.ok{opacity:1;background:var(--okbg)}
+@media (max-width:640px){.escreg{grid-template-columns:1fr}}
 .simbox{margin-top:12px;background:var(--midbg);border:2.5px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px}
 .simbox .big{padding:10px 14px;font-size:14px}
 .realbox{margin-top:10px;background:#eef6ff;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px}
@@ -1535,6 +1543,36 @@ function nextWeek(){
 /* =========================================================
    ELECCIÓN
    ========================================================= */
+/* escrutinio provisorio: las regiones se cargan de a poco (~10 s) */
+function runEscrutinio(res,cb){
+  if(setup.fastEscr){cb();return}
+  const act=S.active.slice().sort((a,b)=>res[b]-res[a]), nat=national();
+  const reg=REG.map((rg,r)=>{const v={};let t=0;act.forEach(c=>{const x=Math.max(.05,S.sh[r][c])*res[c]/Math.max(.3,nat[c]);v[c]=x;t+=x});act.forEach(c=>v[c]=v[c]/t*100);return v});
+  const seq=[1,2,3,5,4,0], steps=[]; seq.forEach(r=>{for(let q=1;q<=4;q++) steps.push({r,q})});
+  const counted=REG.map(()=>0); let i=0, timer=null, done=false, final=false;
+  const title=S.round===1?'Elecciones generales':'Balotaje';
+  showModal(`<div class="eyebrow">Escrutinio provisorio · ${title} · ${fdate(S.round===1?SC.e1:SC.e2)} ${SC.y}</div>
+    <h2>🗳️ Se están cargando los resultados</h2><div id="escr"></div>
+    <div class="row"><button class="big ghost" onclick="window._escSkip&&window._escSkip()">⏭ Saltar escrutinio</button></div>`);
+  const upd=()=>{
+    const el=document.getElementById('escr'); if(!el) return;
+    const wsum=REG.reduce((a,rg,r)=>a+rg.w*counted[r],0), mesas=final?100:wsum*100;
+    const part={}; act.forEach(c=>part[c]=final?res[c]:wsum>0?REG.reduce((a,rg,r)=>a+rg.w*counted[r]*reg[r][c],0)/wsum:0);
+    const ord=act.slice().sort((a,b)=>part[b]-part[a]);
+    const mark=S.round===1?`<i class="esc45" style="left:${45*1.6}%" title="45%"></i>`:`<i class="esc45" style="left:${50*1.6}%" title="50%"></i>`;
+    el.innerHTML=`<div class="escprog"><span>Mesas escrutadas: <b>${fmt(mesas)}%</b></span><span class="meter"><i style="width:${mesas}%;background:var(--rosa)"></i></span></div>
+      <div class="polls" style="margin:12px 0">${ord.map(c=>`<div class="prow ${c===S.p?'me':''}"><span class="nm">${esc(sn(c))}</span><span class="tr esctr">${mark}<i style="width:${Math.min(100,part[c]*1.6)}%;background:${C[c].color}"></i></span><span class="v">${wsum>0||final?fmt(part[c])+'%':'—'}</span></div>`).join('')}</div>
+      <div class="escreg">${seq.map(r=>{const f=final?1:counted[r];const lead=act.slice().sort((a,b)=>reg[r][b]-reg[r][a])[0];
+        return `<div class="er ${f>=1?'ok':f>0?'on':''}"><b>${f>=1?'✅':f>0?'🔄':'⏳'} ${REG[r].k}</b><span>${f>0?`${Math.round(f*100)}% · lidera <b style="color:${C[lead].color}">${esc(sn(lead))}</b> ${fmt(reg[r][lead])}%`:'Esperando datos'}</span></div>`}).join('')}</div>
+      ${final?'<p class="rule">✔️ Escrutinio completo.</p>':'<p class="rule">Los distritos cargan a distinto ritmo: los primeros resultados pueden engañar.</p>'}`;
+  };
+  const finish=()=>{if(done)return;done=true;clearInterval(timer);window._escSkip=null;cb()};
+  window._escSkip=finish; upd();
+  timer=setInterval(()=>{
+    if(i>=steps.length){clearInterval(timer);final=true;upd();setTimeout(finish,1000);return}
+    const st=steps[i++]; counted[st.r]=st.q/4; upd();
+  },375);
+}
 const milOf=c=>c===S.p?S.fiscal:(S.aiMil[c]??(S.aiMil[c]=Math.round(3+(C[c].str||.6)*6+(C[c].trait==='aparato'?3:0)+rnd()*3)));
 function election(){
   let res, blankPct, pollV, tieNote='';
@@ -1550,6 +1588,7 @@ function election(){
   if(setup.forceTie&&S.round===2){const [a,b]=S.active;res[a]=50.02;res[b]=49.98;}
   const lp=lastPoll(); const lpt=S.active.reduce((a,c)=>a+lp[c],0); pollV={}; S.active.forEach(c=>pollV[c]=lp[c]/lpt*100);
   {const arr=Array(U+1).fill(null); S.active.forEach(c=>arr[c]=res[c]); S.hist.push({lbl:S.round===1?'1ªV':'Bal.', poll:arr, result:true});}
+  S.tieCtx={res,blankPct,pollV}; runEscrutinio(res,()=>election()); return;
   }
   const order=S.active.slice().sort((a,b)=>res[b]-res[a]);
   // balotaje voto a voto: desempata la militancia que fiscaliza; si también empata, se judicializa
@@ -1557,7 +1596,7 @@ function election(){
     const [a,b]=order, ma=milOf(a), mb=milOf(b);
     if(ma!==mb){ if(mb>ma) order.reverse();
       tieNote=`⚖️ <b>Empate técnico:</b> ${fmt(res[a])}% a ${fmt(res[b])}%. Lo definió la fiscalización: ${esc(C[order[0]].name)} tenía más militancia cuidando las mesas (${milOf(order[0])} contra ${milOf(order[1])}) y ganó la pelea por los votos impugnados.`; }
-    else if(!S.tieCtx){ S.tieCtx={res,blankPct,pollV};
+    else if(S.tieDraw===undefined){ S.tieCtx={res,blankPct,pollV};
       showModal(`<div class="eyebrow">Balotaje · ${fdate(SC.e2)} ${SC.y}</div><h2>⚖️ Empate técnico total</h2>
         <p>${esc(C[a].name)} y ${esc(C[b].name)} terminan con ${fmt(res[a])}% y ${fmt(res[b])}%. La militancia de los dos fiscalizó la misma cantidad de mesas (${ma} contra ${mb}), así que no hay desempate posible. La elección se judicializa.</p>
         <div class="row"><button class="big" onclick="S.tieDraw=rnd()<.5;election()">⚖️ Apretar el botón (50/50)</button></div>`);
