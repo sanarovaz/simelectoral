@@ -262,6 +262,7 @@ svg text{font-family:Inter,sans-serif}
 .er span{color:var(--muted);font-size:12.5px}
 .er.on{opacity:1;background:var(--midbg)}.er.ok{opacity:1;background:var(--okbg)}
 @media (max-width:640px){.escreg{grid-template-columns:1fr}}
+.swan.luck{box-shadow:4px 4px 0 var(--verde)}.swan.luck .eyebrow{color:#5fe0ad}
 .simbox{margin-top:12px;background:var(--midbg);border:2.5px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px}
 .simbox .big{padding:10px 14px;font-size:14px}
 .realbox{margin-top:10px;background:#eef6ff;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px}
@@ -671,6 +672,52 @@ function makePoll(){
 const lastPoll = () => {for(let i=S.hist.length-1;i>=0;i--) if(!S.hist[i].result) return S.hist[i].poll; return S.hist[0].poll};
 
 /* =========================================================
+   GOLPES DE SUERTE para partidos chicos (5% por semana, una vez por partida)
+   ========================================================= */
+const PJ_SIGS=['FP','UxP','FdT','FPV'];
+const luckTargets=()=>S.active.filter(c=>(C[c].goal.type==='pct'||natOf(c)<15)&&!C[c].hot&&natOf(c)<20);
+function luckKind(c){const x=C[c];
+  if(/^FIT/.test(x.sig)) return ['psyop','estallido','pjscandal','lenin'][Math.floor(rnd()*4)];
+  if(x.short==='Schiaretti') return 'schiaretti'; if(x.short==='Pullaro') return 'pullaro'; if(x.short==='Rodríguez Saá') return 'petroleo'; if(x.short==='Espert') return 'espert'; if(x.short==='Lavagna') return 'lavagna'; if(x.short==='Stolbizer') return 'stolbizer';
+  return 'viral';}
+function applyLuck(c,kind){
+  const nm=esc(C[c].name), me=c===S.p, g=4+rnd()*2;
+  const boost=(x,m=.9)=>{natShift(c,x);S.mom[c]=clamp((S.mom[c]||0)+m,-1.2,1.4)};
+  if(kind==='pjscandal'){const pj=S.active.find(x=>PJ_SIGS.includes(C[x].sig)); if(pj==null) kind='estallido';
+    else {const f=Math.min(.35,4/Math.max(1,natOf(pj)));const m1=transfer(pj,c,f*.6);transfer(pj,null,f*.4);S.mom[c]=clamp((S.mom[c]||0)+.7,-1.2,1.4);S.mom[pj]=clamp((S.mom[pj]||0)-.6,-1.2,1.2);
+      return {ico:'💣',t:'Escándalo en el peronismo',txt:`Se filtran audios de una interna feroz en ${esc(C[pj].party)}: acusaciones cruzadas, insultos y planillas de cargos. Una parte del votante peronista desencantado se va a la izquierda: +${fmt(m1)} pts para ${nm} y −${fmt(m1/0.6)} para ${esc(sn(pj))}.`}}}
+  if(kind==='psyop'){boost(g);S.muPend-=.08;
+    return {ico:'🕵️',t:'Una operación de influencia en redes',txt:`Una red de miles de cuentas falsas, atribuida a una operación extranjera, inunda TikTok y X con contenido de izquierda. ${nm} se desmarca y pide que se investigue, pero el ruido instala sus temas en la agenda: +${fmt(g)} pts y la opinión pública se corre a la izquierda.`}}
+  if(kind==='estallido'){boost(g);S.muPend-=.12;S.polPend+=.06;const i=incOf();if(i!=null&&i!==c)natShift(i,-2);
+    return {ico:'✊',t:'Estallido social',txt:`Marchas masivas y cortes en todo el país contra el ajuste y la inflación. La izquierda conduce las movilizaciones: +${fmt(g)} pts para ${nm}${i!=null&&i!==c?` y −2 para el oficialismo`:''}.`}}
+  if(kind==='lenin'){boost(g,1.3);
+    return {ico:'🧔',t:'Aparece un bisnieto de Lenin',txt:`Un carismático joven que dice ser bisnieto de Lenin (Lenin no tuvo hijos, pero nadie lo deja terminar la aclaración) se suma a la campaña de ${nm}. Sus actos explotan de gente: +${fmt(g)} pts y momentum fortísimo.`}}
+  if(kind==='schiaretti'){boost(g,1.1);S.medOv[c]=[1.3,1.25,1.35];
+    return {ico:'💪',t:'Schiaretti, joven y vigoroso',txt:`Un nuevo equipo de campaña lo muestra renovado: videos en el gimnasio, look moderno y discursos con energía. Las redes no hablan de otra cosa: +${fmt(g)} pts, momentum fuerte y ahora TikTok también le rinde (×1,3).`}}
+  if(kind==='pullaro'){boost(g,1.3);if(me)S.res.i=clamp(S.res.i+imgDelta(6),0,100);
+    return {ico:'🥊',t:'Pullaro sube al ring y gana',txt:`Acepta el desafío de pelear en Párense de Manos y gana por decisión unánime. El video del último round es lo más visto del país: +${fmt(g)} pts${me?', +6 de imagen':''} y momentum fortísimo.`}}
+  if(kind==='petroleo'){natShift(c,3);
+    if(me){S.apMax=3;S.ap=Math.min(S.ap+1,3);S.res.f=clamp(S.res.f+40,0,100)} else C[c].str=(C[c].str||.6)+.4;
+    return {ico:'🛢️',t:'¡Petróleo en San Luis!',txt:`Encuentran un yacimiento enorme en San Luis y la campaña de ${nm} pasa a tener recursos de sobra: +3 pts${me?', +40 💰 y <b>una acción más por semana</b> hasta el final':' y una campaña mucho más intensa'}.`}}
+  if(kind==='espert'){boost(g,1);S.muPend+=.04;if(me)S.res.f=clamp(S.res.f+25,0,100);else C[c].str=(C[c].str||.6)+.25;
+    return {ico:'🇬🇧',t:'Espert, el preferido de Londres y Riad',txt:`Diplomáticos británicos y saudíes elogian en público su programa económico y lo invitan a foros de inversión en Londres y Riad. Empresarios locales toman nota: llueven entrevistas y aportes privados${me?' (+25 💰)':''}. +${fmt(g)} pts.`}}
+  if(kind==='lavagna'){boost(g,1.2);S.medOv[c]=[1.4,1.1,1.35];
+    return {ico:'🧦',t:'Medias con sandalias: la tendencia del verano',txt:`El look que ${nm} usa desde siempre se vuelve furor: influencers, desfiles y memes. Lavagna pasa a ser ícono de estilo y TikTok lo adopta (×1,4). +${fmt(g)} pts y momentum fuerte.`}}
+  if(kind==='stolbizer'){boost(g,1.2);S.medOv[c]=[1.4,1.2,1.25];
+    return {ico:'🏀',t:'Stolbizer, la reina de los edits',txt:`Su hijo, basquetbolista, se vuelve viral con una volcada imposible, y ${nm} aparece en todos los edits alentando desde la tribuna. TikTok la adopta como «la mamá del momento» (×1,4). +${fmt(g)} pts y momentum fuerte.`}}
+  boost(3.5,.9);
+  return {ico:'✨',t:`${C[c].party} pega un batacazo en redes`,txt:`Un spot de campaña de ${nm} se vuelve el video más compartido del país: +3,5 pts y momentum a favor.`};
+}
+function luckStep(){
+  if(S.luck||!(setup.forceLuck||rnd()<.05)) return null;
+  const pool=luckTargets(); if(!pool.length) return null;
+  const c=(pool.includes(S.p)&&(setup.forceLuck||rnd()<.5))?S.p:pool[Math.floor(rnd()*pool.length)];
+  const r=applyLuck(c,luckKind(c)); S.luck={c,...r};
+  S.log.unshift({lbl:`🍀 Golpe de suerte · ${r.t}`, items:[r.txt.replace(/<[^>]+>/g,'')]});
+  return {...r,luck:true};
+}
+
+/* =========================================================
    MOMENTUM: las tendencias se arrastran de semana a semana, hasta que cambian
    ========================================================= */
 function momentumStep(lines){
@@ -720,7 +767,7 @@ const MED={Milei:[1.6,1.4,.8],Kicillof:[.9,.9,1.2],Macri:[.8,1,1.2],Pullaro:[.6,
   Schiaretti:[.55,.75,1.3],'Fernández':[.85,.9,1.2],Lavagna:[.5,.8,1.35],'Del Caño':[1.25,1.1,.8],'Gómez Centurión':[.8,1.05,1.1],Espert:[1.2,1.45,.9],
   Scioli:[.8,.85,1.3],Stolbizer:[.6,.8,1.25],'Rodríguez Saá':[.5,.7,1.3],Cristina:[1,1.05,1.25],Vidal:[.9,1,1.2]};
 const CH={tiktok:{i:0,n:'TikTok',ic:'📱'},yt:{i:1,n:'YouTube',ic:'▶️'},tv:{i:2,n:'la tele',L:'La tele',ic:'📺'}};
-function medOf(c){const x=C[c]; return MED[x.short]||(x.hot?[1.9,1.6,1]:x.trait==='viral'?[1.5,1.3,.9]:x.trait==='militancia'?[1.2,1.1,.85]:[1,1,1])}
+function medOf(c){const x=C[c]; if(S&&S.medOv&&S.medOv[c]) return S.medOv[c]; return MED[x.short]||(x.hot?[1.9,1.6,1]:x.trait==='viral'?[1.5,1.3,.9]:x.trait==='militancia'?[1.2,1.1,.85]:[1,1,1])}
 const chF=(ch,c=S.p)=>medOf(c)[CH[ch].i];
 function scaleEff(e,f){if(!e) return e; const o={...e}; if(o.nat>0) o.nat*=f; if(o.reg) o.reg=o.reg.map(([r,a])=>[r,a>0?a*f:a]); return o}
 const chChip=ch=>{const f=chF(ch);return `<span class="chip ${f>1.05?'pos':f<.95?'neg':'neu'}">${CH[ch].ic} ${CH[ch].L||CH[ch].n} rinde ×${fmt(f)} para tu electorado</span>`};
@@ -858,7 +905,7 @@ function newGame(){
   S={p:Math.min(p,C.length-1), dk:setup.diff, d, round:1, turn:1, phase:'event',
      sh:SC.base.map(r=>r.slice()), active:C.map((_,i)=>i),
      res:{f:d.f, e:85, i:55}, prep:0, fiscal:0, precise:0,
-     ap:2, sel:0, recent:[], hist:[], log:[], used:new Set(),
+     ap:2, apMax:2, luck:null, medOv:{}, sel:0, recent:[], hist:[], log:[], used:new Set(),
      ev:null, evRes:null, weekLog:[], r1:null, over:false,
      bias:[], pact:new Set(), allied:new Set(), pending:[],
      pos:C.map(c=>c.lean||0), mu:SC.mu, pol:SC.pol, muPend:0, polPend:0, disc:0, tilt:0,
@@ -1503,6 +1550,7 @@ function endWeek(){
   // cisnes negros: raros, pero cambian todo
   let swan=null;
   if(S.swanN<2&&(S.debugSwan||rnd()<.045)){S.debugSwan=false;const pool=SWANS.filter(w=>!S.swans.has(w.id));if(pool.length){const w=pool[Math.floor(rnd()*pool.length)];S.swans.add(w.id);S.swanN++;swan={ico:w.ico,t:w.t,txt:w.fx(),resp:!!w.resp};if(w.resp)S.forced={id:'sw_'+w.id,...w.resp}}}
+  if(!swan) swan=luckStep();
   // ideología: tu discurso, la agenda y el reposicionamiento de los rivales
   {const cal=spCalib(); const np=S.pos.slice(); const move=S.disc*STEP+S.tilt; np[S.p]=clamp(S.pos[S.p]+move,-1.3,1.3);
    rivals().forEach(c=>{const opts=[-.04,0,.04].map(dx=>clamp(S.pos[c]+dx,C[c].lean-.22,C[c].lean+.22));let best=opts[1];
@@ -1536,7 +1584,7 @@ function endWeek(){
 function nextWeek(){
   closeModal();
   if(S.turn>=totalTurns()){ election(); return; }
-  S.turn++; S.phase='event'; S.ap=2; S.evRes=null; S.ev=pickEvent(); render();
+  S.turn++; S.phase='event'; S.ap=S.apMax; S.evRes=null; S.ev=pickEvent(); render();
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
@@ -1687,7 +1735,7 @@ function startRunoff(){
   closeModal();
   const [a,b]=S.r1.order;
   runoffTransfer(a,b);
-  S.phase='event'; S.ap=2; S.evRes=null;
+  S.phase='event'; S.ap=S.apMax; S.evRes=null;
   S.res.e=clamp(S.res.e+20,0,100); S.res.f=clamp(S.res.f+15,0,100);
   S.ev=pickEvent(); render(); window.scrollTo({top:0,behavior:'smooth'});
   toast('⚖️ Arranca el balotaje: +15 fondos, +20 energía');
@@ -1829,7 +1877,7 @@ function renderHeader(){
 function renderRes(){
   const r=S.res, low=r.e<20;
   const item=(ic,lb,v,col,tip,warn)=>`<div class="res ${warn?'warn':''}" tabindex="0"><span class="ic">${ic}</span><span class="lb">${lb}<span class="q">?</span></span><span class="val">${Math.round(v)}</span><span class="meter"><i style="width:${v}%;background:${col}"></i></span><div class="tip">${tip}</div></div>`;
-  const dots=[0,1].map(i=>`<i class="${i<S.ap&&S.phase!=='event'?'on':''}"></i>`).join('');
+  const dots=Array.from({length:S.apMax},(_,i)=>i).map(i=>`<i class="${i<S.ap&&S.phase!=='event'?'on':''}"></i>`).join('');
   const showPrep=S.turn<debateTurn()||(S.turn===debateTurn()&&S.phase==='event');
   return `<div class="resbar"><div class="resbar-in">
     ${item('💰','Fondos',r.f,'var(--sol)',`Pagan actos, pauta y algunas respuestas. Recibís ${S.d.inc+(trait('billetera')?3:0)} por semana; «Cena de recaudación» suma 22. Máximo 100.`)}
@@ -1851,9 +1899,9 @@ function renderStepper(){
   const s3=ph==='agenda'&&S.ap===0?'cur':'';
   let hint;
   if(ph==='event') hint=`<span class="em">👇</span> Respondé a la noticia de la semana. Cada opción muestra su efecto antes de elegir.`;
-  else if(S.ap>0) hint=`<span class="em">🗓️</span> Elegí una región, usá ${S.ap===2?'tus 2 acciones':'tu última acción'} y definí tu discurso. Después cerrá la semana.`;
+  else if(S.ap>0) hint=`<span class="em">🗓️</span> Elegí una región, usá ${S.ap>1?`tus ${S.ap} acciones`:'tu última acción'} y definí tu discurso. Después cerrá la semana.`;
   else hint=`<span class="em">✅</span> Ya usaste tus acciones. Revisá tu discurso y cerrá la semana para ver la nueva encuesta.`;
-  return `<div><div class="stepper">${st(1,'Noticia','Respondé al hecho',s1)}${st(2,'Agenda',`${2-(ph==='event'?2:S.ap)}/2 acciones usadas`,s2)}${st(3,'Cerrar semana','Encuesta y rivales',s3)}</div><div class="hint">${hint}</div></div>`;
+  return `<div><div class="stepper">${st(1,'Noticia','Respondé al hecho',s1)}${st(2,'Agenda',`${S.apMax-(ph==='event'?S.apMax:S.ap)}/${S.apMax} acciones usadas`,s2)}${st(3,'Cerrar semana','Encuesta y rivales',s3)}</div><div class="hint">${hint}</div></div>`;
 }
 
 function renderEvent(){
@@ -1901,11 +1949,11 @@ function renderAgenda(){
     <div class="blk"><h2>🗓️ Tu agenda de la semana</h2>
     <div class="sub"><span class="num">1</span><h3>Elegí la región</h3><span>Los actos, la pauta y la organización se hacen en la región marcada. El número grande es tu intención de voto ahí.</span></div>
     <div class="regions">${tiles}</div>
-    <div class="sub"><span class="num">2</span><h3>Elegí hasta 2 acciones</h3><span>Se aplican al instante. Debajo de cada una ves cuánto rendiría ahora.</span></div>
+    <div class="sub"><span class="num">2</span><h3>Elegí hasta ${S.apMax} acciones</h3><span>Se aplican al instante. Debajo de cada una ves cuánto rendiría ahora.</span></div>
     <div class="acts">${acts}</div>
     ${renderDisc(locked)}
     <div class="closebar"><button class="big ${S.ap===0&&!locked?'pulse':''}" ${locked?'disabled':''} onclick="endWeek()">${S.turn===totalTurns()?'Cerrar campaña e ir a votar 🗳️':'Cerrar la semana →'}</button>
-      <span style="font-size:13px;color:var(--muted)">${!locked&&S.ap>0?`Te ${S.ap===1?'queda 1 acción':'quedan 2 acciones'} sin usar.`:''} Al cerrar, los rivales hacen campaña y sale una encuesta nueva.</span></div></div>
+      <span style="font-size:13px;color:var(--muted)">${!locked&&S.ap>0?`Te ${S.ap===1?'queda 1 acción':'quedan '+S.ap+' acciones'} sin usar.`:''} Al cerrar, los rivales hacen campaña y sale una encuesta nueva.</span></div></div>
   </section>`;
 }
 
@@ -2025,8 +2073,8 @@ function toast(t){const el=document.createElement('div');el.className='toast';el
 function showSummary(prev,poll,rivalLines,myLines,inc,last,swan){
   const ids=S.active.slice().sort((a,b)=>poll[b]-poll[a]);
   const rows=ids.map(c=>{const d=poll[c]-(prev[c]??0);return `<tr><td>${momIcon(c)} <span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--line);vertical-align:-1px;background:${C[c].color}"></span> ${c===S.p?'<b>'+esc(C[c].name)+' (vos)</b>':esc(C[c].name)}</td><td class="n">${fmt(prev[c]??0)}%</td><td class="n">→ ${fmt(poll[c])}%</td><td class="n ${d>=0?'up':'dn'}">${d>=0?'▲':'▼'} ${fmt(Math.abs(d))}</td></tr>`}).join('');
-  const sw=swan?`<div class="swan"><div class="eyebrow">🦢 Cisne negro</div><h3>${swan.ico} ${swan.t}</h3><p>${swan.txt}</p>${swan.resp?'<p class="rule">La semana que viene vas a tener que responder.</p>':''}</div>`:'';
-  if(swan) S.log.unshift({lbl:`🦢 Cisne negro · ${swan.t}`, items:[swan.txt.replace(/<[^>]+>/g,'')]});
+  const sw=swan?`<div class="swan ${swan.luck?'luck':''}"><div class="eyebrow">${swan.luck?'🍀 Golpe de suerte':'🦢 Cisne negro'}</div><h3>${swan.ico} ${swan.t}</h3><p>${swan.txt}</p>${swan.resp?'<p class="rule">La semana que viene vas a tener que responder.</p>':''}</div>`:'';
+  if(swan&&!swan.luck) S.log.unshift({lbl:`🦢 Cisne negro · ${swan.t}`, items:[swan.txt.replace(/<[^>]+>/g,'')]});
   showModal(`<div class="eyebrow">Cierre de la semana ${S.turn}${S.round===2?' del balotaje':''}</div>${sw}
     <h2>📊 Nueva encuesta</h2>
     <table class="cmp">${rows}<tr><td style="color:var(--muted)">Indecisos</td><td class="n">${fmt(prev[U])}%</td><td class="n">→ ${fmt(poll[U])}%</td><td></td></tr></table>
@@ -2050,6 +2098,7 @@ function showHelp(first){
      <li><b>🧭 Discurso:</b> cada semana elegís si correrte a la izquierda o a la derecha, y algunas respuestas a noticias también te corren. Los votantes están repartidos en un eje que se mueve con la agenda: acercarte a donde hay más votantes suma, pero los giros bruscos o alejarte mucho de tu identidad cuestan imagen. En el balotaje, los votantes de los eliminados eligen al finalista más cercano, o votan en blanco.</li>
      <li><b>📈 Momentum:</b> las subas y bajas tienden a continuar algunas semanas (▲ / ▼ junto a cada nombre), hasta que algo cambia la tendencia. Una buena semana tuya te da envión para las siguientes.</li>
      <li><b>📱 Medios:</b> cada fuerza tiene su público. TikTok rinde mucho más para un electorado joven (Milei, la izquierda, un outsider) que para uno tradicional (Schiaretti, Lavagna), y con la tele pasa al revés. Las noticias sobre redes y medios muestran cuánto te rinde cada canal.</li>
+     <li><b>🍀 Golpes de suerte:</b> los partidos chicos pueden tener un batacazo inesperado (un estallido social que empuja a la izquierda, una campaña que renueva a un candidato, petróleo en su provincia…).</li>
      <li><b>🦢 Cisnes negros:</b> muy de vez en cuando pasa algo enorme (una crisis, una catástrofe, un escándalo general) que cambia el humor del país.</li>
      <li><b>🏛️ Congreso:</b> después de las generales ves cuántos diputados y senadores gana cada fuerza.</li>
      <li><b>🤝 Negociaciones:</b> a veces otros partidos o gobernadores te ofrecen acuerdos. Solo negocian fuerzas cercanas en el eje ideológico: si te corrés, cambian tus aliados posibles. Aceptar, regatear o rechazar cambia quién se queda con esos votos.</li>
