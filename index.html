@@ -474,7 +474,7 @@ const EV_CIERRE = {id:'cierre', tag:'Última semana', t:'Cierre de campaña',
   opts:[
     {l:'Cierre masivo en el conurbano', d:'El acto más grande de la campaña.', eff:{f:-14,e:-10,reg:[[0,2.2]]}},
     {l:'Caravana por todo el país', d:'Una última recorrida federal.', eff:{e:-18,nat:.8}},
-    {l:'Ejército de fiscales', d:'Cuidar cada voto en cada mesa.', eff:{f:-12,fiscal:4}},
+    {l:'Movilizar a la militancia', d:'Fiscalizar cada mesa y salir a desmentir lo que haga falta.', eff:{f:-12,fiscal:4}},
   ]};
 const EV_BAL = {id:'bal', tag:'Segunda vuelta', t:'Empieza el balotaje',
   txt:()=>`Quedaron ${esc(C[S.p].name)} y ${esc(C[opp()].name)}. Hay cuatro semanas para seducir a los votantes de los que quedaron afuera.`,
@@ -501,7 +501,7 @@ const POOL = [
         {l:'Exigir que se levante el paro', d:'Gesto al votante porteño.', eff:{reg:[[1,1.6],[0,-1.1]]}},
         {l:'Ofrecerte como mediador', d:'Desgastante, pero presidencial.', eff:{e:-8,i:4}}]},
  {id:'streamer', tag:'Redes', t:'Un streamer famoso quiere apoyarte', txt:'Tiene 4 millones de seguidores y un historial de polémicas.',
-  opts:[{l:'Aceptar y hacer un vivo juntos', d:'Llegar a los jóvenes.', viral:true, risk:{p:.6, ok:{nat:1.2}, ko:{nat:-.4,i:-6}, okT:'Explota en redes: los jóvenes te descubren.', koT:'Desentierran sus tuits viejos. Te salpica.'}},
+  opts:[{l:'Aceptar y hacer un vivo juntos', d:'Llegar a los jóvenes.', viral:true, ch:'tiktok', risk:{p:.6, ok:{nat:1.2}, ko:{nat:-.4,i:-6}, okT:'Explota en redes: los jóvenes te descubren.', koT:'Desentierran sus tuits viejos. Te salpica.'}},
         {l:'Agradecer y mantener distancia', d:'Prudencia.', eff:{i:2}}]},
  {id:'gober', tag:'Territorio', t:'Los gobernadores del Centro piden reunión', txt:'Córdoba, Santa Fe y Entre Ríos ofrecen estructura a cambio de compromisos fiscales.',
   opts:[{l:'Firmar un pacto federal', d:'Estructura a cambio de promesas.', eff:{f:-8,reg:[[2,2.2],[3,.8]],i:-2}},
@@ -532,7 +532,7 @@ const POOL = [
         {l:'Bajar un cambio y reagrupar', d:'Recuperar aire.', eff:{e:12,i:1}},
         {l:'Encargar tu propio sondeo', d:'Saber dónde estás parado.', eff:{f:-8,precise:3}}]},
  {id:'stream', tag:'Medios', t:'Te invitan al stream más visto del país', txt:'Formato descontracturado, preguntas filosas, cero guion.',
-  opts:[{l:'Ir y jugarse', d:'Alto riesgo, mucha exposición.', viral:true, risk:{p:.6, ok:{nat:1.1}, ko:{i:-6}, okT:'Te muestran humano. Clips por todos lados.', koT:'Un furcio se vuelve meme nacional.'}},
+  opts:[{l:'Ir y jugarse', d:'Alto riesgo, mucha exposición.', viral:true, ch:'yt', risk:{p:.6, ok:{nat:1.1}, ko:{i:-6}, okT:'Te muestran humano. Clips por todos lados.', koT:'Un furcio se vuelve meme nacional.'}},
         {l:'Mandar a tu vocera', d:'Sin riesgos.', eff:{nat:.2}}]},
  {id:'interna', tag:'Interna', t:'Un aliado critica tu programa', txt:'Un dirigente de tu propio espacio dice en televisión que tus propuestas "no cierran".',
   opts:[{l:'Cena de reconciliación', d:'Coser la interna.', eff:{e:-8,f:-4,i:2}},
@@ -561,7 +561,7 @@ const POOL = [
   opts:[{l:'Plan de emergencia y viaje al Sur', d:'Presencia y propuestas.', eff:{f:-6,e:-10,reg:[[5,2.4]]}},
         {l:'Reclamar a las distribuidoras', d:'Desde Buenos Aires.', eff:{reg:[[5,.9]]}}]},
  {id:'volunt', tag:'Militancia', t:'Brota una red espontánea de voluntarios', txt:'Miles de personas se anotan para ayudar sin que nadie las convoque.',
-  opts:[{l:'Organizarlos como fiscales', d:'Cuidar los votos.', eff:{f:-4,fiscal:3}},
+  opts:[{l:'Sumarlos a la militancia', d:'Fiscalizar y defender la campaña en la calle y en redes.', eff:{f:-4,fiscal:3}},
         {l:'Sumarlos al puerta a puerta', d:'Contagio y entusiasmo.', eff:{nat:.6,e:6}}]},
  {id:'humo', tag:'Ambiente', t:'Incendios en el Delta', txt:'El humo de las quemas cubre Rosario y Buenos Aires durante días.',
   opts:[{l:'Ley de humedales ya', d:'Agenda verde.', eff:{reg:[[1,1.2],[2,.8],[4,-.4]]}},
@@ -569,6 +569,26 @@ const POOL = [
  {id:'jubil', tag:'Social', t:'Jubilados reclaman frente al Congreso', txt:'La jubilación mínima no cubre la canasta. Las imágenes de la represión indignan.',
   opts:[{l:'Prometer un aumento de emergencia', d:'Popular, difícil de pagar.', eff:{nat:1,i:-3}},
         {l:'Reunirte con ellos', d:'Escuchar.', eff:{e:-6,nat:.4,i:2}}]},
+ {id:'tiktok', tag:'📱 Redes', t:'Un video tuyo se vuelve trend en TikTok', txt:'Un clip tuyo de un acto, editado con música, tiene millones de reproducciones. Todo el mundo lo está imitando.',
+  opts:[{l:'Subirte al trend con un video propio', d:'Reírte de vos y sumarte al juego.', ch:'tiktok', risk:{p:.6, ok:{nat:1.1}, ko:{nat:-.3,i:-4}, okT:'Tu video supera al original.', koT:'Queda forzado: «cringe» nacional.'}},
+        {l:'Hacer un vivo de preguntas en TikTok', d:'Una hora respondiendo comentarios.', ch:'tiktok', eff:{nat:.7,e:-6}},
+        {l:'No hacer campaña en TikTok', d:'Mantener un perfil serio.', eff:{i:1}}]},
+ {id:'youtube', tag:'▶️ Redes', t:'Te invitan a una entrevista larga en YouTube', txt:'El canal de entrevistas más visto del país te ofrece tres horas de charla sin cortes ni edición.',
+  opts:[{l:'Ir: tres horas sin red', d:'Mostrar profundidad y personalidad.', ch:'yt', risk:{p:.75, ok:{nat:1}, ko:{i:-4}, okT:'Los cortes de la entrevista circulan toda la semana.', koT:'Un momento incómodo se vuelve viral.'}},
+        {l:'Lanzar tu propio canal con videos explicativos', d:'Producción cuidada, propuestas en detalle.', ch:'yt', eff:{f:-8,nat:.7}},
+        {l:'Mandar a alguien de tu equipo', d:'Sin exponerte.', eff:{nat:.2}}]},
+ {id:'tele', tag:'📺 Medios', t:'Entrevista en el noticiero de mayor rating', txt:'El canal líder te ofrece una entrevista en vivo en el horario central, o una charla más relajada en el programa de la tarde.',
+  opts:[{l:'Ir al horario central', d:'Máxima audiencia, preguntas duras.', ch:'tv', eff:{nat:.9,e:-6}},
+        {l:'El programa de la tarde', d:'Más relajado y cercano.', ch:'tv', eff:{nat:.55,i:2}},
+        {l:'Priorizar las redes', d:'«La tele es del pasado».', ch:'tiktok', eff:{nat:.5,i:-1}}]},
+ {id:'pauta', tag:'💸 Pauta', t:'¿Dónde ponés la plata de la pauta del mes?', txt:'Tu equipo de comunicación tiene que decidir dónde concentrar el presupuesto publicitario. Cada canal llega a un público distinto.',
+  opts:[{l:'TikTok e Instagram', d:'Video corto para el público joven.', ch:'tiktok', eff:{f:-10,nat:1.1}},
+        {l:'YouTube y podcasts', d:'Formatos largos, público informado.', ch:'yt', eff:{f:-10,nat:1}},
+        {l:'Tele y radio', d:'El público de siempre, más grande.', ch:'tv', eff:{f:-12,nat:1}}]},
+ {id:'algoritmo', tag:'📱 Redes', t:'La campaña se muda al video corto', media:{ch:'tiktok',k:1.1}, txt:'Un cambio en los algoritmos hace que los clips de campaña dominen los celulares. Las candidaturas con electorado joven y digital ganan visibilidad; las que dependen de la tele, la pierden.',
+  opts:[{l:'Adaptarte rápido', d:'Equipo de contenidos 24/7.', ch:'tiktok', eff:{f:-6,nat:.6}},
+        {l:'Redoblar en la tele', d:'Ir donde está tu público.', ch:'tv', eff:{nat:.5}},
+        {l:'No cambiar nada', d:'Seguir con tu plan.', eff:{e:4}}]},
  {id:'final', tag:'Fútbol', t:'La Selección juega la final', txt:'Todo el país se frena para ver el partido. Ningún candidato quiere quedar mal.',
   opts:[{l:'Verlo en un club de barrio', d:'Uno más.', eff:{e:-4,nat:.4}},
         {l:'Suspender la campaña ese día', d:'Respeto y descanso.', eff:{e:10,i:1}},
@@ -687,6 +707,19 @@ const blankNow=()=>{const n=national();return Math.max(0,100-n.reduce((a,b)=>a+b
 const TILT={dolar:[1,0,0],paro:[-1,1,0],segur:[1,-1,0],tarifas:[-1,0,1],campo:[1,0,-1],uni:[-1,0,1],frio:[0,-1],humo:[-1,0],jubil:[-1,0]};
 const AGENDA={segur:.06,dolar:.04,jubil:-.05,uni:-.04,tarifas:-.03,humo:-.02,campo:.02,paro:-.02};
 const tiltOf=(ev,i)=>{const o=ev.opts[i];return o.tilt!=null?o.tilt:((TILT[ev.id]||[])[i]||0)};
+/* audiencias: cuánto rinde cada canal según el electorado de cada fuerza [TikTok, YouTube, tele] */
+const MED={Milei:[1.6,1.4,.8],Kicillof:[.9,.9,1.2],Macri:[.8,1,1.2],Pullaro:[.6,.8,1.3],Bregman:[1.3,1.1,.8],Massa:[.8,.9,1.25],Bullrich:[.9,1.1,1.15],
+  Schiaretti:[.55,.75,1.3],'Fernández':[.85,.9,1.2],Lavagna:[.5,.8,1.35],'Del Caño':[1.25,1.1,.8],'Gómez Centurión':[.8,1.05,1.1],Espert:[1.2,1.45,.9],
+  Scioli:[.8,.85,1.3],Stolbizer:[.6,.8,1.25],'Rodríguez Saá':[.5,.7,1.3],Cristina:[1,1.05,1.25],Vidal:[.9,1,1.2]};
+const CH={tiktok:{i:0,n:'TikTok',ic:'📱'},yt:{i:1,n:'YouTube',ic:'▶️'},tv:{i:2,n:'la tele',L:'La tele',ic:'📺'}};
+function medOf(c){const x=C[c]; return MED[x.short]||(x.hot?[1.9,1.6,1]:x.trait==='viral'?[1.5,1.3,.9]:x.trait==='militancia'?[1.2,1.1,.85]:[1,1,1])}
+const chF=(ch,c=S.p)=>medOf(c)[CH[ch].i];
+function scaleEff(e,f){if(!e) return e; const o={...e}; if(o.nat>0) o.nat*=f; if(o.reg) o.reg=o.reg.map(([r,a])=>[r,a>0?a*f:a]); return o}
+const chChip=ch=>{const f=chF(ch);return `<span class="chip ${f>1.05?'pos':f<.95?'neg':'neu'}">${CH[ch].ic} ${CH[ch].L||CH[ch].n} rinde ×${fmt(f)} para tu electorado</span>`};
+const medTxt=c=>{const m=medOf(c);return Object.keys(CH).map(k=>`${CH[k].ic} ×${fmt(m[CH[k].i])}`).join(' · ')};
+function mediaShift(ev){ if(!ev.media) return; const {ch,k}=ev.media; const win=[],lose=[];
+  S.active.forEach(c=>{const g=k*(chF(ch,c)-1); if(Math.abs(g)<.05) return; natShift(c,g); (g>0?win:lose).push(`${esc(sn(c))} ${sgn(g)}`)});
+  note(`${CH[ch].ic} Esta semana la campaña pasa por ${CH[ch].n}. Ganan visibilidad: ${win.join(', ')||'nadie'}. Pierden: ${lose.join(', ')||'nadie'}.`,`${CH[ch].ic} Cambio de agenda mediática`)}
 const tiltChip=t=>t<0?'<span class="chip ideo">⬅ postura de izquierda</span>':t>0?'<span class="chip ideo">postura de derecha ➡</span>':'';
 
 /* =========================================================
@@ -772,6 +805,7 @@ const SWANS=[
 function imgDelta(d){ if(d<0&&trait('viral'))d*=1.3; if(d>0&&trait('prestigio'))d*=1.5; return d; }
 function applyEff(e,opt={}){
   if(!e) return {};
+  if(opt.ch) e=scaleEff(e,chF(opt.ch));
   const m=power(), viral=(opt.viral&&trait('viral'))?1.4:1, out={...e};
   if(e.f) S.res.f=clamp(S.res.f+e.f,0,100);
   if(e.e) S.res.e=clamp(S.res.e+e.e,0,100);
@@ -800,7 +834,7 @@ function chips(e,approx=true){
   if(e.oppgain) c('neg',`${approx?'~':''}+${fmt(e.oppgain)} pts a ${esc(e.oppname||'tu rival')}`);
   if(e.prep) c('pos',`+${e.prep} preparación debate`);
   if(e.precise) c('neu','📊 encuestas precisas');
-  if(e.fiscal) c('pos',`+${e.fiscal} 🛡️ fiscales`);
+  if(e.fiscal) c('pos',`+${e.fiscal} 🛡️ militancia`);
   if(!out.length) c('neu','sin efectos');
   return out.join('');
 }
@@ -825,7 +859,7 @@ function newGame(){
      massa:SC.key==='2023'?{mode:null}:null,
      fus:(SC.key==='2027'&&(setup.forceFus||rnd()<.25))?{turn:3,done:false}:null,
      out:(['2019','2023','2027'].includes(SC.key)&&(setup.forceOut||rnd()<.2))?{turn:3+Math.floor(rnd()*4),done:false}:null,
-     notes:[],
+     notes:[], later:[], alivio:null, platita:null, nafta:(SC.key==='2023'&&(setup.forceNafta||rnd()<.7)),
      mom:[], prevNat:null, wd:{}, swans:new Set(), swanN:0, forced:null, congress:null, transfers:null, resultHTML:'', resultHead:''};
   S.bias=C.map(()=>randn()*2.4); {const mb=S.bias.reduce((a,b)=>a+b,0)/C.length; S.bias=S.bias.map(b=>b-mb);}
   if(trait('billetera')) S.res.f+=10;
@@ -859,7 +893,7 @@ function pickEvent0(){
   }
   if(S.round===2&&rnd()<.4) return evGober();
   const pool=POOL.filter(e=>!S.used.has(e.id));
-  const ev=pool[Math.floor(rnd()*pool.length)]; S.used.add(ev.id); return ev;
+  const ev=pool[Math.floor(rnd()*pool.length)]; S.used.add(ev.id); mediaShift(ev); return ev;
 }
 
 /* ---------- debate ---------- */
@@ -899,7 +933,7 @@ const DEBQ={
    {l:'Reforma laboral profunda', d:'Bajar costos para contratar.', style:'ataque', tilt:1},
    {l:'Formalización gradual con incentivos', d:'Simplificar y premiar al que contrata.', style:'propuesta'},
    {l:'Proteger derechos y paritarias', d:'Defensa del trabajador.', style:'calma', tilt:-1}]},
- cruce:{tema:'Cruce', bon:{calma:6,ataque:-4}, q:()=>`${esc(C[topRival()].name)} se da vuelta y te acusa: «vos sos parte del problema». Tenés 30 segundos.`, opts:[
+cruce:{tema:'Cruce', bon:{calma:6,ataque:-4}, q:()=>`${esc(C[rivals().filter(c=>c!==S.deb.absent).sort((a,b)=>natOf(b)-natOf(a))[0]].name)} se da vuelta y te acusa: «vos sos parte del problema». Tenés 30 segundos.`, opts:[
    {l:'Contraatacar con lo peor de su pasado', d:'Ojo por ojo.', style:'ataque'},
    {l:'Responder con datos', d:'Desarmar la acusación.', style:'propuesta'},
    {l:'No entrar en la provocación', d:'Mostrarte presidencial.', style:'calma'}]},
@@ -912,13 +946,17 @@ const TIER_IC={b:'🌟',c:'👍',f:'😬'};
 function debateEvent(){
   const mid=['seg','edu','fed','trab'][Math.floor(rnd()*4)];
   const qs=(S.round===1?['eco',mid,'cruce','final']:['eco','cruce','final']).map(k=>DEBQ[k]);
-  S.deb={q:0,res:[]};
+  const lp=lastPoll(), leader=S.active.slice().sort((a,b)=>lp[b]-lp[a])[0];
+  S.deb={q:0,res:[],ask:leader===S.p,absent:(S.round===1&&leader!==S.p&&S.active.length>2&&rnd()<.25)?leader:null};
   return {id:'debate', tag:'🎤 Debate', debate:true, qs,
-    get t(){return `${S.round===1?'Debate presidencial':'Debate del balotaje'} · Bloque ${S.deb.q+1} de ${qs.length}: ${qs[S.deb.q].tema}`},
-    txt:()=>{const prog=qs.map((q,i)=>i<S.deb.res.length?`<span class="dq done">${TIER_IC[S.deb.res[i].tier]} ${q.tema}</span>`:i===S.deb.q?`<span class="dq now">▶ ${q.tema}</span>`:`<span class="dq">${q.tema}</span>`).join('');
+    get t(){return S.deb.ask?`${S.round===1?'Debate presidencial':'Debate del balotaje'}: ¿vas?`:`${S.round===1?'Debate presidencial':'Debate del balotaje'} · Bloque ${S.deb.q+1} de ${qs.length}: ${qs[S.deb.q].tema}`},
+    txt:()=>{if(S.deb.ask) return 'Llegás primero en las encuestas. Tu equipo está dividido: unos dicen que el favorito no tiene nada que ganar en un debate; otros, que faltar se paga caro. Si faltás, tu atril queda vacío y los demás te pegan sin respuesta.';
+      const prog=qs.map((q,i)=>i<S.deb.res.length?`<span class="dq done">${TIER_IC[S.deb.res[i].tier]} ${q.tema}</span>`:i===S.deb.q?`<span class="dq now">▶ ${q.tema}</span>`:`<span class="dq">${q.tema}</span>`).join('');
       const last=S.deb.res.length?S.deb.res[S.deb.res.length-1]:null;
-      return `<span class="dprog">${prog}</span>${last?`<span class="dlast">Bloque anterior: ${TIER_IC[last.tier]} ${last.tier==='b'?'muy bien':last.tier==='c'?'correcto':'flojo'} ${last.chips}</span>`:`<span class="dlast">Cámaras, atriles y millones de personas mirando. Preparación: <b>${S.prep}/100</b>. Cada bloque suma o resta; al final se define quién ganó el debate.</span>`}<br>${val(qs[S.deb.q].q)}`},
-    get opts(){return qs[S.deb.q].opts},
+      return `<span class="dprog">${prog}</span>${last?`<span class="dlast">Bloque anterior: ${TIER_IC[last.tier]} ${last.tier==='b'?'muy bien':last.tier==='c'?'correcto':'flojo'} ${last.chips}</span>`:`<span class="dlast">Cámaras, atriles y millones de personas mirando. Preparación: <b>${S.prep}/100</b>. Cada bloque suma o resta; al final se define quién ganó el debate.</span>`}${S.deb.absent!=null?`<span class="dlast">🪑 <b>${esc(C[S.deb.absent].name)} no vino al debate:</b> su atril está vacío.</span>`:''}<br>${val(qs[S.deb.q].q)}`},
+    get opts(){return S.deb.ask?[
+      {l:'Ir al debate', d:'Jugártela en los bloques.', ask:true, go:true, preview:cp('neu','🎤 se juega bloque por bloque')},
+      {l:'Faltar: atril vacío', d:'Sin riesgo de un mal debate, pero te pegan sin respuesta.', ask:true, preview:chips({nat:-.6,i:-3})+cp('neg','▼▼ momentum: quedás último en el ranking')}]:qs[S.deb.q].opts},
     get bon(){return qs[S.deb.q].bon||{}}};
 }
 
@@ -931,7 +969,7 @@ function transfer(from,to,f){let moved=0;S.sh.forEach((s,r)=>{const v=s[from]*f;
 /* afinidad para negociar: solo arreglan fuerzas razonablemente cercanas en el eje ideológico */
 const DEAL=.65, PACT=.6;
 const ideoDist=(a,b)=>Math.abs(S.pos[a]-S.pos[b]);
-const flex=c=>C[c].hard?.3:9; // el Frente de Izquierda no hace acuerdos electorales
+const flex=c=>C[c].nodeal?-1:C[c].hard?.3:9; // el Frente de Izquierda no hace acuerdos electorales
 const canDeal=(a,b,max=DEAL)=>ideoDist(a,b)<=Math.min(max,flex(a),flex(b));
 function bestAlly(c,exclude=[]){return S.active.filter(o=>o!==c&&!exclude.includes(o)&&canDeal(c,o)).sort((a,b)=>natOf(b)*prox(c,b)-natOf(a)*prox(c,a))[0]}
 function withdraw(c,to,fTo){
@@ -978,14 +1016,14 @@ function evPacto(c){
 function evGober(){
   const r=[0,2,3,4,5][Math.floor(rnd()*5)];
   return {id:'neg', tag:'🤝 Negociación', t:`Un gobernador de ${REG[r].k} ofrece su aparato`,
-    txt:()=>`Un gobernador con peso en ${REG[r].n} ofrece movilizar intendentes y fiscales a cambio de obras y fondos para su provincia.`,
+    txt:()=>`Un gobernador con peso en ${REG[r].n} ofrece movilizar intendentes y militancia a cambio de obras y fondos para su provincia.`,
     opts:[
       {l:'Aceptar a cambio de obras', d:'Mucho aparato, compromisos que después se cobran.', cost:{f:-10}, preview:chips({f:-10,reg:[[r,2.6]],fiscal:2})+cp('risk','🎲 30%: después te pasa factura'),
         fn:()=>{S.res.f=clamp(S.res.f-10,0,100);const g=vol(2.6*power()*C[S.p].aff[r]);shift(r,S.p,g);S.fiscal+=2;
           if(rnd()<.3) S.pending.push({at:S.turn+2+Math.floor(rnd()*2),round:S.round,txt:`El gobernador de ${REG[r].k} reclama en público lo prometido`,eff:{reg:[[r,-1.5]],i:-4}});
           return {title:'🤝 Trato hecho',text:'El aparato provincial se pone en marcha.',chips:chips({f:-10,reg:[[r,g]],fiscal:2},false),good:true}}},
-      {l:'Pedir solo fiscales', d:'Ayuda acotada, sin grandes promesas.', preview:chips({fiscal:3,e:-4}),
-        fn:()=>{S.fiscal+=3;S.res.e=clamp(S.res.e-4,0,100);return {title:'🛡️ Fiscales asegurados',text:'',chips:chips({fiscal:3,e:-4},false),good:true}}},
+      {l:'Pedir solo militantes', d:'Ayuda acotada, sin grandes promesas.', preview:chips({fiscal:3,e:-4}),
+        fn:()=>{S.fiscal+=3;S.res.e=clamp(S.res.e-4,0,100);return {title:'🛡️ Militancia asegurada',text:'',chips:chips({fiscal:3,e:-4},false),good:true}}},
       {l:'Rechazar', d:'No negociás con aparatos.', preview:chips({i:2})+cp('risk','🎲 el gobernador se lo ofrece a otro'),
         fn:()=>{S.res.i=clamp(S.res.i+imgDelta(2),0,100);const t=wpickRival(r);const g=vol(2);shift(r,t,g);
           return {title:'✋ Rechazado',text:`El gobernador terminó apoyando a ${esc(C[t].name)}.`,chips:chips({i:2},false)+cp('neg',`+${fmt(g)} pts a ${esc(sn(t))} en ${REG[r].k}`),good:false}}},
@@ -1039,7 +1077,7 @@ function note(txt,lbl){S.notes.push({turn:S.turn,round:S.round,txt}); S.log.unsh
 
 /* ---------- escenarios especiales ---------- */
 function scenarioEvent(fixed){
-  if(S.round!==1) return null;
+  if(S.round!==1) return scenarioEventR2(fixed);
   const sig=C[S.p].sig;
   if(S.turn===1){
     if(S.cfk&&sig==='LLA') return evCFK1();
@@ -1056,12 +1094,69 @@ function scenarioEvent(fixed){
   }
   if(fixed) return null;
   if(S.cfk&&!S.cfk.decided&&S.turn>=2){S.cfk.decided=true;
-    if(rnd()<S.cfk.p){S.cfk.released=true;spawnCFK();S.log.unshift({lbl:'🔓 Escenario hipotético · Cristina queda libre',items:['Un fallo le devuelve la libertad y la habilitación para competir. Lanza el Kirchnerismo por fuera de Fuerza Patria.']});return evCFK2()}
+    if(rnd()<S.cfk.p){S.cfk.released=true; const fp=idxOf('FP');
+      S.log.unshift({lbl:'🔓 Escenario hipotético · Cristina queda libre',items:['Un fallo le devuelve la libertad y la habilitación para competir.']});
+      if(S.p===fp) return evCFKAxel(fp);
+      if(fp>=0&&S.active.includes(fp)&&rnd()<.4){swapCristina(fp);note('🔁 Kicillof le cedió la candidatura de Fuerza Patria a Cristina.','🔁 Fuerza Patria');return evCFK2(true)}
+      spawnCFK(); note('🆕 Kicillof no le cedió el lugar: Cristina compite con un partido propio, el Kirchnerismo.','🆕 Kirchnerismo'); return evCFK2(false)}
     note('⚖️ La Justicia rechazó el planteo: Cristina Fernández de Kirchner sigue detenida y no podrá competir.','⚖️ Fallo judicial');}
   if(S.fus&&!S.fus.done&&S.turn>=S.fus.turn){S.fus.done=true; const a=idxOf('LLA'),b=idxOf('PRO');
     if(a>=0&&b>=0&&S.active.includes(a)&&S.active.includes(b)){ if(S.p===a||S.p===b) return evFusion(a,b); doFusion(a,b); return evFusionNews(); }}
   if(S.out&&!S.out.done&&S.turn>=S.out.turn){S.out.done=true; return evOutsider(spawnOutsider())}
+  if(SC.key==='2019'&&!S.alivio&&S.turn>=2){const j=idxOf('JxC'); S.alivio={done:true};
+    if(j>=0&&S.active.includes(j)){ if(S.p===j) return evAlivio(j);
+      if(rnd()<.7){const g=vol(1);natShift(j,g);S.later.push({at:S.turn+2+Math.floor(rnd()*2),round:1,fn:()=>{if(rnd()<.5){const h=vol(1);natShift(j,-h);return `📈 La inflación se acelera tras las medidas de alivio: −${fmt(h)} pts para ${esc(sn(j))}`}}});
+        note(`🛒 El gobierno lanza medidas de alivio: congela combustibles y elimina el IVA de alimentos básicos (${sgn(g)} pts para ${esc(sn(j))}).`,'🛒 Medidas de alivio')}
+      else note('🛒 El gobierno descarta medidas de alivio y mantiene la ortodoxia.','🛒 Medidas de alivio')}}
+  if(SC.key==='2023'&&!S.platita&&S.turn>=3){const m=idxOf('UxP'); S.platita={done:true};
+    if(m>=0&&S.active.includes(m)){ if(S.p===m) return evPlatita(m);
+      if(rnd()<.7){const g=vol(1.2);natShift(m,g);S.massa.drag=-.45;S.massa.dragUntil=S.turn+4;note(`💸 El gobierno anuncia devolución de impuestos, bonos y suba del piso de Ganancias (${sgn(g)} pts para ${esc(sn(m))}). Los economistas advierten por la inflación.`,'💸 Medidas económicas')}
+      else note('💸 El gobierno descarta nuevas medidas de gasto y prioriza las cuentas.','💸 Medidas económicas')}}
   return null;
+}
+function scenarioEventR2(fixed){
+  if(fixed) return null;
+  if(S.nafta===true&&S.turn>=2){S.nafta='done'; const m=idxOf('UxP');
+    if(m>=0&&S.active.includes(m)&&S.active.includes(S.p)){const g=vol(1.5);natShift(m,-g);S.mom[m]=clamp((S.mom[m]||0)-.4,-1.2,1.2);return evNafta(m,g)}}
+  return null;
+}
+function evAlivio(j){
+  return {id:'alivio', tag:'🛒 Dilema', t:'¿Lanzás medidas de alivio?',
+    txt:()=>'Después del golpe de las PASO y la devaluación, tu equipo propone congelar los combustibles, eliminar el IVA de alimentos básicos y dar un bono. Sumaría votos rápido, pero contradice tu discurso de orden fiscal y puede acelerar la inflación.',
+    opts:[
+      {l:'Lanzar el paquete de alivio', d:'Votos ya, costo después.', preview:chips({nat:1.2,i:-3})+cp('risk','🎲 50%: en 2–3 semanas la inflación te pasa factura (~−1 pt)'),
+        fn:()=>{const fx=applyEff({nat:1.2,i:-3});S.later.push({at:S.turn+2+Math.floor(rnd()*2),round:1,fn:()=>{if(rnd()<.5){const h=vol(1);natShift(S.p,-h);return `📈 La inflación se acelera tras tus medidas de alivio: −${fmt(h)} pts`}}});
+          return {title:'🛒 Medidas lanzadas',text:'El alivio llega al bolsillo. Habrá que ver qué pasa con la inflación.',chips:chips(fx,false),good:true}}},
+      {l:'Un alivio acotado', d:'Solo el IVA de alimentos.', preview:chips({nat:.5,i:-1})+cp('risk','🎲 25%: la inflación te pasa factura (~−0,6 pts)'),
+        fn:()=>{const fx=applyEff({nat:.5,i:-1});S.later.push({at:S.turn+2,round:1,fn:()=>{if(rnd()<.25){const h=vol(.6);natShift(S.p,-h);return `📈 La inflación sube: −${fmt(h)} pts`}}});
+          return {title:'🛒 Alivio acotado',text:'',chips:chips(fx,false),good:true}}},
+      {l:'Mantener la ortodoxia', d:'Coherencia: no hay plata para regalar.', tilt:1, eff:{i:3}},
+    ]};
+}
+function evPlatita(m){
+  return {id:'platita', tag:'💸 Dilema', t:'¿Sacás medidas económicas para la campaña?',
+    txt:()=>'Tu equipo propone un paquete: devolución del IVA en compras, bonos para jubilados y trabajadores, y suba del piso de Ganancias. Suma votos en las próximas semanas, pero puede empeorar los datos de inflación.',
+    opts:[
+      {l:'Paquete grande', d:'Devolución de impuestos, bonos y Ganancias.', preview:chips({nat:1.4})+cp('risk','📊 el dato de inflación sale peor durante 4 semanas'),
+        fn:()=>{const fx=applyEff({nat:1.4});S.massa.drag=-.5;S.massa.dragUntil=S.turn+4;return {title:'💸 Paquete lanzado',text:'La plata llega rápido; la inflación, también.',chips:chips(fx,false),good:true}}},
+      {l:'Paquete moderado', d:'Solo bonos focalizados.', preview:chips({nat:.7})+cp('risk','📊 el dato de inflación sale algo peor'),
+        fn:()=>{const fx=applyEff({nat:.7});S.massa.drag=-.25;S.massa.dragUntil=S.turn+3;return {title:'💸 Bonos focalizados',text:'',chips:chips(fx,false),good:true}}},
+      {l:'No gastar: cuidar las cuentas', d:'Mostrar responsabilidad.', tilt:1, eff:{i:3}},
+    ]};
+}
+function evNafta(m,g){
+  const meM=S.p===m;
+  return {id:'nafta', tag:'⛽ Crisis', t:'Faltante de combustible en todo el país',
+    txt:()=>`Colas de cuadras en las estaciones de servicio y surtidores vacíos en plena campaña del balotaje. El gobierno queda en el centro de las críticas (−${fmt(g)} pts para ${meM?'vos':esc(C[m].name)}).`,
+    opts: meM ? [
+      {l:'Culpar a las petroleras y amenazar con sanciones', d:'Que el costo lo paguen ellas.', tilt:-1, eff:{nat:.5,i:-1}},
+      {l:'Pedir disculpas y garantizar el abastecimiento', d:'Hacerte cargo.', eff:{i:3,nat:.2}},
+      {l:'Minimizar el problema', d:'«Se normaliza en 48 horas».', risk:{p:.4,ok:{i:1},ko:{nat:-.8,i:-3},okT:'Se normaliza rápido y el tema se olvida.',koT:'Las colas siguen y te acusan de negarlo.'}},
+    ] : [
+      {l:'Responsabilizar al gobierno', d:'Mostrar el desorden de la gestión.', eff:{nat:.6,riv:.4}},
+      {l:'Proponer desregular el mercado', d:'Que no vuelva a pasar.', tilt:1, eff:{nat:.4}},
+      {l:'No politizarlo', d:'Pedir calma.', eff:{i:2}},
+    ]};
 }
 
 /* 2019 · Plan V */
@@ -1103,7 +1198,7 @@ function evMassa1(){
 function inflationStep(lines){
   if(!S.massa||!S.massa.mode||S.massa.mode==='out') return;
   const m=idxOf('UxP'); if(m<0||!S.active.includes(m)) return;
-  const g=(randn()*.8-.25)*(S.massa.mode==='half'?.5:1); natShift(m,g);
+  const g=(randn()*.8-.25+(S.massa.drag&&S.turn<=S.massa.dragUntil?S.massa.drag:0))*(S.massa.mode==='half'?.5:1); natShift(m,g);
   lines.push(`📊 Dato de inflación ${g>=0?'mejor':'peor'} de lo esperado: ${sgn(g)} pts para ${m===S.p?'vos':'Massa'}`);
 }
 
@@ -1140,21 +1235,37 @@ function evFusionNews(){
 }
 
 /* outsider (2019, 2023, 2027) */
-const OUTSIDERS=[{name:'Nico Arrieta',short:'Arrieta',role:'conductor de televisión'},{name:'Fede Ocampo',short:'Ocampo',role:'ex futbolista de la Selección'},{name:'Lu Bravo',short:'Bravo',role:'streamer con millones de seguidores'}];
+const OUTSIDERS=[
+ {name:'Sebastián R.', short:'Sebastián R.', sig:'PPS', party:'Partido del Pueblo Soviético', color:'#c1121f', lean:-.7, prof:[1.1,1.1,1,.9,.9,1.1], med:[1.7,1.2,.9],
+  role:'enano soviético', story:'Llegó desde los confines de la ex URSS con un sobretodo dos talles más grande y un manifiesto escrito a mano. Promete «planes quinquenales y pan para todos» y llena plazas con su oratoria.'},
+ {name:'Juan Ignacio Peyret', short:'Peyret', sig:'FS', party:'Frente Sociológico', color:'#6a4c93', lean:-.3, prof:[.95,1.4,1.05,.9,.8,1], med:[1.2,1.5,.9],
+  role:'sociólogo mujeriego', story:'De café y de cátedra, con una vida sentimental que es tema de conversación en todas las facultades. Explica el país en hilos interminables y tiene un club de fans sorprendentemente grande.'},
+ {name:'Martín Adrián Calvo', short:'Calvo', sig:'MRF', party:'Movimiento Ritmo Federal', color:'#ff9f1c', lean:-.15, prof:[.9,.8,.9,.9,1.7,.9], med:[1.6,1.1,1.1],
+  role:'músico formoseño', story:'Pasó de los escenarios del Litoral a los videos virales. Sus canciones de campaña suenan en todo el Norte y propone «un país que baile al ritmo del interior».'},
+ {name:'Matthew Achevalara', short:'Achevalara', sig:'SP', party:'Scrum Patriótico', color:'#2b2d42', lean:.75, prof:[.95,1.35,1.15,1.05,.8,1], med:[1.3,1.2,1.2],
+  role:'rugbier retirado y mano dura', story:'Ex tercera línea con fama de duro dentro y fuera de la cancha. Promete «orden, disciplina y tackle al delito» y arma su campaña como una gira de rugby por el país.'},
+ {name:'Luka Leopardo', short:'Leopardo', sig:'FBR', party:'Frente Bigotudo Revolucionario', color:'#9d0208', lean:-.95, nodeal:true, prof:[1.1,1.3,.9,.9,.8,1.1], med:[1.4,1.2,.8],
+  role:'militante de extrema izquierda con un frondoso bigote', story:'Militante de toda la vida, famoso por un bigote frondoso que ya tiene su propia cuenta de fans. No negocia con nadie y convoca a «la revolución del bigote».'},
+ {name:'Nacho Xenón', short:'Xenón', sig:'OX', party:'Orden Xenón', color:'#3d405b', lean:.95, nodeal:true, prof:[1,1.25,1.1,1,.85,1], med:[1.8,1.4,.8],
+  role:'fascista egresado de ORT', story:'Su discurso autoritario incomoda hasta a la derecha más dura. Crece a fuerza de videos provocadores y no acepta alianzas con nadie.'},
+ {name:'Gante Debel', short:'Debel', sig:'FyE', party:'Fe y Esperanza', color:'#7209b7', lean:.35, prof:[1.25,.8,.95,1,1.35,1], med:[1.2,1.7,1.2],
+  role:'pastor evangélico recién vuelto de Canadá', story:'Sus prédicas suman millones de vistas en internet. Habla de familia, trabajo y esperanza, y llena estadios en el conurbano y el Norte.'},
+];
+OUTSIDERS.forEach(o=>MED[o.short]=o.med);
 function spawnOutsider(){
-  const o=OUTSIDERS[Math.floor(rnd()*OUTSIDERS.length)], k=U, prof=[1.05,1.1,1,1,.95,1];
-  C.push({sig:'YA', party:'Movimiento Ya', name:o.name, short:o.short, role:o.role, vp:'fórmula a definir', color:'#f72585',
-    lean:clamp(randn()*.3,-.5,.5), trait:'viral', traitTxt:TRAITS.viral, prof, aff:prof.map(x=>clamp(.55+.45*x,.7,1.45)), str:.75, hot:true,
+  const o=OUTSIDERS[Math.floor(rnd()*OUTSIDERS.length)], k=U;
+  C.push({sig:o.sig, party:o.party, name:o.name, short:o.short, role:o.role, story:o.story, vp:'fórmula a definir', color:o.color,
+    lean:o.lean, nodeal:!!o.nodeal, trait:'viral', traitTxt:TRAITS.viral, prof:o.prof, aff:o.prof.map(x=>clamp(.55+.45*x,.7,1.45)), str:.75, hot:true,
     start:0, goal:{type:'pct',v:0}, diff:'—', pitch:`Outsider: ${o.role}.`});
   insertParty(k); S.mom[k]=1.2;
-  S.sh.forEach(s=>{const fromU=Math.min(2,s[U]); s[U]-=fromU; const others=S.active.filter(c=>c!==k); const tot=others.reduce((a,c)=>a+s[c],0); const rest=3-fromU;
-    others.forEach(c=>s[c]-=rest*s[c]/tot); s[k]=3});
+  S.sh.forEach((s,r)=>{const want=3*clamp(o.prof[r],.6,1.8)/1.05; const fromU=Math.min(want*.66,s[U]); s[U]-=fromU; const others=S.active.filter(c=>c!==k); const tot=others.reduce((a,c)=>a+s[c],0); const rest=want-fromU;
+    others.forEach(c=>s[c]-=rest*s[c]/tot); s[k]=want});
   S.prevNat=national(); return k;
 }
 function evOutsider(k){
   const o=C[k];
   return {id:'outsider', tag:'⚡ Irrumpe un outsider', t:`${o.name} se lanza a presidente`,
-    txt:()=>`${o.name}, ${o.role}, anuncia su candidatura con el Movimiento Ya. Arranca con ≈ 3%, pero las redes explotan y viene con un envión enorme. ¿Cómo reaccionás?`,
+    txt:()=>`<b>${o.name}</b>, ${o.role}, lanza su candidatura con <b>${o.party}</b>. ${o.story} Arranca con ≈ ${fmt(natOf(k))}%, pero viene con un envión enorme. ¿Cómo reaccionás?`,
     opts:[
       {l:'Atacarlo por improvisado', d:'Marcar que no tiene equipo ni experiencia.', preview:cp('pos','~−0,8 pts y freno a su momentum')+chips({i:-2})+cp('risk','🎲 30%: el ataque lo victimiza'),
         fn:()=>{if(rnd()<.3){S.mom[k]=clamp(S.mom[k]+.3,-1.2,1.4);const d=imgDelta(-3);S.res.i=clamp(S.res.i+d,0,100);return {title:'😬 Lo victimizaste',text:`El ataque le dio todavía más visibilidad a ${o.short}.`,chips:chips({i:Math.round(d)},false),good:false}}
@@ -1178,10 +1289,40 @@ function spawnCFK(){
   S.prevNat=national();
   return k;
 }
-function evCFK2(){
+function swapCristina(j){
+  const c=C[j], prof=[1.45,.6,.65,.7,1.15,1];
+  Object.assign(c,{name:'Cristina Fernández de Kirchner', short:'Cristina', vp:'fórmula a definir', lean:-.62, prof,
+    aff:prof.map(x=>clamp(.55+.45*x,.7,1.45)), pitch:'Expresidenta; encabeza Fuerza Patria tras recuperar la libertad.'});
+  S.pos[j]=-.62;
+  const gp=vol(1.6), gn=vol(1.4), gl=vol(1.1);
+  shift(0,j,gp); shift(4,j,gn); [1,2,3].forEach(r=>shift(r,j,-gl));
+  S.mom[j]=clamp((S.mom[j]||0)+.5,-1.2,1.2); S.polPend+=.05; S.prevNat=national(); spCache=null;
+  return {gp,gn,gl};
+}
+function evCFKAxel(fp){
+  return {id:'cfkaxel', tag:'🔓 Escenario hipotético', t:'Cristina queda libre: ¿le dejás tu lugar?',
+    txt:()=>'Un fallo le devuelve la libertad a Cristina Fernández de Kirchner y deja sin efecto su inhabilitación. Quiere volver a ser candidata. Podés cederle la candidatura de Fuerza Patria o mantenerla, sabiendo que en ese caso ella competiría por afuera.',
+    opts:[
+      {l:'Cederle la candidatura', d:'Fuerza Patria va con Cristina. Seguís jugando, ahora con ella.',
+        preview:cp('neu','🔁 pasás a jugar con Cristina')+cp('pos','~+1,6 pts en PBA y ~+1,4 en el Norte')+cp('neg','~−1,1 pts en CABA, Centro y Cuyo')+cp('ideo','⬅ discurso más a la izquierda')+cp('pos','▲ momentum'),
+        fn:()=>{const g=swapCristina(S.p);return {title:'🔁 Cristina es la candidata',text:'Kicillof da un paso al costado. Desde ahora jugás con Cristina Fernández de Kirchner al frente de Fuerza Patria.',chips:chips({reg:[[0,g.gp],[4,g.gn],[1,-g.gl],[2,-g.gl],[3,-g.gl]]},false),good:true}}},
+      {l:'Mantener tu candidatura', d:'Seguís siendo el candidato; Cristina lanza un partido propio.',
+        preview:cp('neg','Cristina compite por afuera y se lleva gran parte de tus votantes')+cp('pos','+3 ⭐ por plantarte'),
+        fn:()=>{const before=natOf(S.p);const k=spawnCFK();const d=imgDelta(3);S.res.i=clamp(S.res.i+d,0,100);
+          return {title:'✋ Te plantaste',text:`Cristina lanza el Kirchnerismo por fuera de Fuerza Patria y arranca con ≈ ${fmt(natOf(k))}%.`,chips:cp('neg',`−${fmt(before-natOf(S.p))} pts para vos`)+chips({i:Math.round(d)},false),good:false}}},
+    ]};
+}
+function evCFK2(ceded){
+  if(ceded) return {id:'cfk2', tag:'🔓 Escenario hipotético', t:'Cristina es la candidata de Fuerza Patria',
+    txt:()=>'Un fallo le devuelve la libertad a Cristina Fernández de Kirchner y deja sin efecto su inhabilitación. Kicillof le cede el lugar y ella encabeza Fuerza Patria. La elección se polariza.',
+    opts:[
+      {l:'Polarizar con su vuelta', d:'Hacer de la elección un plebiscito sobre el kirchnerismo.', tilt:1, eff:{nat:.8,i:-2}},
+      {l:'Mostrarte por encima de la pelea', d:'Tono institucional.', eff:{i:4}},
+      {l:'Hablarle al votante peronista moderado', d:'El que prefería a Kicillof.', tilt:-1, eff:{nat:.6,reg:[[2,.6]]}},
+    ]};
   const k=C.length-1, fp=C.findIndex(c=>c.sig==='FP'), meK=S.p===fp;
   const base={id:'cfk2', tag:'🔓 Escenario hipotético', t:'Cristina queda libre y vuelve a competir',
-    txt:()=>`Un fallo le devuelve la libertad a Cristina Fernández de Kirchner y deja sin efecto su inhabilitación. En horas lanza el <b>Kirchnerismo</b> con candidatura presidencial propia, por fuera de Fuerza Patria, y se lleva a buena parte de los votantes de Kicillof: arranca con ≈ ${fmt(natOf(k))}%.`};
+    txt:()=>`Un fallo le devuelve la libertad a Cristina Fernández de Kirchner y deja sin efecto su inhabilitación. Kicillof no le cede el lugar y ella lanza el <b>Kirchnerismo</b> con candidatura presidencial propia, por fuera de Fuerza Patria, y se lleva a buena parte de los votantes de Kicillof: arranca con ≈ ${fmt(natOf(k))}%.`};
   if(meK) return {...base, opts:[
     {l:'Pedirle unidad y que baje su candidatura', d:'Una negociación a todo o nada.', preview:cp('risk','🎲 25%: se baja y te apoya')+cp('neg','si falla: −4 ⭐'),
       fn:()=>{if(rnd()<.25){const m=withdraw(k,S.p,.65);return {title:'🤝 Unidad',text:`Cristina baja su candidatura y llama a votarte (≈ +${fmt(m)} pts).`,chips:chips({xfer:m},false),good:true}}
@@ -1203,7 +1344,15 @@ function chooseOpt(i){
   if(S.phase!=='event') return;
   const ev=S.ev, o=ev.opts[i];
   let res={opt:o.l, good:true};
-  if(ev.debate){
+  if(ev.debate&&S.deb.ask){
+    if(o.go){S.deb.ask=false; render(); return;}
+    const fx=applyEff({nat:-.6,i:-3}); S.mom[S.p]=clamp((S.mom[S.p]||0)-.8,-1.2,1.4);
+    const rk=rivals().map(c=>({c,s:38+C[c].str*22+randn()*15})).sort((x,y)=>y.s-x.s);
+    rk.forEach((x,r)=>{const dm=rk.length>1?.6-1.0*r/(rk.length-1):.4; S.mom[x.c]=clamp((S.mom[x.c]||0)+dm,-1.2,1.4)});
+    res.title='🪑 Atril vacío'; res.text=`No fuiste al debate y los demás te pegaron sin respuesta. Ranking: ${rk.map((x,r)=>`${['🥇','🥈','🥉'][r]||(r+1)+'º'} ${esc(sn(x.c))}`).join(' · ')} · último: <b>vos</b> (ausente).`;
+    res.chips=chips(fx,false)+cp('neg','▼ momentum'); res.good=false; S.prep=0;
+    S.log.unshift({lbl:'🪑 Atril vacío', items:['Faltaste al debate.']});
+  } else if(ev.debate){
     if(S.deb.q===0) S.res.e=clamp(S.res.e-8,0,100);
     const sc=debateScore(o.style)+(ev.bon[o.style]||0); const tier=sc>=64?'b':sc>=44?'c':'f';
     const fx={b:{nat:.5},c:{nat:.1},f:{nat:-.4}}[tier]; if(o.style==='ataque'&&tier==='b') fx.riv=.4; if(o.style==='ataque'&&tier==='f') fx.i=-2;
@@ -1216,11 +1365,12 @@ function chooseOpt(i){
     const flash=clamp(Math.round((win?38:ok?24:12)*(S.active.length<=2?1.6:1)+randn()*5),3,80);
     // ranking del debate: el orden mueve el momentum de todos
     const myS=pts/(2*n)*100+randn()*6;
-    const rk=S.active.map(c=>({c,s:c===S.p?myS:38+C[c].str*22+randn()*15})).sort((x,y)=>y.s-x.s);
+    const rk=S.active.filter(c=>c!==S.deb.absent).map(c=>({c,s:c===S.p?myS:38+C[c].str*22+randn()*15})).sort((x,y)=>y.s-x.s);
+    if(S.deb.absent!=null){const a=S.deb.absent;S.mom[a]=clamp((S.mom[a]||0)-.8,-1.2,1.4);natShift(a,-vol(.6));}
     rk.forEach((x,r)=>{const dm=rk.length>1?.7-1.4*r/(rk.length-1):0; S.mom[x.c]=clamp((S.mom[x.c]||0)+dm,-1.2,1.4)});
     const myRank=rk.findIndex(x=>x.c===S.p)+1;
     res.title=win?'🌟 ¡Ganaste el debate!':ok?'👍 Debate correcto':'😬 Debate flojo';
-    res.text=`Bloques: ${S.deb.res.map((r,k)=>`${TIER_IC[r.tier]} ${ev.qs[k].tema}`).join(' · ')}. Encuesta flash: ${flash}% cree que ganaste.<br>🏅 <b>Ranking del debate:</b> ${rk.map((x,r)=>`${['🥇','🥈','🥉'][r]||(r+1)+'º'} ${x.c===S.p?'<b>'+esc(sn(x.c))+'</b>':esc(sn(x.c))}`).join(' · ')}. Quedaste ${myRank}º: ${myRank===1?'arrancás con viento de cola':myRank===rk.length?'salís con la tendencia en contra':'el orden mueve el momentum de cada uno'}.`;
+    res.text=`Bloques: ${S.deb.res.map((r,k)=>`${TIER_IC[r.tier]} ${ev.qs[k].tema}`).join(' · ')}. Encuesta flash: ${flash}% cree que ganaste.<br>🏅 <b>Ranking del debate:</b> ${rk.map((x,r)=>`${['🥇','🥈','🥉'][r]||(r+1)+'º'} ${x.c===S.p?'<b>'+esc(sn(x.c))+'</b>':esc(sn(x.c))}`).join(' · ')}. Quedaste ${myRank}º: ${myRank===1?'arrancás con viento de cola':myRank===rk.length?'salís con la tendencia en contra':'el orden mueve el momentum de cada uno'}.${S.deb.absent!=null?` 🪑 ${esc(C[S.deb.absent].name)} faltó y lo paga.`:''}`;
     S.log.unshift({lbl:'🎤 Ranking del debate', items:[rk.map((x,r)=>`${r+1}. ${C[x.c].name}`).join(' · ')]});
     res.chips=chips(fin,false); res.good=ok; S.prep=0;
   } else if(o.risk){
@@ -1244,7 +1394,7 @@ function chooseOpt(i){
 const ACT = [
   {id:'acto', ico:'📣', n:'Acto en la región', d:'Llenás una plaza. Gana votos en la región elegida.', f:12, e:15, reg:true},
   {id:'spot', ico:'📺', n:'Pauta publicitaria', d:'Spots locales y redes. Cansa poco, cuesta caro. Algo de alcance nacional.', f:20, e:4, reg:true},
-  {id:'org',  ico:'🧭', n:'Organizar el territorio', d:'Voluntarios y fiscales: suma votos en la región y fiscales para el día de la elección.', f:9, e:8, reg:true},
+  {id:'org',  ico:'🧭', n:'Organizar el territorio', d:'Voluntarios y locales: suma votos en la región y militancia, que fiscaliza la elección y defiende tu campaña.', f:9, e:8, reg:true},
   {id:'entrevista', ico:'🎙️', n:'Entrevista nacional', d:'Alcance en todo el país y mejora tu imagen. 15% de riesgo de furcio.', f:3, e:10},
   {id:'contraste', ico:'⚔️', n:'Contraste con el rival', d:'Golpeás al rival mejor ubicado. Le resta votos, pero te cuesta imagen.', f:6, e:12},
   {id:'recaudar', ico:'💰', n:'Cena de recaudación', d:'Recuperás 22 de fondos.', f:0, e:12},
@@ -1266,7 +1416,7 @@ const restAmt = () => trait('militancia')?35:25;
 function actPreview(a){
   const g=actGain(a), r=REG[S.sel];
   switch(a.id){
-    case 'acto': case 'org': return `≈ ${sgn(g)} pts en ${r.k} (entre ${rng(g)})`+(a.id==='org'?' · +1 🛡️':'');
+    case 'acto': case 'org': return `≈ ${sgn(g)} pts en ${r.k} (entre ${rng(g)})`+(a.id==='org'?' · +1 🛡️ militancia':'');
     case 'spot': return `≈ ${sgn(g)} pts en ${r.k} (entre ${rng(g)}) + algo en el país`;
     case 'entrevista': return `≈ ${sgn(g)} pts país (entre ${rng(g)}) · +${fmt(imgDelta(3),0)} ⭐`;
     case 'contraste': return S.pact.has(topRival())?`Tenés un pacto de no agresión con ${esc(sn(topRival()))}`:`≈ −${fmt(g)} pts a ${esc(sn(topRival()))} (puede rebotar) · ${fmt(imgDelta(-4),0)} ⭐`;
@@ -1292,7 +1442,7 @@ function doAction(id){
   switch(id){
     case 'acto': shift(r,S.p,g); msg=g<0?`📣 Acto deslucido en ${REG[r].k}: ${sgn(g)} pts`:`📣 Acto en ${REG[r].k}: ${sgn(g)} pts en la región`; break;
     case 'spot': shift(r,S.p,g); natShift(S.p,.15*power()); msg=`📺 Pauta en ${REG[r].k}: ${sgn(g)} pts`; break;
-    case 'org': shift(r,S.p,g); S.fiscal+=1; msg=`🧭 Territorio en ${REG[r].k}: ${sgn(g)} pts y +1 fiscal`; break;
+    case 'org': shift(r,S.p,g); S.fiscal+=1; msg=`🧭 Territorio en ${REG[r].k}: ${sgn(g)} pts y +1 militancia`; break;
     case 'entrevista':
       if(rnd()<(S.res.i<35?.25:.15)){natShift(S.p,-.4);const d=imgDelta(-5);S.res.i=clamp(S.res.i+d,0,100);msg=`🎙️ ¡Furcio en la entrevista! −0,4 pts y ${fmt(d,0)} imagen`}
       else {natShift(S.p,g);const d=imgDelta(3);S.res.i=clamp(S.res.i+d,0,100);msg=`🎙️ Buena entrevista: ${sgn(g)} pts y +${fmt(d,0)} imagen`} break;
@@ -1331,8 +1481,17 @@ function endWeek(){
     const pairs=[];sm.forEach(a=>bg.forEach(b=>{if(canDeal(a,b))pairs.push([a,b])}));
     if(pairs.length){const [a,b]=pairs[wpick(pairs.map(([a,b])=>prox(a,b)))];const m=withdraw(a,b,clamp(.15+.35*prox(a,b)+.1*randn(),.05,.6));S.allied.add(a);
       rivalLines.push(`🏳️ <b style="color:${C[a].color}">${esc(C[a].name)}</b> bajó su candidatura y llamó a votar a <b style="color:${C[b].color}">${esc(C[b].name)}</b> (≈ +${fmt(m)} pts)`)}}
+  // efectos diferidos de escenarios (medidas económicas, etc.)
+  S.later=S.later.filter(l=>{if(l.round===S.round&&l.at<=S.turn){const t=l.fn();if(t)rivalLines.push(t);return false}return true});
   // consecuencias diferidas
   S.pending=S.pending.filter(pd=>{if(pd.round===S.round&&pd.at<=S.turn){const fx=applyEff(pd.eff);rivalLines.push(`📌 <b>Te pasaron factura:</b> ${pd.txt}`);return false}return true});
+  // deepfake en la veda (última semana)
+  if(S.turn===totalTurns()&&rnd()<(setup.forceDeep?1:.15)){
+    const pool=S.active.slice().sort((a,b)=>natOf(b)-natOf(a)).slice(0,3); const t=rnd()<.5&&pool.includes(S.p)?S.p:pool[Math.floor(rnd()*pool.length)];
+    const shield=t===S.p?Math.min(.8,S.fiscal/12):0; const dmg=vol(2.4)*(1-shield); natShift(t,-dmg);
+    rivalLines.unshift(`🤖 <b>Deepfake en la veda:</b> circula un video falso hecho con IA ${t===S.p?'tuyo':'de <b style="color:'+C[t].color+'">'+esc(C[t].name)+'</b>'} y la veda impide responder (−${fmt(dmg)} pts).${t===S.p?(shield>0?` Tu militancia salió a desmentirlo en redes y en la calle: frenó ≈ ${Math.round(shield*100)}% del daño.`:' No tenías militancia organizada para desmentirlo.'):''}`);
+    S.log.unshift({lbl:'🤖 Deepfake en la veda', items:[`Víctima: ${C[t].name} (−${fmt(dmg)} pts).`]});
+  }
   // cisnes negros: raros, pero cambian todo
   let swan=null;
   if(S.swanN<2&&(S.debugSwan||rnd()<.045)){S.debugSwan=false;const pool=SWANS.filter(w=>!S.swans.has(w.id));if(pool.length){const w=pool[Math.floor(rnd()*pool.length)];S.swans.add(w.id);S.swanN++;swan={ico:w.ico,t:w.t,txt:w.fx(),resp:!!w.resp};if(w.resp)S.forced={id:'sw_'+w.id,...w.resp}}}
@@ -1443,7 +1602,7 @@ function election(){
     ${ch}${cg}
     <details class="pvr"><summary>📊 Encuestas vs. resultado</summary>${vs}</details>
     ${S.round===1?'<div class="rule">Victoria en primera vuelta: 45%, o 40% con 10 puntos de ventaja.</div>':''}
-    <p class="rule">Fiscales: ${S.fiscal} (cuidaron ≈ ${fmt(Math.min(S.fiscal,10)*.12)} pts). Los indecisos se repartieron el día de la elección.</p>
+    <p class="rule">Militancia: ${S.fiscal} (fiscalizando, cuidó ≈ ${fmt(Math.min(S.fiscal,10)*.12)} pts). Los indecisos se repartieron el día de la elección.</p>
     ${simBox}${realTxt}
     <div class="row">${btns}</div>`;
   if(S.over){S.phase='done';S.resultHead=head;S.resultHTML=html;render();showModal(html,true)}
@@ -1525,7 +1684,7 @@ function renderStart(){
     if(setup.cand>=C.length) setup.cand=0;
     cards=`<div class="cands">`+C.map((c,i)=>`<button class="cand ${setup.cand===i?'sel':''}" onclick="setup.cand=${i};render()">
      <div class="hd" style="background:${c.color}"><small>${c.sig}</small><b>${c.name}</b><span style="font-size:12px;font-weight:600">${c.party}</span></div>
-     <div class="bd">${c.vp?`<span style="color:var(--muted)">Fórmula con ${c.vp}</span>`:''}<span class="df">Arranca con ${fmt(c.start)}% · Dificultad: ${c.diff}</span><span>${c.pitch}</span><span style="color:var(--muted)"><b>Rasgo.</b> ${c.traitTxt}</span>
+     <div class="bd">${c.vp?`<span style="color:var(--muted)">Fórmula con ${c.vp}</span>`:''}<span class="df">Arranca con ${fmt(c.start)}% · Dificultad: ${c.diff}</span><span>${c.pitch}</span><span style="color:var(--muted)"><b>Rasgo.</b> ${c.traitTxt}</span><span style="color:var(--muted)"><b>Audiencia.</b> ${medTxt(i)}</span>
      <span><b>Objetivo:</b> ${c.goal.type==='win'?'ganar la presidencia':'superar el '+fmt(c.goal.v)+'%'}</span></div></button>`).join('')+`</div>`;
   }
   const ds=Object.entries(DIFF).map(([k,d])=>`<button class="${setup.diff===k?'on':''}" onclick="setup.diff='${k}';render()" title="${d.d}">${d.l}</button>`).join('');
@@ -1618,7 +1777,7 @@ function renderRes(){
     ${item('⭐','Imagen',r.i,'var(--cel2)',`Multiplica todo lo que hacés: con 50 rendís normal, con 80 rendís 27% más, con 20 un 27% menos. También mejora las apuestas arriesgadas.`)}
     <div class="mini"><span class="pill">Acciones <span class="apdots">${dots}</span></span>
       ${showPrep?`<span class="pill" title="Preparación para el debate de la semana ${debateTurn()}">🎯 ${S.prep}</span>`:''}</div>
-    <div class="mini"><span class="pill" title="Fiscales: cuidan votos el día de la elección">🛡️ ${S.fiscal}</span>${S.precise>0?`<span class="pill" title="Encuestas precisas">📊 ${S.precise}</span>`:''}</div>
+    <div class="mini"><span class="pill" title="Militancia: fiscaliza la elección y frena operaciones en tu contra">🛡️ ${S.fiscal}</span>${S.precise>0?`<span class="pill" title="Encuestas precisas">📊 ${S.precise}</span>`:''}</div>
   </div></div>`;
 }
 
@@ -1643,12 +1802,14 @@ function renderEvent(){
   if(S.phase==='event'){
     body=`<div class="opts">`+ev.opts.map((o,i)=>{
       let detail='', dis=false;
-      if(ev.debate){const od=debateOdds(o.style,ev.bon[o.style]||0);detail=`<div class="chips"><span class="chip pos">🌟 muy bien ${od.b}%</span><span class="chip neg">😬 flojo ${od.f}%</span>${S.deb.q===0?'<span class="chip neg">−8 ⚡ energía (todo el debate)</span>':''}</div>`}
+      if(ev.debate&&o.ask){detail=`<div class="chips">${o.preview}</div>`}
+      else if(ev.debate){const od=debateOdds(o.style,ev.bon[o.style]||0);detail=`<div class="chips"><span class="chip pos">🌟 muy bien ${od.b}%</span><span class="chip neg">😬 flojo ${od.f}%</span>${S.deb.q===0?'<span class="chip neg">−8 ⚡ energía (todo el debate)</span>':''}</div>`}
       else if(o.risk){const p=Math.round(clamp(o.risk.p+(S.res.i-50)/250,.1,.9)*100);
-        detail=`<div class="chips"><span class="chip risk">🎲 ${p}% de que salga bien</span></div><div class="riskrow">Bien: <span class="chips">${chips(o.risk.ok)}</span></div><div class="riskrow">Mal: <span class="chips">${chips(o.risk.ko)}</span></div>`;
+        detail=`<div class="chips"><span class="chip risk">🎲 ${p}% de que salga bien</span></div><div class="riskrow">Bien: <span class="chips">${chips(o.ch?scaleEff(o.risk.ok,chF(o.ch)):o.risk.ok)}</span></div><div class="riskrow">Mal: <span class="chips">${chips(o.risk.ko)}</span></div>`;
         dis=!affordable(o.risk.ok)}
       else if(o.fn){detail=`<div class="chips">${o.preview||''}</div>`;dis=!affordable(o.cost)}
-      else {detail=`<div class="chips">${chips(o.eff)}</div>`;dis=!affordable(o.eff)}
+      else {detail=`<div class="chips">${chips(o.ch?scaleEff(o.eff,chF(o.ch)):o.eff)}</div>`;dis=!affordable(o.eff)}
+      if(o.ch) detail+=`<div class="chips" style="margin-top:4px">${chChip(o.ch)}</div>`;
       const tc=tiltChip(tiltOf(ev,i)); if(tc) detail+=`<div class="chips" style="margin-top:4px">${tc}</div>`;
       return `<button class="opt" ${dis?'disabled title="No te alcanzan los fondos"':''} onclick="chooseOpt(${i})"><span class="k">${'ABC'[i]}</span><span><b>${o.l}</b><p>${o.d}</p>${detail}</span></button>`;
     }).join('')+`</div><p class="rule">Atajo: teclas 1, 2, 3. Los puntos (~) son estimaciones: según cómo caiga, pueden rendir bastante más, bastante menos o incluso jugarte en contra.</p>`;
@@ -1824,10 +1985,11 @@ function showHelp(first){
    <ul class="mlist">
      <li><b>💰 Fondos</b> pagan la campaña. <b>⚡ Energía</b> baja con cada actividad: debajo de 20 todo rinde 40% menos. <b>⭐ Imagen</b> multiplica todo lo que hacés.</li>
      <li>En la semana ${DEB1} hay <b>🎤 debate</b> en cuatro bloques (economía, un tema social, un cruce con un rival y el minuto final); en el balotaje, tres. Prepararlo antes mejora mucho tus chances.</li>
-     <li><b>🛡️ Fiscales</b> cuidan votos la noche de la elección.</li>
+     <li><b>🛡️ Militancia</b> fiscaliza la elección (cuida votos) y sale a desmentir operaciones en tu contra, como un deepfake en la veda.</li>
      <li><b>🎲 Nada es seguro:</b> los efectos marcados con ~ son estimaciones y pueden salir mucho mejor, mucho peor o al revés. Hay sorpresas semanales y las encuestas pueden tener un sesgo que no ves hasta la noche electoral.</li>
      <li><b>🧭 Discurso:</b> cada semana elegís si correrte a la izquierda o a la derecha, y algunas respuestas a noticias también te corren. Los votantes están repartidos en un eje que se mueve con la agenda: acercarte a donde hay más votantes suma, pero los giros bruscos o alejarte mucho de tu identidad cuestan imagen. En el balotaje, los votantes de los eliminados eligen al finalista más cercano, o votan en blanco.</li>
      <li><b>📈 Momentum:</b> las subas y bajas tienden a continuar algunas semanas (▲ / ▼ junto a cada nombre), hasta que algo cambia la tendencia. Una buena semana tuya te da envión para las siguientes.</li>
+     <li><b>📱 Medios:</b> cada fuerza tiene su público. TikTok rinde mucho más para un electorado joven (Milei, la izquierda, un outsider) que para uno tradicional (Schiaretti, Lavagna), y con la tele pasa al revés. Las noticias sobre redes y medios muestran cuánto te rinde cada canal.</li>
      <li><b>🦢 Cisnes negros:</b> muy de vez en cuando pasa algo enorme (una crisis, una catástrofe, un escándalo general) que cambia el humor del país.</li>
      <li><b>🏛️ Congreso:</b> después de las generales ves cuántos diputados y senadores gana cada fuerza.</li>
      <li><b>🤝 Negociaciones:</b> a veces otros partidos o gobernadores te ofrecen acuerdos. Solo negocian fuerzas cercanas en el eje ideológico: si te corrés, cambian tus aliados posibles. Aceptar, regatear o rechazar cambia quién se queda con esos votos.</li>
