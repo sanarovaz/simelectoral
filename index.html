@@ -8,9 +8,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 :root{
-  --bg:#fdf6e3; --ink:#15152e; --card:#ffffff; --muted:#5f5d78; --line:#15152e;
+  --bg:#fdf6e3; --ink:#15152e; --card:#ffffff; --surface:#ffffff; --muted:#5f5d78; --line:#15152e; --edge:#15152e; --night:#15152e;
+  --text2:#2c2b45; --okbg:#dff7ec; --badbg:#ffe6ea; --midbg:#fff4c9; --line2:#e8e1cf; --gridtxt:#6b6985;
   --cel:#6ec6f5; --cel2:#2f8fe0; --sol:#ffd23f; --rosa:#ff5c8a; --verde:#20c997; --rojo:#ef3b3b;
-  --soft:#f3eddc; --shadow:4px 4px 0 var(--ink);
+  --soft:#f3eddc; --shadow:4px 4px 0 var(--edge);
+  color-scheme:light;
+}
+:root[data-theme="dark"]{
+  --bg:#11111f; --ink:#ecebff; --card:#1c1b33; --surface:#1c1b33; --muted:#a6a3c6; --line:#6f6c99; --edge:#000000; --night:#0a0a17;
+  --text2:#d8d6f0; --okbg:#123a2c; --badbg:#41182a; --midbg:#3b3415; --line2:#2d2c4a; --gridtxt:#9d9abd;
+  --soft:#2a2946; --rojo:#ff6b6b; color-scheme:dark;
 }
 *{box-sizing:border-box}
 html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,system-ui,sans-serif;font-size:15px;line-height:1.45}
@@ -20,73 +27,73 @@ button:disabled{cursor:not-allowed}
 .hidden{display:none!important}
 
 /* ---------- header ---------- */
-.top{background:linear-gradient(100deg,var(--cel) 0%,#8fd6ff 45%,#ffe58a 100%);border-bottom:3px solid var(--ink)}
+.top{background:linear-gradient(100deg,var(--cel) 0%,#8fd6ff 45%,#ffe58a 100%);border-bottom:3px solid var(--line)}
 .top-in{max-width:1320px;margin:auto;padding:12px 16px;display:flex;align-items:center;gap:16px;flex-wrap:wrap}
 .logo{display:flex;align-items:center;gap:10px}
-.sun{width:38px;height:38px;border-radius:50%;background:var(--sol);border:3px solid var(--ink);display:grid;place-items:center;font-size:18px;box-shadow:0 0 0 4px rgba(255,210,63,.45)}
+.sun{width:38px;height:38px;border-radius:50%;background:var(--sol);border:3px solid var(--line);display:grid;place-items:center;font-size:18px;box-shadow:0 0 0 4px rgba(255,210,63,.45)}
 .logo h1{font-size:22px;font-weight:800}
 .logo small{display:block;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.7}
-.who{display:flex;align-items:center;gap:10px;background:#fff;border:2px solid var(--ink);border-radius:999px;padding:5px 14px 5px 6px;box-shadow:3px 3px 0 var(--ink)}
-.dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--ink);flex:none}
+.who{display:flex;align-items:center;gap:10px;background:var(--surface);border:2px solid var(--line);border-radius:999px;padding:5px 14px 5px 6px;box-shadow:3px 3px 0 var(--edge)}
+.dot{width:26px;height:26px;border-radius:50%;border:2px solid var(--line);flex:none}
 .who b{font-size:14px}.who span{font-size:12px;color:var(--muted)}
 .spacer{flex:1}
-.hbtn{background:#fff;border:2px solid var(--ink);border-radius:10px;padding:7px 12px;font-weight:700;font-size:13px;box-shadow:3px 3px 0 var(--ink)}
-.hbtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
-.weekchip{background:var(--ink);color:#fff;border-radius:10px;padding:6px 12px;font-weight:700;font-size:13px}
+.hbtn{background:var(--surface);border:2px solid var(--line);border-radius:10px;padding:7px 12px;font-weight:700;font-size:13px;box-shadow:3px 3px 0 var(--edge)}
+.hbtn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--edge)}
+.weekchip{background:var(--night);color:#fff;border-radius:10px;padding:6px 12px;font-weight:700;font-size:13px}
 .weekchip em{font-style:normal;color:var(--sol)}
 
 /* ---------- resource bar ---------- */
-.resbar{position:sticky;top:0;z-index:20;background:#fff;border-bottom:3px solid var(--ink)}
+.resbar{position:sticky;top:0;z-index:20;background:var(--surface);border-bottom:3px solid var(--line)}
 .resbar-in{max-width:1320px;margin:auto;padding:10px 16px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr)) auto auto;gap:14px;align-items:center}
 .res{display:grid;grid-template-columns:auto 1fr auto;gap:2px 8px;align-items:center;position:relative}
 .res .ic{grid-row:span 2;font-size:22px}
 .res .lb{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
 .res .val{font-weight:800;font-size:16px;font-variant-numeric:tabular-nums}
-.meter{grid-column:2/4;height:10px;border-radius:99px;background:var(--soft);border:2px solid var(--ink);overflow:hidden}
+.meter{grid-column:2/4;height:10px;border-radius:99px;background:var(--soft);border:2px solid var(--line);overflow:hidden}
 .meter i{display:block;height:100%;border-radius:99px;transition:width .4s}
 .res.warn .val{color:var(--rojo)}
 .res .q{display:inline-grid;place-items:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--muted);font-size:10px;margin-left:4px;cursor:help;vertical-align:1px}
-.tip{position:absolute;top:calc(100% + 8px);left:0;width:260px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:500;padding:10px 12px;border-radius:10px;z-index:40;display:none;text-transform:none;letter-spacing:0;line-height:1.4}
+.tip{position:absolute;top:calc(100% + 8px);left:0;width:260px;background:var(--night);color:#fff;font-size:12.5px;font-weight:500;padding:10px 12px;border-radius:10px;z-index:40;display:none;text-transform:none;letter-spacing:0;line-height:1.4}
 .res:hover .tip,.res:focus-within .tip{display:block}
 .mini{display:flex;gap:10px;align-items:center}
-.pill{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--ink);border-radius:999px;padding:4px 10px;font-weight:700;font-size:13px;background:var(--soft);white-space:nowrap}
+.pill{display:inline-flex;align-items:center;gap:6px;border:2px solid var(--line);border-radius:999px;padding:4px 10px;font-weight:700;font-size:13px;background:var(--soft);white-space:nowrap}
 .apdots{display:inline-flex;gap:4px}
-.apdots i{width:13px;height:13px;border-radius:50%;border:2px solid var(--ink);background:#fff}
+.apdots i{width:13px;height:13px;border-radius:50%;border:2px solid var(--line);background:var(--surface)}
 .apdots i.on{background:var(--rosa)}
 
 /* ---------- layout ---------- */
 .layout{max-width:1320px;margin:auto;padding:20px 16px 60px;display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:22px;align-items:start}
 aside{position:sticky;top:78px;display:flex;flex-direction:column;gap:18px}
 main{display:flex;flex-direction:column;gap:18px;min-width:0}
-.card{background:var(--card);border:2.5px solid var(--ink);border-radius:18px;box-shadow:var(--shadow);padding:18px}
+.card{background:var(--card);border:2.5px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px}
 .card h2{font-size:20px;font-weight:800}
 .card h3{font-size:16px;font-weight:800}
 .eyebrow{font-size:11.5px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
 
 /* ---------- stepper ---------- */
 .stepper{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
-.step{border:2.5px solid var(--ink);border-radius:14px;padding:10px 12px;background:#fff;display:flex;gap:10px;align-items:center;opacity:.55}
-.step .n{width:30px;height:30px;border-radius:50%;border:2.5px solid var(--ink);display:grid;place-items:center;font-weight:800;flex:none;background:#fff}
+.step{border:2.5px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--surface);display:flex;gap:10px;align-items:center;opacity:.55}
+.step .n{width:30px;height:30px;border-radius:50%;border:2.5px solid var(--line);display:grid;place-items:center;font-weight:800;flex:none;background:var(--surface)}
 .step b{display:block;font-size:14px}.step span{font-size:12px;color:var(--muted)}
 .step.cur{opacity:1;background:var(--sol);box-shadow:var(--shadow)}
-.step.cur .n{background:var(--ink);color:var(--sol)}
+.step.cur .n{background:var(--night);color:var(--sol)}
 .step.done{opacity:1;background:#e6f8f1}
 .step.done .n{background:var(--verde);color:#fff}
-.hint{margin-top:12px;display:flex;gap:10px;align-items:center;background:var(--ink);color:#fff;border-radius:12px;padding:10px 14px;font-weight:600}
+.hint{margin-top:12px;display:flex;gap:10px;align-items:center;background:var(--night);color:#fff;border-radius:12px;padding:10px 14px;font-weight:600}
 .hint .em{font-size:20px}
 
 /* ---------- event ---------- */
 .event{position:relative;overflow:hidden}
 .event::before{content:"";position:absolute;inset:0 0 auto 0;height:8px;background:repeating-linear-gradient(90deg,var(--rosa) 0 24px,var(--sol) 24px 48px,var(--cel) 48px 72px)}
 .ev-head{display:flex;align-items:center;gap:10px;margin:6px 0 6px;flex-wrap:wrap}
-.tag{background:var(--rosa);color:#fff;border:2px solid var(--ink);border-radius:999px;padding:2px 10px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.tag{background:var(--rosa);color:#fff;border:2px solid var(--line);border-radius:999px;padding:2px 10px;font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.06em}
 .ev-title{font-size:26px;font-weight:800;line-height:1.15;margin:4px 0 8px}
-.ev-txt{font-size:15.5px;color:#2c2b45;margin:0 0 14px;max-width:70ch}
+.ev-txt{font-size:15.5px;color:var(--text2);margin:0 0 14px;max-width:70ch}
 .opts{display:grid;gap:10px}
-.opt{display:grid;grid-template-columns:40px 1fr;gap:12px;text-align:left;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:12px 14px;box-shadow:3px 3px 0 var(--ink);transition:transform .08s,background .15s}
-.opt:hover:not(:disabled){background:#fff8d6;transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.opt{display:grid;grid-template-columns:40px 1fr;gap:12px;text-align:left;background:var(--surface);border:2.5px solid var(--line);border-radius:14px;padding:12px 14px;box-shadow:3px 3px 0 var(--edge);transition:transform .08s,background .15s}
+.opt:hover:not(:disabled){background:#fff8d6;transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--edge)}
 .opt:disabled{opacity:.45}
-.opt .k{width:36px;height:36px;border-radius:10px;background:var(--cel);border:2.5px solid var(--ink);display:grid;place-items:center;font-weight:800;font-size:16px}
+.opt .k{width:36px;height:36px;border-radius:10px;background:var(--cel);border:2.5px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:16px}
 .opt b{font-size:15.5px}
 .opt p{margin:2px 0 6px;color:var(--muted);font-size:13.5px}
 .chips{display:flex;gap:6px;flex-wrap:wrap}
@@ -103,23 +110,23 @@ main{display:flex;flex-direction:column;gap:18px;min-width:0}
 /* ---------- agenda ---------- */
 .agenda.locked{position:relative}
 .agenda.locked .blk{filter:grayscale(.8);opacity:.35;pointer-events:none}
-.lockmsg{position:absolute;inset:60px 20px auto 20px;z-index:3;text-align:center;background:var(--ink);color:#fff;border-radius:14px;padding:14px;font-weight:700}
+.lockmsg{position:absolute;inset:60px 20px auto 20px;z-index:3;text-align:center;background:var(--night);color:#fff;border-radius:14px;padding:14px;font-weight:700}
 .sub{display:flex;align-items:baseline;gap:10px;margin:16px 0 10px}
-.sub .num{width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
+.sub .num{width:26px;height:26px;border-radius:50%;background:var(--night);color:#fff;display:grid;place-items:center;font-weight:800;font-size:13px;flex:none}
 .sub h3{font-size:16px;white-space:nowrap}
 .sub span{color:var(--muted);font-size:13px}
 .regions{display:grid;grid-template-columns:repeat(3,1fr);grid-template-areas:"norte norte caba" "cuyo centro pba" "pata pata pba";gap:8px}
-.rt{border:2.5px solid var(--ink);border-radius:14px;padding:10px 12px;background:#fff;text-align:left;position:relative;overflow:hidden;min-height:78px}
+.rt{border:2.5px solid var(--line);border-radius:14px;padding:10px 12px;background:var(--surface);text-align:left;position:relative;overflow:hidden;min-height:78px}
 .rt .bar{position:absolute;left:0;top:0;bottom:0;width:8px}
 .rt .nm{font-weight:800;font-size:14px;padding-left:6px}
 .rt .meta{font-size:12px;color:var(--muted);padding-left:6px}
 .rt .yours{font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif;font-weight:800;font-size:22px;padding-left:6px}
 .rt .w{position:absolute;right:8px;top:8px;font-size:11px;font-weight:800;background:var(--soft);border-radius:6px;padding:1px 6px}
-.rt.sel{background:#fff6c8;box-shadow:0 0 0 3px var(--rosa) inset,3px 3px 0 var(--ink)}
+.rt.sel{background:#fff6c8;box-shadow:0 0 0 3px var(--rosa) inset,3px 3px 0 var(--edge)}
 .rt:hover{background:#fffbe8}
 .acts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
-.act{text-align:left;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:12px;box-shadow:3px 3px 0 var(--ink);display:flex;flex-direction:column;gap:5px;transition:transform .08s,background .15s;position:relative}
-.act:hover:not(:disabled){background:#eaf7ff;transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ink)}
+.act{text-align:left;background:var(--surface);border:2.5px solid var(--line);border-radius:14px;padding:12px;box-shadow:3px 3px 0 var(--edge);display:flex;flex-direction:column;gap:5px;transition:transform .08s,background .15s;position:relative}
+.act:hover:not(:disabled){background:#eaf7ff;transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--edge)}
 .act:disabled{opacity:.42;box-shadow:none}
 .act .t{display:flex;gap:8px;align-items:center;font-weight:800;font-size:14.5px}
 .act .t .i{font-size:20px}
@@ -129,16 +136,16 @@ main{display:flex;flex-direction:column;gap:18px;min-width:0}
 .act .why{font-size:11.5px;font-weight:700;color:var(--rojo)}
 .act .loc{position:absolute;right:8px;top:8px;font-size:11px;font-weight:800;background:#ffe3ec;border:1.5px solid var(--rosa);color:#b0204c;border-radius:6px;padding:0 6px}
 .closebar{margin-top:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.big{background:var(--rosa);color:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:13px 22px;font-weight:800;font-size:16px;box-shadow:var(--shadow)}
-.big:hover:not(:disabled){filter:brightness(1.05);transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--ink)}
+.big{background:var(--rosa);color:#fff;border:2.5px solid var(--line);border-radius:14px;padding:13px 22px;font-weight:800;font-size:16px;box-shadow:var(--shadow)}
+.big:hover:not(:disabled){filter:brightness(1.05);transform:translate(-1px,-1px);box-shadow:6px 6px 0 var(--edge)}
 .big:disabled{opacity:.4}
 .big.pulse{animation:pulse 1.4s infinite}
-@keyframes pulse{0%,100%{box-shadow:var(--shadow)}50%{box-shadow:4px 4px 0 var(--ink),0 0 0 8px rgba(255,92,138,.3)}}
+@keyframes pulse{0%,100%{box-shadow:var(--shadow)}50%{box-shadow:4px 4px 0 var(--edge),0 0 0 8px rgba(255,92,138,.3)}}
 .big.alt{background:var(--sol);color:var(--ink)}
-.big.ghost{background:#fff;color:var(--ink)}
+.big.ghost{background:var(--surface);color:var(--ink)}
 
 /* ---------- sidebar ---------- */
-.count{background:var(--ink);color:#fff;border-radius:18px;padding:16px 18px;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--rosa)}
+.count{background:var(--night);color:#fff;border-radius:18px;padding:16px 18px;border:2.5px solid var(--line);box-shadow:4px 4px 0 var(--rosa)}
 .count .d{font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif;font-size:54px;font-weight:800;line-height:1;color:var(--sol)}
 .count .lbl{font-size:13px;opacity:.85}
 .track{display:flex;gap:4px;margin-top:14px}
@@ -154,65 +161,65 @@ svg text{font-family:Inter,sans-serif}
 .polls{display:flex;flex-direction:column;gap:7px;margin-top:8px}
 .prow{display:grid;grid-template-columns:96px 1fr 46px;gap:8px;align-items:center;font-size:13px}
 .prow .nm{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.prow .tr{height:16px;background:var(--soft);border-radius:6px;overflow:hidden;border:1.5px solid var(--ink)}
+.prow .tr{height:16px;background:var(--soft);border-radius:6px;overflow:hidden;border:1.5px solid var(--line)}
 .prow .tr i{display:block;height:100%}
 .prow .v{font-weight:800;text-align:right;font-variant-numeric:tabular-nums}
 .prow.me .nm::after{content:" ◀ vos";color:var(--rosa);font-size:11px}
-.verdict{margin-top:12px;border-radius:12px;padding:10px 12px;font-weight:700;font-size:13.5px;border:2px solid var(--ink)}
+.verdict{margin-top:12px;border-radius:12px;padding:10px 12px;font-weight:700;font-size:13.5px;border:2px solid var(--line)}
 .rule{font-size:12px;color:var(--muted);margin-top:8px}
 
 /* ---------- log ---------- */
 .log{max-height:340px;overflow:auto;display:flex;flex-direction:column;gap:10px}
 .lw{border-left:4px solid var(--cel2);padding:2px 0 2px 12px}
 .lw b{font-size:13px}
-.lw ul{margin:4px 0 0;padding-left:18px;font-size:13px;color:#3a3955}
+.lw ul{margin:4px 0 0;padding-left:18px;font-size:13px;color:var(--text2)}
 
 /* ---------- modal & toasts ---------- */
 .modal{position:fixed;inset:0;background:rgba(21,21,46,.55);z-index:60;display:grid;place-items:center;padding:16px;overflow:auto}
-.mbox{background:#fff;border:3px solid var(--ink);border-radius:20px;box-shadow:8px 8px 0 var(--ink);max-width:640px;width:100%;padding:24px;max-height:92vh;overflow:auto}
+.mbox{background:var(--surface);border:3px solid var(--line);border-radius:20px;box-shadow:8px 8px 0 var(--edge);max-width:640px;width:100%;padding:24px;max-height:92vh;overflow:auto}
 .mbox h2{font-size:26px;font-weight:800;margin-bottom:6px}
 .cmp{width:100%;border-collapse:collapse;margin:10px 0;font-size:14px}
-.cmp td{padding:6px 4px;border-bottom:1.5px solid #eee6d3}
+.cmp td{padding:6px 4px;border-bottom:1.5px solid var(--line2)}
 .cmp td.n{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
 .up{color:#0b7a55}.dn{color:#c0262f}
 .mlist{margin:6px 0 0;padding-left:18px;font-size:14px}
 .mlist li{margin:3px 0}
 #toasts{position:fixed;right:16px;bottom:16px;z-index:70;display:flex;flex-direction:column;gap:8px}
-.toast{background:var(--ink);color:#fff;border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px;box-shadow:4px 4px 0 var(--rosa);animation:tin .25s ease-out}
+.toast{background:var(--night);color:#fff;border-radius:12px;padding:10px 14px;font-weight:700;font-size:14px;box-shadow:4px 4px 0 var(--rosa);animation:tin .25s ease-out}
 @keyframes tin{from{transform:translateY(12px);opacity:0}}
 
 /* ---------- start ---------- */
 .start{max-width:1100px;margin:auto;padding:28px 16px 60px}
 .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;margin-bottom:24px}
 .hero h2{font-size:48px;font-weight:800;line-height:1.02}
-.hero h2 span{background:var(--sol);padding:0 8px;border:3px solid var(--ink);border-radius:12px;display:inline-block;transform:rotate(-1.5deg)}
-.hero p{font-size:16px;color:#2c2b45;max-width:58ch}
+.hero h2 span{background:var(--sol);padding:0 8px;border:3px solid var(--line);border-radius:12px;display:inline-block;transform:rotate(-1.5deg)}
+.hero p{font-size:16px;color:var(--text2);max-width:58ch}
 .how{display:grid;gap:10px}
-.how>div{display:flex;gap:12px;align-items:flex-start;background:#fff;border:2.5px solid var(--ink);border-radius:14px;padding:10px 12px;box-shadow:3px 3px 0 var(--ink)}
-.how .n{width:30px;height:30px;border-radius:50%;background:var(--rosa);color:#fff;border:2px solid var(--ink);display:grid;place-items:center;font-weight:800;flex:none}
+.how>div{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:2.5px solid var(--line);border-radius:14px;padding:10px 12px;box-shadow:3px 3px 0 var(--edge)}
+.how .n{width:30px;height:30px;border-radius:50%;background:var(--rosa);color:#fff;border:2px solid var(--line);display:grid;place-items:center;font-weight:800;flex:none}
 .how b{display:block}
 .how span{font-size:13px;color:var(--muted)}
 .cands{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
-.cand{text-align:left;background:#fff;border:2.5px solid var(--ink);border-radius:16px;padding:0;overflow:hidden;box-shadow:3px 3px 0 var(--ink);display:flex;flex-direction:column}
-.cand .hd{padding:12px 14px;color:#fff;border-bottom:2.5px solid var(--ink)}
+.cand{text-align:left;background:var(--surface);border:2.5px solid var(--line);border-radius:16px;padding:0;overflow:hidden;box-shadow:3px 3px 0 var(--edge);display:flex;flex-direction:column}
+.cand .hd{padding:12px 14px;color:#fff;border-bottom:2.5px solid var(--line)}
 .cand .hd small{font-weight:800;letter-spacing:.1em;font-size:11px;text-transform:uppercase;opacity:.9}
 .cand .hd b{display:block;font-family:"Bricolage Grotesque",Inter,system-ui,sans-serif;font-size:20px;font-weight:800;line-height:1.1}
 .cand .bd{padding:10px 14px 14px;font-size:13px;display:flex;flex-direction:column;gap:6px}
 .cand .bd .df{font-weight:800;font-size:12px}
-.cand.sel{box-shadow:0 0 0 4px var(--rosa),6px 6px 0 var(--ink);transform:translate(-2px,-2px)}
-.seg{display:inline-flex;border:2.5px solid var(--ink);border-radius:12px;overflow:hidden;box-shadow:3px 3px 0 var(--ink)}
-.seg button{border:0;background:#fff;padding:9px 14px;font-weight:700;font-size:13.5px;border-right:2px solid var(--ink)}
+.cand.sel{box-shadow:0 0 0 4px var(--rosa),6px 6px 0 var(--edge);transform:translate(-2px,-2px)}
+.seg{display:inline-flex;border:2.5px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:3px 3px 0 var(--edge)}
+.seg button{border:0;background:var(--surface);padding:9px 14px;font-weight:700;font-size:13.5px;border-right:2px solid var(--line)}
 .seg button:last-child{border-right:0}
-.seg button.on{background:var(--ink);color:var(--sol)}
+.seg button.on{background:var(--night);color:var(--sol)}
 .row{display:flex;gap:18px;align-items:center;flex-wrap:wrap;margin-top:20px}
 .note{font-size:12.5px;color:var(--muted);margin-top:18px}
 
 
 .seg.scen{flex-wrap:wrap}
-.scintro{font-size:14px;color:#2c2b45;margin:12px 0 0;max-width:80ch}
+.scintro{font-size:14px;color:var(--text2);margin:12px 0 0;max-width:80ch}
 .custom .crows{display:flex;flex-direction:column;gap:8px}
 .crow{display:grid;grid-template-columns:auto 44px 70px minmax(0,1.2fr) minmax(0,1.2fr) 88px 140px 140px 38px;gap:8px;align-items:center}
-.crow input,.crow select,.pctin input{font:inherit;font-size:14px;border:2px solid var(--ink);border-radius:10px;padding:7px 9px;background:#fff;min-width:0;width:100%}
+.crow input,.crow select,.pctin input{font:inherit;color:var(--ink);font-size:14px;border:2px solid var(--line);border-radius:10px;padding:7px 9px;background:var(--surface);min-width:0;width:100%}
 .crow input[type=color]{padding:2px;height:38px;cursor:pointer}
 .pctin{display:inline-flex;align-items:center;gap:4px;font-weight:700;font-size:14px}
 .pctin input{width:76px}
@@ -222,24 +229,26 @@ svg text{font-family:Inter,sans-serif}
 .chip.ideo{color:#5b2a86;background:#f1e6ff}
 .agnote{font-size:13px;font-weight:700;color:#5b2a86;background:#f6efff;border-radius:10px;padding:6px 10px;margin:-4px 0 12px;display:inline-block}
 .disc{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
-.db{background:#fff;border:2.5px solid var(--ink);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center;box-shadow:3px 3px 0 var(--ink);font-size:12.5px}
+.db{background:var(--surface);border:2.5px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;gap:2px;align-items:center;text-align:center;box-shadow:3px 3px 0 var(--edge);font-size:12.5px}
 .db b{font-size:16px}.db .pv{font-weight:800;color:#0b6b4b}.db .pv.neg{color:#b02a2a}.db .why{font-size:11px;font-weight:700;color:var(--rojo)}
-.db.on{background:#f1e6ff;box-shadow:0 0 0 3px #7b2cbf inset,3px 3px 0 var(--ink)}
+.db.on{background:#f1e6ff;box-shadow:0 0 0 3px #7b2cbf inset,3px 3px 0 var(--edge)}
 .db:hover{background:#faf5ff}
-.seats{display:flex;height:22px;border:2px solid var(--ink);border-radius:8px;overflow:hidden;margin-top:4px}
+.seats{display:flex;height:22px;border:2px solid var(--line);border-radius:8px;overflow:hidden;margin-top:4px}
 .seats i{display:grid;place-items:center;color:#fff;font-style:normal;font-size:11px;font-weight:800;border-right:1.5px solid #fff;min-width:3px}
 .seats i:last-child{border-right:0}
-.cdot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--ink);vertical-align:-1px}
-.swan{background:#15152e;color:#fff;border-radius:14px;padding:12px 14px;margin:8px 0 12px;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--sol)}
+.cdot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--line);vertical-align:-1px}
+.swan{background:var(--night);color:#fff;border-radius:14px;padding:12px 14px;margin:8px 0 12px;border:2.5px solid var(--line);box-shadow:4px 4px 0 var(--sol)}
 .swan .eyebrow{color:var(--sol)}.swan h3{font-size:19px;margin:2px 0 4px}.swan p{margin:4px 0;font-size:14px}.swan .rule{color:#cfcde0}
 .mbox{position:relative}
-.mclose{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:50%;border:2.5px solid var(--ink);background:#fff;font-weight:800;box-shadow:2px 2px 0 var(--ink)}
-.finalbar{background:var(--ink);color:#fff;border-radius:16px;padding:14px 16px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:4px 4px 0 var(--rosa)}
+.mclose{position:absolute;right:14px;top:14px;width:36px;height:36px;border-radius:50%;border:2.5px solid var(--line);background:var(--surface);font-weight:800;box-shadow:2px 2px 0 var(--edge)}
+.finalbar{background:var(--night);color:#fff;border-radius:16px;padding:14px 16px;display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;box-shadow:4px 4px 0 var(--rosa)}
 .finalbar b{font-size:18px}.fbtns{display:flex;gap:10px;flex-wrap:wrap}.fbtns .big{padding:10px 16px;font-size:14px}
 @media (max-width:640px){.sub{flex-wrap:wrap}.sub>span:last-child{flex-basis:100%}}
 @media (max-width:640px){.disc{grid-template-columns:repeat(5,minmax(0,1fr));gap:4px}.db{padding:6px 2px;font-size:10.5px}.db span:nth-of-type(1){display:none}}
-.realbox{margin-top:10px;background:#eef6ff;border:2px solid var(--ink);border-radius:12px;padding:10px 12px;font-size:13.5px}
-@media (max-width:1100px){.crow{grid-template-columns:auto 44px 1fr 38px;padding-bottom:12px;border-bottom:2px dashed #d9d1bd}.crow .x{grid-row:1;grid-column:4}.crow input:not([type=color]):not(.sm),.crow select,.crow .pctin{grid-column:1/-1}.crow .pctin input{width:100%}}
+.simbox{margin-top:12px;background:var(--midbg);border:2.5px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px}
+.simbox .big{padding:10px 14px;font-size:14px}
+.realbox{margin-top:10px;background:#eef6ff;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px}
+@media (max-width:1100px){.crow{grid-template-columns:auto 44px 1fr 38px;padding-bottom:12px;border-bottom:2px dashed var(--line2)}.crow .x{grid-row:1;grid-column:4}.crow input:not([type=color]):not(.sm),.crow select,.crow .pctin{grid-column:1/-1}.crow .pctin input{width:100%}}
 @media (max-width:1000px){
   .layout{grid-template-columns:1fr}
   aside{position:static}
@@ -258,6 +267,33 @@ svg text{font-family:Inter,sans-serif}
   .hero h2{font-size:36px}
   .weekchip{order:5}
 }
+
+/* ---------- modo oscuro ---------- */
+:root[data-theme="dark"] .top{background:linear-gradient(100deg,#1d3557 0%,#2a2f6b 50%,#4a3b1a 100%)}
+:root[data-theme="dark"] .step.cur,:root[data-theme="dark"] .big.alt,:root[data-theme="dark"] .opt .k,:root[data-theme="dark"] .hero h2 span,
+:root[data-theme="dark"] .track i.now,:root[data-theme="dark"] .sun{color:#15152e}
+:root[data-theme="dark"] .step.done{background:#16342a}
+:root[data-theme="dark"] .rt.sel{background:#3a3417}
+:root[data-theme="dark"] .rt:hover,:root[data-theme="dark"] .opt:hover:not(:disabled){background:#2b2a48}
+:root[data-theme="dark"] .act:hover:not(:disabled){background:#1f3047}
+:root[data-theme="dark"] .resolved{background:#13291f}
+:root[data-theme="dark"] .resolved.bad{background:#341720}
+:root[data-theme="dark"] .chip.pos{color:#5fe0ad;background:#12352a}
+:root[data-theme="dark"] .chip.neg{color:#ff8f96;background:#3d1a22}
+:root[data-theme="dark"] .chip.neu{color:#c9c7e4;background:#2a2946}
+:root[data-theme="dark"] .chip.risk{color:#ffd27a;background:#3b3010}
+:root[data-theme="dark"] .chip.ideo{color:#d7b6ff;background:#33204d}
+:root[data-theme="dark"] .agnote{color:#d7b6ff;background:#2a1d40}
+:root[data-theme="dark"] .db.on{background:#33204d}
+:root[data-theme="dark"] .db:hover{background:#2a2946}
+:root[data-theme="dark"] .act .pv,:root[data-theme="dark"] .db .pv,:root[data-theme="dark"] .up{color:#5fe0ad}
+:root[data-theme="dark"] .act .pv.neg,:root[data-theme="dark"] .db .pv.neg,:root[data-theme="dark"] .dn{color:#ff8f96}
+:root[data-theme="dark"] .act .loc{background:#41182a;color:#ff9dbb}
+:root[data-theme="dark"] .realbox{background:#172840}
+:root[data-theme="dark"] .rt .w{background:#2a2946}
+:root[data-theme="dark"] .modal{background:rgba(0,0,0,.65)}
+:root[data-theme="dark"] .cand .bd span[style]{color:var(--muted)!important}
+.themebtn{min-width:40px}
 </style>
 </head>
 <body>
@@ -302,7 +338,7 @@ const SCEN = {
        prof:[.9,1.9,1.1,1,.7,.8], pitch:'Expresidente; posible candidatura propia del PRO.'},
       {sig:'PU', party:'Provincias Unidas', name:'Maximiliano Pullaro', short:'Pullaro', vp:'fórmula a definir', pb:{'Santa Fe':1.9}, color:COL.verde, pct:8, trait:'territorial', lean:.2,
        prof:[.5,.7,2.6,.9,.6,1], pitch:'Gobernador de Santa Fe; posible cara de la alianza de gobernadores.'},
-      {sig:'FIT-U', party:'Frente de Izquierda', name:'Myriam Bregman', short:'Bregman', vp:'fórmula a definir', color:COL.rojo, pct:8, trait:'militancia', lean:-1,
+      {sig:'FIT-U', party:'Frente de Izquierda', name:'Myriam Bregman', short:'Bregman', vp:'fórmula a definir', color:COL.rojo, pct:8, trait:'militancia', lean:-1, hard:true,
        prof:[1.1,1.5,.8,.9,.7,1.2], pitch:'Diputada de la izquierda con buena imagen en las encuestas.'},
     ]},
   2023:{y:2023, e1:[2023,9,22], und:12, mu:.1, pol:.3,
@@ -317,7 +353,7 @@ const SCEN = {
        prof:[.95,1.7,1.1,1.1,.75,.85], pitch:'Ganó la interna de Juntos por el Cambio con una propuesta de orden.'},
       {sig:'HxNP', party:'Hacemos por Nuestro País', name:'Juan Schiaretti', short:'Schiaretti', vp:'Florencio Randazzo', pb:{'Córdoba':1.9}, color:COL.verde, pct:4, trait:'territorial', lean:.2,
        prof:[.45,.6,3,.6,.4,.5], pitch:'Gobernador de Córdoba; propuesta federal con bastión en el Centro.'},
-      {sig:'FIT-U', party:'Frente de Izquierda', name:'Myriam Bregman', short:'Bregman', vp:'Nicolás del Caño', color:COL.rojo, pct:2.7, trait:'militancia', lean:-1,
+      {sig:'FIT-U', party:'Frente de Izquierda', name:'Myriam Bregman', short:'Bregman', vp:'Nicolás del Caño', color:COL.rojo, pct:2.7, trait:'militancia', lean:-1, hard:true,
        prof:[1.1,1.4,.8,.9,.8,1.2], pitch:'Diputada de la izquierda, con base en los grandes centros urbanos.'},
     ]},
   2019:{y:2019, e1:[2019,9,27], und:12, mu:-.05, pol:.33,
@@ -330,7 +366,7 @@ const SCEN = {
        prof:[.88,1.3,1.35,1.25,.8,.85], pitch:'Presidente que busca la reelección con la economía bajo presión.'},
       {sig:'CF', party:'Consenso Federal', name:'Roberto Lavagna', short:'Lavagna', vp:'Juan Manuel Urtubey', color:COL.turquesa, pct:8.2, trait:'prestigio', lean:0,
        prof:[.9,1.3,1.35,.9,.7,1], pitch:'Exministro de Economía; tercera opción entre las dos grandes coaliciones.'},
-      {sig:'FIT-U', party:'Frente de Izquierda', name:'Nicolás del Caño', short:'Del Caño', vp:'Romina Del Plá', color:COL.rojo, pct:2.9, trait:'militancia', lean:-1,
+      {sig:'FIT-U', party:'Frente de Izquierda', name:'Nicolás del Caño', short:'Del Caño', vp:'Romina Del Plá', color:COL.rojo, pct:2.9, trait:'militancia', lean:-1, hard:true,
        prof:[1.1,1.2,.8,1.2,.7,1.3], pitch:'Agenda de trabajadores y jóvenes, con base militante.'},
       {sig:'NOS', party:'Frente NOS', name:'Juan José Gómez Centurión', short:'Gómez Centurión', vp:'Cynthia Hotton', color:COL.azul, pct:2.6, trait:'territorial', lean:.9,
        prof:[.9,.8,1.2,1.3,1.1,.9], pitch:'Agenda conservadora, con más peso en el interior.'},
@@ -347,7 +383,7 @@ const SCEN = {
        prof:[.85,1.45,1.35,1.3,.75,.85], pitch:'Jefe de Gobierno porteño al frente de Cambiemos.'},
       {sig:'UNA', party:'Unidos por una Nueva Alternativa', name:'Sergio Massa', short:'Massa', vp:'Gustavo Sáenz', color:COL.turquesa, pct:20.6, trait:'territorial', lean:.1,
        prof:[1.3,.7,1,.8,.7,.95], pitch:'Tercera vía desde el Frente Renovador, fuerte en la provincia de Buenos Aires.'},
-      {sig:'FIT', party:'Frente de Izquierda', name:'Nicolás del Caño', short:'Del Caño', vp:'Myriam Bregman', color:COL.rojo, pct:3.3, trait:'militancia', lean:-1,
+      {sig:'FIT', party:'Frente de Izquierda', name:'Nicolás del Caño', short:'Del Caño', vp:'Myriam Bregman', color:COL.rojo, pct:3.3, trait:'militancia', lean:-1, hard:true,
        prof:[1,1.2,.8,1.6,.8,1.2], pitch:'Diputado mendocino de la izquierda.'},
       {sig:'PROG', party:'Progresistas', name:'Margarita Stolbizer', short:'Stolbizer', vp:'Miguel Ángel Olaviaga', color:COL.coral, pct:3.5, trait:'prestigio', lean:-.1,
        prof:[1.2,1.4,1.3,.6,.5,.7], pitch:'Progresismo y transparencia, con base bonaerense.'},
@@ -535,6 +571,11 @@ const POOL = [
    UTILIDADES
    ========================================================= */
 let S = null;
+/* tema claro / oscuro */
+function initTheme(){let t=null;try{t=localStorage.getItem('rosada_theme')}catch(e){}if(!t)t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.dataset.theme=t}
+function toggleTheme(){const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('rosada_theme',t)}catch(e){}render()}
+const themeBtn=()=>`<button class="hbtn themebtn" onclick="toggleTheme()" title="Cambiar a modo ${document.documentElement.dataset.theme==='dark'?'claro':'oscuro'}" aria-label="Cambiar tema">${document.documentElement.dataset.theme==='dark'?'☀️':'🌙'}</button>`;
+initTheme();
 let setup = {scen:'2023', cand:1, diff:'normal', tut:true, custom:loadCustom(), customPlayer:0};
 function loadCustom(){try{const v=JSON.parse(localStorage.getItem('rosada_custom'));if(v&&v.cands&&v.cands.length>=2)return v}catch(e){}return JSON.parse(JSON.stringify(CUSTOM_DEFAULT))}
 function saveCustom(){try{localStorage.setItem('rosada_custom',JSON.stringify(setup.custom))}catch(e){}}
@@ -633,14 +674,15 @@ const senGroup=()=>SC.y%6===5?'A':SC.y%6===1?'B':'C';
 function congress(res){
   const act=S.active, nat=national(), grp=senGroup();
   const dip=Array(U).fill(0), sen=Array(U).fill(0);
+  const wdc=Object.keys(S.wd).map(Number), all=act.concat(wdc);
   PROVS.forEach(([pn,r,seats,g])=>{
     const v={};let t=0;
-    act.forEach(c=>{const x=Math.max(.05,S.sh[r][c])*(res[c]/Math.max(.3,nat[c]))*Math.exp(randn()*.2)*((C[c].pb&&C[c].pb[pn])||1);v[c]=x;t+=x});
-    act.forEach(c=>v[c]=v[c]/t*100);
-    const el=act.filter(c=>v[c]>=3), got={}; el.forEach(c=>got[c]=0);
+    all.forEach(c=>{const b=S.wd[c]?Math.max(.05,S.wd[c].sh[r])*.7:Math.max(.05,S.sh[r][c])*(res[c]/Math.max(.3,nat[c]));const x=b*Math.exp(randn()*.2)*((C[c].pb&&C[c].pb[pn])||1);v[c]=x;t+=x});
+    all.forEach(c=>v[c]=v[c]/t*100);
+    const el=all.filter(c=>v[c]>=3), got={}; el.forEach(c=>got[c]=0);
     for(let k=0;k<seats;k++){let best=el[0],bv=-1;el.forEach(c=>{const q=v[c]/(got[c]+1);if(q>bv){bv=q;best=c}});got[best]++}
     el.forEach(c=>dip[c]+=got[c]);
-    if(g===grp){const o=act.slice().sort((a,b)=>v[b]-v[a]);sen[o[0]]+=2;sen[o[1]]+=1}
+    if(g===grp){const o=all.slice().sort((a,b)=>v[b]-v[a]);sen[o[0]]+=2;sen[o[1]]+=1}
   });
   return {dip,sen,provs:PROVS.filter(x=>x[3]===grp).map(x=>x[0])};
 }
@@ -650,7 +692,7 @@ function congressHTML(cg){
   return `<div class="eyebrow" style="margin-top:6px">Diputados · 130 de 257 bancas en juego</div>${strip('d')}
    <div class="eyebrow" style="margin-top:10px">Senadores · 24 de 72 bancas en juego</div>${strip('s')}
    <table class="cmp"><tr><td class="eyebrow">Fuerza</td><td class="n eyebrow">Diputados</td><td class="n eyebrow">Senadores</td></tr>${rows.map(r=>`<tr><td><span class="cdot" style="background:${C[r.i].color}"></span> ${r.i===S.p?'<b>'+esc(C[r.i].party)+' (vos)</b>':esc(C[r.i].party)}</td><td class="n">${r.d}</td><td class="n">${r.s}</td></tr>`).join('')}</table>
-   <p class="rule">Senado: renuevan ${cg.provs.join(', ')}. Reparto aproximado: sistema D'Hondt por provincia con piso del 3% para Diputados y, en el Senado, dos bancas para la primera fuerza y una para la segunda. Se usa el voto presidencial con algo de corte de boleta.</p>`;
+   <p class="rule">Senado: renuevan ${cg.provs.join(', ')}. Reparto aproximado: sistema D'Hondt por provincia con piso del 3% para Diputados y, en el Senado, dos bancas para la primera fuerza y una para la segunda. Se usa el voto presidencial con algo de corte de boleta; las fuerzas que bajaron su candidatura presidencial igual presentan listas legislativas.</p>`;
 }
 
 /* =========================================================
@@ -750,7 +792,7 @@ function newGame(){
      ev:null, evRes:null, weekLog:[], r1:null, over:false,
      bias:[], pact:new Set(), allied:new Set(), pending:[],
      pos:C.map(c=>c.lean||0), mu:SC.mu, pol:SC.pol, muPend:0, polPend:0, disc:0, tilt:0,
-     swans:new Set(), swanN:0, forced:null, congress:null, transfers:null, resultHTML:'', resultHead:''};
+     wd:{}, swans:new Set(), swanN:0, forced:null, congress:null, transfers:null, resultHTML:'', resultHead:''};
   S.bias=C.map(()=>randn()*2.4); {const mb=S.bias.reduce((a,b)=>a+b,0)/C.length; S.bias=S.bias.map(b=>b-mb);}
   if(trait('billetera')) S.res.f+=10;
   S.sel=bestRegion();
@@ -814,21 +856,39 @@ const prox=(a,b)=>Math.exp(-1.6*Math.abs(S.pos[a]-S.pos[b]));
 const natOf=c=>national()[c];
 const cp=(cls,t)=>`<span class="chip ${cls}">${t}</span>`;
 function transfer(from,to,f){let moved=0;S.sh.forEach((s,r)=>{const v=s[from]*f;s[from]-=v;if(to==null)s[U]+=v;else s[to]+=v;moved+=v*REG[r].w});return moved}
+/* un partido se baja: una parte de sus votos va a quien apoya, el resto se reparte entre afines e indecisos */
+/* afinidad para negociar: solo arreglan fuerzas razonablemente cercanas en el eje ideológico */
+const DEAL=.65, PACT=.6;
+const ideoDist=(a,b)=>Math.abs(S.pos[a]-S.pos[b]);
+const flex=c=>C[c].hard?.3:9; // el Frente de Izquierda no hace acuerdos electorales
+const canDeal=(a,b,max=DEAL)=>ideoDist(a,b)<=Math.min(max,flex(a),flex(b));
+function bestAlly(c,exclude=[]){return S.active.filter(o=>o!==c&&!exclude.includes(o)&&canDeal(c,o)).sort((a,b)=>natOf(b)*prox(c,b)-natOf(a)*prox(c,a))[0]}
+function withdraw(c,to,fTo){
+  const others=S.active.filter(o=>o!==c&&o!==to); const w={}; let wt=0;
+  others.forEach(o=>{w[o]=prox(c,o)**2*Math.max(.5,natOf(o));wt+=w[o]});
+  S.wd[c]={sh:S.sh.map(r=>r[c]),nat:natOf(c),to,week:S.turn};
+  let gain=0;
+  S.sh.forEach((s,r)=>{const v=s[c];s[c]=0;s[to]+=v*fTo;gain+=v*fTo*REG[r].w;const rest=v*(1-fTo);
+    if(wt){s[U]+=rest*.6;others.forEach(o=>s[o]+=rest*.4*w[o]/wt)} else s[U]+=rest});
+  S.active=S.active.filter(o=>o!==c);
+  return gain;
+}
 function wpickRival(r){const rv=rivals();return rv[wpick(rv.map(c=>S.sh[r][c]+.1))]}
 function evApoyo(c){
+  const alt=bestAlly(c,[S.p]);
   const base=natOf(c), pr=prox(c,S.p), fe=clamp(.2+.45*pr,.15,.65), exp=base*fe;
   return {id:'neg', tag:'🤝 Negociación', t:`${C[c].party} ofrece un acuerdo`,
-    txt:()=>`El equipo de ${esc(C[c].name)} (${fmt(lastPoll()[c])}% en la última encuesta) propone llamar a votarte a cambio de lugares en tus listas y espacios en un futuro gobierno. ${pr>.6?'Hay afinidad programática: muchos de sus votantes podrían seguirlo.':'Sus votantes no se parecen mucho a los tuyos: muchos podrían no seguirlo.'}`,
+    txt:()=>`El equipo de ${esc(C[c].name)} (${fmt(lastPoll()[c])}% en la última encuesta) propone bajar su candidatura presidencial y llamar a votarte, a cambio de lugares en tus listas y espacios en un futuro gobierno. ${pr>.6?'Hay afinidad programática: muchos de sus votantes podrían seguirlo.':'Sus votantes no se parecen mucho a los tuyos: muchos podrían no seguirlo.'}`,
     opts:[
-      {l:'Firmar el acuerdo completo', d:'Listas compartidas y compromisos de gobierno. Tu discurso se acerca al suyo.', preview:chips({xfer:exp,i:-4})+cp('risk','🎲 cuántos te siguen es incierto · 25% de que tu base se queje'),
-        fn:()=>{const f=clamp(fe*(1+.5*randn()),.05,.85);const m=transfer(c,S.p,f);const d=imgDelta(-4);S.res.i=clamp(S.res.i+d,0,100);S.allied.add(c);S.tilt+=(S.pos[c]-S.pos[S.p])*.25;
+      {l:'Firmar el acuerdo: se baja y te apoya', d:'Listas compartidas y compromisos de gobierno. Tu discurso se acerca al suyo.', preview:cp('neu','🏳️ se baja de la carrera')+chips({xfer:exp,i:-4})+cp('risk','🎲 cuántos te siguen es incierto · 25% de que tu base se queje'),
+        fn:()=>{const f=clamp(fe*(1+.4*randn()),.2,.85);const m=withdraw(c,S.p,f);const d=imgDelta(-4);S.res.i=clamp(S.res.i+d,0,100);S.allied.add(c);S.tilt+=(S.pos[c]-S.pos[S.p])*.25;
           let extra='',lost=0;if(rnd()<.25){lost=vol(.9);natShift(S.p,-lost);extra=` Parte de tu base no lo digiere (−${fmt(lost)}).`}
-          return {title:'🤝 Acuerdo firmado',text:`${esc(C[c].name)} llama a votarte. Te siguen ≈ ${fmt(m)} pts.`+extra,chips:chips({xfer:m,i:Math.round(d),lose:lost||0},false),good:true}}},
-      {l:'Una foto juntos, sin cargos', d:'Gesto de unidad sin comprometer nada.', preview:chips({xfer:exp*.35}),
+          return {title:'🤝 Acuerdo firmado',text:`${esc(C[c].name)} baja su candidatura y llama a votarte. Te siguen ≈ ${fmt(m)} pts; el resto de sus votantes se reparte entre otras fuerzas e indecisos.`+extra,chips:chips({xfer:m,i:Math.round(d),lose:lost||0},false),good:true}}},
+      {l:'Una foto juntos, sin cargos', d:'Gesto de unidad; sigue en carrera con su propia candidatura.', preview:chips({xfer:exp*.35}),
         fn:()=>{const f=clamp(fe*.35*(1+.5*randn()),0,.4);const m=transfer(c,S.p,f);S.allied.add(c);return {title:'📸 Foto de unidad',text:`Algunos votantes de ${esc(C[c].name)} se acercan.`,chips:chips({xfer:m},false),good:true}}},
-      {l:'Rechazar la oferta', d:'Mantenés tu identidad, pero puede que se la lleven a otro.', preview:chips({i:2})+cp('risk',`🎲 40%: termina apoyando a ${esc(sn(topRival()))}`),
-        fn:()=>{S.res.i=clamp(S.res.i+imgDelta(2),0,100);S.allied.add(c);const t=topRival();
-          if(t!==c&&rnd()<.4){const m=transfer(c,t,clamp(.2+.45*prox(c,t)*(1+.4*randn()),.05,.7));return {title:'😬 Se fue con otro',text:`${esc(C[c].name)} terminó apoyando a ${esc(C[t].name)}.`,chips:chips({i:2,oppgain:m,oppname:sn(t)},false),good:false}}
+      {l:'Rechazar la oferta', d:'Mantenés tu identidad, pero puede que se la lleven a otro.', preview:chips({i:2})+(alt!=null?cp('risk',`🎲 40%: se baja para apoyar a ${esc(sn(alt))}`):cp('neu','sigue en carrera: no tiene otro aliado posible')),
+        fn:()=>{S.res.i=clamp(S.res.i+imgDelta(2),0,100);S.allied.add(c);const t=alt;
+          if(t!=null&&S.active.includes(t)&&rnd()<.4){const m=withdraw(c,t,clamp(.2+.45*prox(c,t)*(1+.4*randn()),.05,.7));return {title:'😬 Se fue con otro',text:`${esc(C[c].name)} bajó su candidatura para apoyar a ${esc(C[t].name)}.`,chips:chips({i:2,oppgain:m,oppname:sn(t)},false),good:false}}
           return {title:'✋ Oferta rechazada',text:'Mantenés tu identidad.',chips:chips({i:2},false),good:true}}},
     ]};
 }
@@ -861,26 +921,26 @@ function evGober(){
     ]};
 }
 function evEndorse(){
-  const x=S.r1.order.find(c=>!S.active.includes(c)); if(x==null) return null;
-  const v=S.r1.res[x], o=opp(), pme=prox(x,S.p), pop=prox(x,o), fe=.2+.4*pme/(pme+pop);
+  const x=S.r1.order.find(c=>!S.active.includes(c)&&canDeal(c,S.p,PACT)); if(x==null) return null;
+  const v=S.r1.res[x], o=opp(), back=canDeal(x,o,PACT), pme=prox(x,S.p), pop=prox(x,o), fe=.2+.4*pme/(pme+pop);
   return {id:'neg', tag:'🤝 Negociación', t:`${C[x].party} pone condiciones`,
-    txt:()=>`${esc(C[x].name)} sacó ${fmt(v)}% en primera vuelta y ahora negocia su apoyo para el balotaje. También está hablando con ${esc(C[o].name)}.`,
+    txt:()=>`${esc(C[x].name)} sacó ${fmt(v)}% en primera vuelta y ahora negocia su apoyo para el balotaje.${back?` También está hablando con ${esc(C[o].name)}.`:` Con ${esc(C[o].name)} no tiene nada que hablar: si no arregla con vos, deja libertad de acción.`}`,
     opts:[
       {l:'Firmar un acuerdo programático', d:'Incorporás parte de su programa y de su equipo.', preview:chips({xfer:v*fe*.6,i:-3})+cp('risk','🎲 cuántos votos se mueven es incierto'),
         fn:()=>{const m=Math.max(0,v*fe*.6*(1+.5*randn()));natShift(S.p,m);const d=imgDelta(-3);S.res.i=clamp(S.res.i+d,0,100);return {title:'🤝 Acuerdo para el balotaje',text:`${esc(C[x].name)} llama a votarte.`,chips:chips({xfer:m,i:Math.round(d)},false),good:true}}},
-      {l:'Pedir el voto sin acuerdo', d:'Apelar a sus votantes por encima del dirigente.', preview:chips({xfer:v*fe*.25})+cp('risk','🎲 30%: se ofende y apoya al otro'),
-        fn:()=>{if(rnd()<.3){const m=Math.max(0,v*(1-fe)*.4*(1+.4*randn()));natShift(o,m);return {title:'😬 Se ofendió',text:`${esc(C[x].name)} terminó apoyando a ${esc(C[o].name)}.`,chips:chips({oppgain:m,oppname:sn(o)},false),good:false}}
+      {l:'Pedir el voto sin acuerdo', d:'Apelar a sus votantes por encima del dirigente.', preview:chips({xfer:v*fe*.25})+(back?cp('risk','🎲 30%: se ofende y apoya al otro'):''),
+        fn:()=>{if(back&&rnd()<.3){const m=Math.max(0,v*(1-fe)*.4*(1+.4*randn()));natShift(o,m);return {title:'😬 Se ofendió',text:`${esc(C[x].name)} terminó apoyando a ${esc(C[o].name)}.`,chips:chips({oppgain:m,oppname:sn(o)},false),good:false}}
           const m=Math.max(0,v*fe*.25*(1+.5*randn()));natShift(S.p,m);return {title:'🗳️ Algunos votantes se acercan',text:'',chips:chips({xfer:m},false),good:true}}},
-      {l:'Rechazar cualquier negociación', d:'Mostrarte sin ataduras.', preview:chips({i:3})+cp('risk','🎲 50%: apoya a tu rival'),
-        fn:()=>{S.res.i=clamp(S.res.i+imgDelta(3),0,100);if(rnd()<.5){const m=Math.max(0,v*(1-fe)*.5*(1+.4*randn()));natShift(o,m);return {title:'😬 Apoyó a tu rival',text:`${esc(C[x].name)} llama a votar a ${esc(C[o].name)}.`,chips:chips({i:3,oppgain:m,oppname:sn(o)},false),good:false}}
+      {l:'Rechazar cualquier negociación', d:'Mostrarte sin ataduras.', preview:chips({i:3})+(back?cp('risk','🎲 50%: apoya a tu rival'):cp('neu','deja libertad de acción')),
+        fn:()=>{S.res.i=clamp(S.res.i+imgDelta(3),0,100);if(back&&rnd()<.5){const m=Math.max(0,v*(1-fe)*.5*(1+.4*randn()));natShift(o,m);return {title:'😬 Apoyó a tu rival',text:`${esc(C[x].name)} llama a votar a ${esc(C[o].name)}.`,chips:chips({i:3,oppgain:m,oppname:sn(o)},false),good:false}}
           return {title:'✋ Sin ataduras',text:`${esc(C[x].name)} deja libertad de acción.`,chips:chips({i:3},false),good:true}}},
     ]};
 }
 function negEvent(){
   const types=[];
-  const small=rivals().filter(c=>!S.allied.has(c)&&natOf(c)<natOf(S.p)&&natOf(c)<14);
+  const small=rivals().filter(c=>!S.allied.has(c)&&natOf(c)<natOf(S.p)&&natOf(c)<14&&canDeal(c,S.p));
   if(small.length) types.push(()=>evApoyo(small[wpick(small.map(c=>prox(c,S.p)+.2))]));
-  const big=rivals().filter(c=>!S.pact.has(c)&&natOf(c)>=natOf(S.p)*.6);
+  const big=rivals().filter(c=>!S.pact.has(c)&&natOf(c)>=natOf(S.p)*.6&&canDeal(c,S.p,PACT));
   if(big.length&&rivals().length>=2) types.push(()=>evPacto(big[Math.floor(rnd()*big.length)]));
   types.push(evGober);
   return types[Math.floor(rnd()*types.length)]();
@@ -1004,9 +1064,10 @@ function endWeek(){
     const why=g>0?['un video que se viralizó','una entrevista muy comentada','el apoyo de una figura popular','un buen dato en su distrito']:['una declaración desafortunada','una interna que salió a la luz','un error de campaña','un mal dato económico que se le atribuye'];
     rivalLines.push(`⚡ <b>Sorpresa:</b> <b style="color:${C[c].color}">${c===S.p?'Vos':esc(C[c].name)}</b> ${c===S.p?(g>0?'crecés':'caés'):(g>0?'crece':'cae')} fuerte (${sgn(g)} pts) por ${why[Math.floor(rnd()*why.length)]}`)}
   // acuerdos entre rivales
-  if(S.round===1&&rnd()<.12){const sm=rivals().filter(c=>!S.allied.has(c)&&natOf(c)<9);const bg=rivals().filter(c=>natOf(c)>=15);
-    if(sm.length&&bg.length){const a=sm[Math.floor(rnd()*sm.length)];const b=bg[wpick(bg.map(t=>prox(a,t)))];const m=transfer(a,b,clamp(.15+.35*prox(a,b)+.1*randn(),.05,.6));S.allied.add(a);
-      rivalLines.push(`🤝 <b style="color:${C[a].color}">${esc(C[a].name)}</b> llamó a votar a <b style="color:${C[b].color}">${esc(C[b].name)}</b> (≈ +${fmt(m)} pts)`)}}
+  if(S.round===1&&S.turn>=3&&rnd()<.08){const sm=rivals().filter(c=>!S.allied.has(c)&&natOf(c)<9);const bg=rivals().filter(c=>natOf(c)>=15);
+    const pairs=[];sm.forEach(a=>bg.forEach(b=>{if(canDeal(a,b))pairs.push([a,b])}));
+    if(pairs.length){const [a,b]=pairs[wpick(pairs.map(([a,b])=>prox(a,b)))];const m=withdraw(a,b,clamp(.15+.35*prox(a,b)+.1*randn(),.05,.6));S.allied.add(a);
+      rivalLines.push(`🏳️ <b style="color:${C[a].color}">${esc(C[a].name)}</b> bajó su candidatura y llamó a votar a <b style="color:${C[b].color}">${esc(C[b].name)}</b> (≈ +${fmt(m)} pts)`)}}
   // consecuencias diferidas
   S.pending=S.pending.filter(pd=>{if(pd.round===S.round&&pd.at<=S.turn){const fx=applyEff(pd.eff);rivalLines.push(`📌 <b>Te pasaron factura:</b> ${pd.txt}`);return false}return true});
   // cisnes negros: raros, pero cambian todo
@@ -1083,13 +1144,17 @@ function election(){
     } else {
       head='😞 Quedaste afuera'; body=`Salís ${order.indexOf(S.p)+1}º con ${fmt(me)}%. El balotaje será entre ${esc(C[top].name)} y ${esc(C[second].name)}.`;
     }
+  } else if(!S.active.includes(S.p)){
+    head=`🗳️ ${esc(C[top].name)} gana el balotaje`;
+    body=`${esc(C[top].name)} sacó <b>${fmt(res[top])}%</b> contra ${fmt(res[second])}% de ${esc(C[second].name)}. ${S.endorse!=null?(S.endorse===top?'Tu candidatura había llamado a votar al ganador.':'Tu candidatura había apoyado a quien perdió.'):'Tu candidatura había dado libertad de acción.'} Tu resultado en primera vuelta: ${S.r1Head||''} (${fmt(S.r1.res[S.p])}%).`;
   } else {
     const win=top===S.p;
     head=win?'🏛️ ¡Ganaste el balotaje!':'😞 Perdiste el balotaje';
     body=win?`Con <b>${fmt(me)}%</b>, ${esc(C[S.p].name)} gana la presidencia.`:`${esc(C[top].name)} gana con ${fmt(res[top])}%.`;
   }
   S.over=!bal;
-  if(S.round===1) S.congress=congress(res);
+  if(S.round===1){S.congress=congress(res);S.r1Head=head.replace(/^\S+\s/,'')}
+  const spect=S.round===1&&S.over&&order.length>=2&&top!==S.p&&second!==S.p&&!(res[top]>=45||(res[top]>=40&&res[top]-res[second]>=10));
   const bars=order.map(c=>`<div class="prow ${c===S.p?'me':''}"><span class="nm">${esc(sn(c))}</span><span class="tr"><i style="width:${res[c]}%;background:${C[c].color}"></i></span><span class="v">${fmt(res[c])}%</span></div>`).join('');
   const maxErr=Math.max(...S.active.map(c=>Math.abs(res[c]-pollV[c])));
   const vs=`<table class="cmp"><tr><td class="eyebrow">Candidatura</td><td class="n eyebrow">Última encuesta</td><td class="n eyebrow">Resultado</td><td class="n eyebrow">Error</td></tr>`+order.map(c=>{const d=res[c]-pollV[c];return `<tr><td>${c===S.p?'<b>'+esc(sn(c))+'</b>':esc(sn(c))}</td><td class="n">${fmt(pollV[c])}%</td><td class="n">${fmt(res[c])}%</td><td class="n ${d>=0?'up':'dn'}">${sgn(d)}</td></tr>`}).join('')+`</table>
@@ -1098,6 +1163,10 @@ function election(){
   const blankTxt = S.round===2 ? `<p class="rule">Votos en blanco o nulos: <b>${fmt(blankPct)}%</b> de los emitidos.</p>` : '';
   const cg = S.congress ? `<details class="pvr" ${S.round===1?'open':''}><summary>🏛️ Diputados y senadores (elección general)</summary>${congressHTML(S.congress)}</details>` : '';
   const ch = `<details class="pvr" ${S.over?'open':''}><summary>📈 Evolución de la intención de voto</summary>${chartSVG()}</details>`;
+  const okA=spect&&canDeal(S.p,top,.9), okB=spect&&canDeal(S.p,second,.9);
+  const simBox = spect ? `<div class="simbox"><b>⚖️ ¿Cómo sigue?</b> Hay balotaje entre ${esc(C[top].name)} y ${esc(C[second].name)}. Podés simularlo semana a semana. ${okA||okB?'Antes, ¿llamás a votar a alguien?':'Tu fuerza no tiene afinidad con ninguno de los dos finalistas: solo podés dar libertad de acción.'}
+    <div class="row" style="margin-top:10px">${okA?`<button class="big alt" onclick="simulateRunoff(${top})">Apoyar a ${esc(sn(top))}</button>`:''}${okB?`<button class="big alt" onclick="simulateRunoff(${second})">Apoyar a ${esc(sn(second))}</button>`:''}<button class="big ghost" onclick="simulateRunoff(null)">${okA||okB?'Libertad de acción':'Simular con libertad de acción'}</button></div>
+    ${okA||okB?'<p class="rule">Tu apoyo arrastra a parte de tus votantes, más cuanto más cerca estés ideológicamente del candidato.</p>':''}</div>` : '';
   const btns = bal ? `<button class="big" onclick="startRunoff()">Ir al balotaje →</button>`
     : `<button class="big" onclick="closeModal();newGame()">Revancha con ${esc(sn(S.p))}</button><button class="big ghost" onclick="closeModal();S=null;render()">Elegir otra elección</button><button class="big ghost" onclick="closeModal()">👀 Ver la campaña</button>`;
   const html=`<div class="eyebrow">${S.round===1?'Noche electoral · '+fdate(SC.e1)+' '+SC.y:'Balotaje · '+fdate(SC.e2)+' '+SC.y}</div>
@@ -1107,14 +1176,12 @@ function election(){
     <details class="pvr"><summary>📊 Encuestas vs. resultado</summary>${vs}</details>
     ${S.round===1?'<div class="rule">Victoria en primera vuelta: 45%, o 40% con 10 puntos de ventaja.</div>':''}
     <p class="rule">Fiscales: ${S.fiscal} (cuidaron ≈ ${fmt(Math.min(S.fiscal,10)*.12)} pts). Los indecisos se repartieron el día de la elección.</p>
-    ${realTxt}
+    ${simBox}${realTxt}
     <div class="row">${btns}</div>`;
   if(S.over){S.phase='done';S.resultHead=head;S.resultHTML=html;render();showModal(html,true)}
   else showModal(html);
 }
-function startRunoff(){
-  closeModal();
-  const [a,b]=S.r1.order;
+function runoffTransfer(a,b){
   const elim=S.active.filter(c=>c!==a&&c!==b);
   // cada votante de los eliminados elige al finalista más cercano en el eje ideológico, o vota en blanco si ambos le quedan lejos
   const cal=spCalib(); const d=dens(S.mu,S.pol); const ia=cal.act.indexOf(a), ib=cal.act.indexOf(b); const fr={};
@@ -1125,11 +1192,47 @@ function startRunoff(){
   S.transfers=elim.map(c=>({c,a:fr[c].a/fr[c].t,b:fr[c].b/fr[c].t,bl:fr[c].bl/fr[c].t}));
   S.sh.forEach(s=>{S.transfers.forEach(tr=>{const v=s[tr.c];s[tr.c]=0;s[a]+=v*tr.a;s[b]+=v*tr.b})});
   S.log.unshift({lbl:'⚖️ Traspaso de votos al balotaje', items:S.transfers.map(tr=>`Votantes de ${esc(C[tr.c].name)}: ${Math.round(tr.a*100)}% a ${esc(sn(a))}, ${Math.round(tr.b*100)}% a ${esc(sn(b))}, ${Math.round(tr.bl*100)}% en blanco`)});
-  S.active=[a,b]; S.round=2; S.turn=1; S.phase='event'; S.ap=2; S.evRes=null; S.prep=0; S.recent=[];
-  S.res.e=clamp(S.res.e+20,0,100); S.res.f=clamp(S.res.f+15,0,100);
+  S.active=[a,b]; S.round=2; S.turn=1; S.prep=0; S.recent=[];
   S.hist.push({lbl:'B0', poll:makePoll(), sep:true});
+}
+function startRunoff(){
+  closeModal();
+  const [a,b]=S.r1.order;
+  runoffTransfer(a,b);
+  S.phase='event'; S.ap=2; S.evRes=null;
+  S.res.e=clamp(S.res.e+20,0,100); S.res.f=clamp(S.res.f+15,0,100);
   S.ev=pickEvent(); render(); window.scrollTo({top:0,behavior:'smooth'});
   toast('⚖️ Arranca el balotaje: +15 fondos, +20 energía');
+}
+
+/* balotaje sin vos: se simula semana a semana, con tu apoyo opcional */
+function simulateRunoff(endorse){
+  closeModal();
+  const [a,b]=S.r1.order; const mine=S.sh.map(r=>r[S.p]);
+  runoffTransfer(a,b);
+  if(endorse!=null){
+    const o=endorse===a?b:a, k=.3*prox(S.p,endorse); let moved=0;
+    S.sh.forEach((s,r)=>{const v=mine[r]*k; const take=Math.min(v*.5,s[o]*.3); s[o]-=take; s[endorse]+=v; moved+=v*REG[r].w;
+      const t=s.reduce((x,y)=>x+y,0); if(t>100){const f=100/t; s.forEach((x,i)=>s[i]=x*f)}});
+    S.log.unshift({lbl:'📣 Tu apoyo en el balotaje', items:[`Llamaste a votar a ${esc(C[endorse].name)}: ≈ ${fmt(moved)} pts más de tus votantes lo siguen${k<.15?' (pocos: estás lejos ideológicamente)':''}.`]});
+  } else S.log.unshift({lbl:'📣 Tu apoyo en el balotaje', items:['Diste libertad de acción a tus votantes.']});
+  S.endorse=endorse;
+  for(let t=1;t<=T2;t++){ S.turn=t; autoWeek(); }
+  S.turn=T2; S.over=false; election();
+}
+function autoWeek(){
+  const lines=[];
+  S.active.forEach(c=>{const str=C[c].str*1.35; const r=wpick(REG.map((rg,i)=>rg.w*C[c].aff[i]**2)); shift(r,c,(.6+rnd()*1.2)*str*1.8); natShift(c,randn()*.5)});
+  if(S.turn===DEB2){const c=S.active[rnd()<.5?0:1];const g=1+rnd()*1.5;natShift(c,g);lines.push(`🎤 ${esc(C[c].name)} ganó el debate (${sgn(g)} pts)`)}
+  if(rnd()<.25){const c=S.active[rnd()<.5?0:1];const g=(rnd()<.5?-1:1)*(1.2+rnd()*2.3);natShift(c,g);lines.push(`⚡ Sorpresa: ${esc(C[c].name)} ${g>0?'crece':'cae'} fuerte (${sgn(g)} pts)`)}
+  {const cal=spCalib(); const np=S.pos.slice();
+   S.active.forEach(c=>{const opts=[-.04,0,.04].map(dx=>clamp(S.pos[c]+dx,C[c].lean-.22,C[c].lean+.22));let best=opts[1],bv=-1e9;
+     opts.forEach(x=>{const pm=np.slice();pm[c]=x;const v=spEval(cal,pm)[cal.act.indexOf(c)];if(v>bv){bv=v;best=x}});np[c]=best});
+   const nmu=clamp(S.mu+randn()*.02,-.6,.6); applyNatDelta(cal.act,spEval(cal,np,nmu,S.pol)); S.pos=np; S.mu=nmu;}
+  S.bias=S.bias.map(x=>x*.96+randn()*.3);
+  S.sh.forEach(s=>{const mv=s[U]*.15;const tot=S.active.reduce((x,c)=>x+s[c],0);S.active.forEach(c=>s[c]+=mv*s[c]/tot);s[U]-=mv});
+  const poll=makePoll(); S.hist.push({lbl:'B'+S.turn, poll});
+  S.log.unshift({lbl:`Balotaje simulado · semana ${S.turn}`, items:[`Encuesta: ${S.active.map(c=>`${esc(sn(c))} ${fmt(poll[c])}%`).join(' – ')}`,...lines]});
 }
 
 /* =========================================================
@@ -1155,7 +1258,7 @@ function renderStart(){
      <span><b>Objetivo:</b> ${c.goal.type==='win'?'ganar la presidencia':'superar el '+fmt(c.goal.v)+'%'}</span></div></button>`).join('')+`</div>`;
   }
   const ds=Object.entries(DIFF).map(([k,d])=>`<button class="${setup.diff===k?'on':''}" onclick="setup.diff='${k}';render()" title="${d.d}">${d.l}</button>`).join('');
-  return `<header class="top"><div class="top-in"><div class="logo"><div class="sun">☀️</div><div><small>Simulador electoral · Argentina</small><h1>Rumbo a la Rosada</h1></div></div></div></header>
+  return `<header class="top"><div class="top-in"><div class="logo"><div class="sun">☀️</div><div><small>Simulador electoral · Argentina</small><h1>Rumbo a la Rosada</h1></div></div><div class="spacer"></div>${themeBtn()}</div></header>
   <div class="start">
     <div class="hero"><div><h2>¿Llegás a la <span>Casa Rosada</span>?</h2>
       <p>Doce semanas de campaña hasta la primera vuelta y cuatro más si hay balotaje. Cada semana respondés a una noticia, armás tu agenda y mirás cómo se mueven las encuestas.</p></div>
@@ -1215,7 +1318,7 @@ function renderCustomEditor(){
 `;
 }
 function cust(i,k,v){setup.custom.cands[i][k]=k==='pct'||k==='base'||k==='lean'?+v:v; if(k==='pct')custSum(); saveCustom()}
-function custSum(){const el=document.getElementById('custsum');if(!el)return;const cc=setup.custom;const s=cc.cands.reduce((a,c)=>a+(+c.pct||0),0)+(+cc.und||0);el.textContent=`Total: ${fmt(s)}%`;el.style.background=Math.abs(s-100)<=.6?'#dff7ec':'#ffe6ea'}
+function custSum(){const el=document.getElementById('custsum');if(!el)return;const cc=setup.custom;const s=cc.cands.reduce((a,c)=>a+(+c.pct||0),0)+(+cc.und||0);el.textContent=`Total: ${fmt(s)}%`;el.style.background=Math.abs(s-100)<=.6?'var(--okbg)':'var(--badbg)'}
 function custAdd(){const pal=Object.values(COL);const cc=setup.custom;const i=cc.cands.length;cc.cands.push({sig:'P'+(i+1),party:'Partido '+(i+1),name:'Candidatura '+(i+1),color:pal[(i+4)%pal.length],pct:4,base:0,lean:0});render()}
 function custDel(i){const cc=setup.custom;if(cc.cands.length<=2)return;cc.cands.splice(i,1);if(setup.customPlayer>=cc.cands.length)setup.customPlayer=0;render()}
 function custNormalize(){const cc=setup.custom;const s=cc.cands.reduce((a,c)=>a+(+c.pct||0),0);if(s<=0)return;const room=100-(+cc.und||0);cc.cands.forEach(c=>c.pct=Math.round((+c.pct||0)/s*room*10)/10);render()}
@@ -1227,6 +1330,7 @@ function renderHeader(){
     <div class="who"><span class="dot" style="background:${c.color}"></span><div><b>${esc(c.name)}</b><br><span>${esc(c.party)} · ${S.d.l}</span></div></div>
     <div class="spacer"></div>
     <span class="weekchip">${S.round===1?'1ª vuelta':'Balotaje'} · Semana <em>${S.turn}</em> de ${totalTurns()} · ${fdate(weekDate())}</span>
+    ${themeBtn()}
     <button class="hbtn" onclick="showHelp()">❓ Cómo jugar</button>
     <button class="hbtn" onclick="if(confirm('¿Abandonar esta campaña?')){S=null;render()}">↺ Salir</button>
   </div></header>`;
@@ -1328,13 +1432,13 @@ function renderIdeo(){
   const X=v=>L+(W-L-R)*(v+1.5)/3, Y=y=>T+(H-T-B)*(1-y/mx), base=H-B;
   const line=arr=>arr.map((y,i)=>(i?'L':'M')+X(GRID[i]).toFixed(1)+','+Y(y).toFixed(1)).join('');
   let g=`<path d="${line(d)}L${X(1.5)},${base}L${X(-1.5)},${base}Z" fill="#6ec6f5" fill-opacity=".35" stroke="#2f8fe0" stroke-width="2"/>`;
-  g+=`<path d="${line(d0)}" fill="none" stroke="#15152e" stroke-opacity=".35" stroke-dasharray="4 4" stroke-width="1.5"/>`;
-  g+=`<line x1="${L}" x2="${W-R}" y1="${base}" y2="${base}" stroke="#15152e" stroke-width="1.5"/>`;
+  g+=`<path d="${line(d0)}" fill="none" style="stroke:var(--ink)" stroke-opacity=".35" stroke-dasharray="4 4" stroke-width="1.5"/>`;
+  g+=`<line x1="${L}" x2="${W-R}" y1="${base}" y2="${base}" style="stroke:var(--ink)" stroke-width="1.5"/>`;
   const items=S.active.map(c=>({c,x:X(clamp(S.pos[c],-1.45,1.45))})).sort((a,b)=>a.x-b.x); let lastX=-99,row=0;
   items.forEach(it=>{row=(it.x-lastX<34)?1-row:0;lastX=it.x;const me=it.c===S.p;const ly=base+16+row*14;
-    g+=`<line x1="${it.x}" x2="${it.x}" y1="${base-6}" y2="${ly-9}" stroke="${C[it.c].color}" stroke-width="1.5"/><circle cx="${it.x}" cy="${base}" r="${me?7:5}" fill="${C[it.c].color}" stroke="#15152e" stroke-width="1.5"/>
+    g+=`<line x1="${it.x}" x2="${it.x}" y1="${base-6}" y2="${ly-9}" stroke="${C[it.c].color}" stroke-width="1.5"/><circle cx="${it.x}" cy="${base}" r="${me?7:5}" fill="${C[it.c].color}" style="stroke:var(--ink)" stroke-width="1.5"/>
        <text x="${it.x}" y="${ly}" font-size="10" font-weight="${me?800:600}" text-anchor="middle" fill="${C[it.c].color}">${esc(C[it.c].sig)}</text>`});
-  g+=`<text x="${L}" y="${H-2}" font-size="10" fill="#6b6985">◀ Izquierda</text><text x="${W/2}" y="${H-2}" font-size="10" text-anchor="middle" fill="#6b6985">Centro</text><text x="${W-R}" y="${H-2}" font-size="10" text-anchor="end" fill="#6b6985">Derecha ▶</text>`;
+  g+=`<text x="${L}" y="${H-2}" font-size="10" style="fill:var(--gridtxt)">◀ Izquierda</text><text x="${W/2}" y="${H-2}" font-size="10" text-anchor="middle" style="fill:var(--gridtxt)">Centro</text><text x="${W-R}" y="${H-2}" font-size="10" text-anchor="end" style="fill:var(--gridtxt)">Derecha ▶</text>`;
   const dm=S.mu-SC.mu; const clima=Math.abs(dm)<.03?'no se movió mucho desde el inicio':`se corrió hacia la ${dm<0?'izquierda':'derecha'} desde el inicio`;
   return `<div class="card"><h3>🧭 Mapa ideológico</h3>
     <svg viewBox="0 0 ${W} ${H}" width="100%" role="img" aria-label="Distribución de votantes y posición de cada candidatura">${g}</svg>
@@ -1363,12 +1467,12 @@ function chartSVG(){
   const yMax=Math.max(50,Math.ceil((maxV+4)/10)*10);
   const x=i=>L+(W-L-R)*i/maxX, y=v=>T+(H-T-B)*(1-v/yMax);
   let g='';
-  for(let v=0;v<=yMax;v+=10) g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="#e8e1cf" stroke-width="1"/><text x="${L-6}" y="${y(v)+4}" font-size="10" text-anchor="end" fill="#6b6985">${v}</text>`;
+  for(let v=0;v<=yMax;v+=10) g+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" style="stroke:var(--line2)" stroke-width="1"/><text x="${L-6}" y="${y(v)+4}" font-size="10" text-anchor="end" style="fill:var(--gridtxt)">${v}</text>`;
   const gl=S.round===1?45:50;
   g+=`<line x1="${L}" x2="${W-R}" y1="${y(gl)}" y2="${y(gl)}" stroke="#ff5c8a" stroke-width="1.5" stroke-dasharray="5 4"/><text x="${L+4}" y="${y(gl)-4}" font-size="10" font-weight="700" fill="#d43a6a">${S.round===1?'45% gana en 1ª vuelta':'50%'}</text>`;
-  const db=S.round===1?DEB1:T1+1+DEB2; if(db<=maxX) g+=`<line x1="${x(db)}" x2="${x(db)}" y1="${T}" y2="${H-B}" stroke="#15152e" stroke-opacity=".15" stroke-width="10"/><text x="${x(db)}" y="${H-B+22}" font-size="10" text-anchor="middle">🎤</text>`;
-  if(S.round===2){const sx=x(T1+.5);g+=`<line x1="${sx}" x2="${sx}" y1="${T}" y2="${H-B}" stroke="#15152e" stroke-width="1.5" stroke-dasharray="3 3"/><text x="${sx+3}" y="${T+10}" font-size="9.5" font-weight="700">balotaje →</text>`}
-  for(let i=0;i<=maxX;i+=2){const lb=i===0?'0':i<=T1?'S'+i:'B'+(i-T1-1);g+=`<text x="${x(i)}" y="${H-B+13}" font-size="9.5" text-anchor="middle" fill="#6b6985">${lb}</text>`}
+  const db=S.round===1?DEB1:T1+1+DEB2; if(db<=maxX) g+=`<line x1="${x(db)}" x2="${x(db)}" y1="${T}" y2="${H-B}" style="stroke:var(--ink)" stroke-opacity=".15" stroke-width="10"/><text x="${x(db)}" y="${H-B+22}" font-size="10" text-anchor="middle">🎤</text>`;
+  if(S.round===2){const sx=x(T1+.5);g+=`<line x1="${sx}" x2="${sx}" y1="${T}" y2="${H-B}" style="stroke:var(--ink)" stroke-width="1.5" stroke-dasharray="3 3"/><text x="${sx+3}" y="${T+10}" font-size="9.5" font-weight="700">balotaje →</text>`}
+  for(let i=0;i<=maxX;i+=2){const lb=i===0?'0':i<=T1?'S'+i:'B'+(i-T1-1);g+=`<text x="${x(i)}" y="${H-B+13}" font-size="9.5" text-anchor="middle" style="fill:var(--gridtxt)">${lb}</text>`}
   const labels=[];
   ids.sort((a,b)=>a===S.p?1:b===S.p?-1:0).forEach(c=>{
     const pts=hist.map((h,i)=>h.poll[c]!=null?[x(i),y(h.poll[c])]:null);
@@ -1377,7 +1481,7 @@ function chartSVG(){
     g+=`<path d="${d}" fill="none" stroke="${C[c].color}" stroke-width="${me?4:2.4}" stroke-linejoin="round" stroke-linecap="round" opacity="${me?1:.85}"/>`;
     if(me) pts.forEach(p=>{if(p)g+=`<circle cx="${p[0]}" cy="${p[1]}" r="3.2" fill="#fff" stroke="${C[c].color}" stroke-width="2"/>`});
     const li=hist.length-1; const lv=hist[li].poll[c];
-    if(lv!=null){g+=`<circle cx="${x(li)}" cy="${y(lv)}" r="${me?5.5:4}" fill="${C[c].color}" stroke="#15152e" stroke-width="1.5"/>`;labels.push({c,yy:y(lv),v:lv,xx:x(li)})}
+    if(lv!=null){g+=`<circle cx="${x(li)}" cy="${y(lv)}" r="${me?5.5:4}" fill="${C[c].color}" style="stroke:var(--ink)" stroke-width="1.5"/>`;labels.push({c,yy:y(lv),v:lv,xx:x(li)})}
   });
   labels.sort((a,b)=>a.yy-b.yy); for(let i=1;i<labels.length;i++) if(labels[i].yy-labels[i-1].yy<12) labels[i].yy=labels[i-1].yy+12;
   labels.forEach(l=>g+=`<text x="${l.xx+8}" y="${l.yy+4}" font-size="11" font-weight="800" fill="${C[l.c].color}">${fmt(l.v)}</text>`);
@@ -1397,16 +1501,17 @@ function renderPolls(){
   const tot=ids.reduce((a,c)=>a+p[c],0); const v=c=>p[c]/tot*100;
   const [a,b]=ids; let txt, bg;
   const goal=C[S.p].goal;
-  if(S.round===2){ txt=a===S.p?`Si fuera hoy: <b>ganás</b> ${fmt(v(a))} a ${fmt(v(b))}.`:`Si fuera hoy: <b>perdés</b> ${fmt(v(S.p))} a ${fmt(v(a))}.`; bg=a===S.p?'#dff7ec':'#ffe6ea'; }
-  else if(goal.type==='pct'){ const ok=v(S.p)>=goal.v; txt=`Objetivo ${fmt(goal.v)}% · si fuera hoy sacarías <b>${fmt(v(S.p))}%</b> ${ok?'✅':'❌'}`; bg=ok?'#dff7ec':'#ffe6ea'; }
+  if(S.round===2&&!S.active.includes(S.p)){ txt=`Balotaje sin vos: ${esc(sn(a))} ${fmt(v(a))}% – ${esc(sn(b))} ${fmt(v(b))}% (votos válidos).`; bg='var(--midbg)'; }
+  else if(S.round===2){ txt=a===S.p?`Con esta encuesta: <b>ganás</b> ${fmt(v(a))} a ${fmt(v(b))} (votos válidos).`:`Con esta encuesta: <b>perdés</b> ${fmt(v(S.p))} a ${fmt(v(a))} (votos válidos).`; bg=a===S.p?'var(--okbg)':'var(--badbg)'; }
+  else if(goal.type==='pct'){ const ok=v(S.p)>=goal.v; txt=`Objetivo ${fmt(goal.v)}% de los votos válidos · con esta encuesta, sin indecisos, tendrías <b>${fmt(v(S.p))}%</b> ${ok?'✅':'❌'}`; bg=ok?'var(--okbg)':'var(--badbg)'; }
   else { const first=v(a)>=45||(v(a)>=40&&v(a)-v(b)>=10);
-    if(first&&a===S.p){txt=`Si fuera hoy: <b>ganás en primera vuelta</b> (${fmt(v(a))}% de los votos válidos).`;bg='#dff7ec'}
-    else if(first){txt=`Si fuera hoy: <b>gana ${esc(C[a].name)}</b> en primera vuelta.`;bg='#ffe6ea'}
-    else if(a===S.p||b===S.p){txt=`Si fuera hoy: <b>balotaje</b> contra ${esc(C[a===S.p?b:a].name)}.`;bg='#fff4c9'}
-    else {txt=`Si fuera hoy: <b>quedás afuera</b>; el balotaje sería ${esc(C[a].sig)} vs ${esc(C[b].sig)}.`;bg='#ffe6ea'} }
+    if(first&&a===S.p){txt=`Con esta encuesta: <b>ganás en primera vuelta</b> (${fmt(v(a))}% de los votos válidos).`;bg='var(--okbg)'}
+    else if(first){txt=`Con esta encuesta: <b>gana ${esc(C[a].name)}</b> en primera vuelta.`;bg='var(--badbg)'}
+    else if(a===S.p||b===S.p){txt=`Con esta encuesta: <b>balotaje</b> contra ${esc(C[a===S.p?b:a].name)}.`;bg='var(--midbg)'}
+    else {txt=`Con esta encuesta: <b>quedás afuera</b>; el balotaje sería ${esc(C[a].sig)} vs ${esc(C[b].sig)}.`;bg='var(--badbg)'} }
   return `<div class="card"><h3>🗳️ Última encuesta</h3><div class="polls">${rows}</div>
-    <div class="verdict" style="background:${bg}">${txt}</div>
-    <div class="rule">${S.round===1?'Gana en 1ª vuelta quien saca 45% de los votos válidos, o 40% con 10 puntos de ventaja sobre el segundo.':'En el balotaje gana quien saque más votos válidos. *Estimación: votantes de los eliminados que no se sienten representados por ningún finalista.'}</div></div>`;
+    <div class="verdict" style="background:${bg}">${txt}</div>${Object.keys(S.wd).length?`<div class="rule">🏳️ Se bajaron: ${Object.entries(S.wd).map(([c,w])=>`${esc(sn(+c))} (apoya a ${esc(sn(w.to))})`).join(', ')}.</div>`:''}
+    <div class="rule">Las barras incluyen a los indecisos; el recuadro los saca y recalcula sobre votos válidos, que es como se cuenta la elección. Ambos vienen de la encuesta, no del voto real. ${S.round===1?'Gana en 1ª vuelta quien saca 45% de los votos válidos, o 40% con 10 puntos de ventaja sobre el segundo.':'En el balotaje gana quien saque más votos válidos. *Estimación: votantes de los eliminados que no se sienten representados por ningún finalista.'}</div></div>`;
 }
 
 /* =========================================================
@@ -1418,7 +1523,7 @@ function toast(t){const el=document.createElement('div');el.className='toast';el
 
 function showSummary(prev,poll,rivalLines,myLines,inc,last,swan){
   const ids=S.active.slice().sort((a,b)=>poll[b]-poll[a]);
-  const rows=ids.map(c=>{const d=poll[c]-(prev[c]??0);return `<tr><td><span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid #15152e;vertical-align:-1px;background:${C[c].color}"></span> ${c===S.p?'<b>'+esc(C[c].name)+' (vos)</b>':esc(C[c].name)}</td><td class="n">${fmt(prev[c]??0)}%</td><td class="n">→ ${fmt(poll[c])}%</td><td class="n ${d>=0?'up':'dn'}">${d>=0?'▲':'▼'} ${fmt(Math.abs(d))}</td></tr>`}).join('');
+  const rows=ids.map(c=>{const d=poll[c]-(prev[c]??0);return `<tr><td><span style="display:inline-block;width:12px;height:12px;border-radius:50%;border:1.5px solid var(--line);vertical-align:-1px;background:${C[c].color}"></span> ${c===S.p?'<b>'+esc(C[c].name)+' (vos)</b>':esc(C[c].name)}</td><td class="n">${fmt(prev[c]??0)}%</td><td class="n">→ ${fmt(poll[c])}%</td><td class="n ${d>=0?'up':'dn'}">${d>=0?'▲':'▼'} ${fmt(Math.abs(d))}</td></tr>`}).join('');
   const sw=swan?`<div class="swan"><div class="eyebrow">🦢 Cisne negro</div><h3>${swan.ico} ${swan.t}</h3><p>${swan.txt}</p>${swan.resp?'<p class="rule">La semana que viene vas a tener que responder.</p>':''}</div>`:'';
   if(swan) S.log.unshift({lbl:`🦢 Cisne negro · ${swan.t}`, items:[swan.txt.replace(/<[^>]+>/g,'')]});
   showModal(`<div class="eyebrow">Cierre de la semana ${S.turn}${S.round===2?' del balotaje':''}</div>${sw}
@@ -1444,7 +1549,7 @@ function showHelp(first){
      <li><b>🧭 Discurso:</b> cada semana elegís si correrte a la izquierda o a la derecha, y algunas respuestas a noticias también te corren. Los votantes están repartidos en un eje que se mueve con la agenda: acercarte a donde hay más votantes suma, pero los giros bruscos o alejarte mucho de tu identidad cuestan imagen. En el balotaje, los votantes de los eliminados eligen al finalista más cercano, o votan en blanco.</li>
      <li><b>🦢 Cisnes negros:</b> muy de vez en cuando pasa algo enorme (una crisis, una catástrofe, un escándalo general) que cambia el humor del país.</li>
      <li><b>🏛️ Congreso:</b> después de las generales ves cuántos diputados y senadores gana cada fuerza.</li>
-     <li><b>🤝 Negociaciones:</b> a veces otros partidos o gobernadores te ofrecen acuerdos. Aceptar, regatear o rechazar cambia quién se queda con esos votos.</li>
+     <li><b>🤝 Negociaciones:</b> a veces otros partidos o gobernadores te ofrecen acuerdos. Solo negocian fuerzas cercanas en el eje ideológico: si te corrés, cambian tus aliados posibles. Aceptar, regatear o rechazar cambia quién se queda con esos votos.</li>
      <li>Ganás en primera vuelta con <b>45%</b>, o con <b>40% y 10 de ventaja</b>. Si no, balotaje de 4 semanas entre los dos primeros.</li>
    </ul>
    <div class="row"><button class="big" onclick="closeModal()">${first?'¡A la campaña!':'Entendido'}</button></div>`);
