@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Rumbo a la Rosada</title>
+<title>SimElectoral</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
@@ -134,6 +134,7 @@ main{display:flex;flex-direction:column;gap:18px;min-width:0}
 .act .pv{font-weight:800;font-size:13px;color:#0b6b4b}
 .act .pv.neg{color:#b02a2a}
 .act .why{font-size:11.5px;font-weight:700;color:var(--rojo)}
+.act:has(.loc) .t{padding-right:64px}
 .act .loc{position:absolute;right:8px;top:8px;font-size:11px;font-weight:800;background:#ffe3ec;border:1.5px solid var(--rosa);color:#b0204c;border-radius:6px;padding:0 6px}
 .closebar{margin-top:18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .big{background:var(--rosa);color:#fff;border:2.5px solid var(--line);border-radius:14px;padding:13px 22px;font-weight:800;font-size:16px;box-shadow:var(--shadow)}
@@ -192,7 +193,7 @@ svg text{font-family:Inter,sans-serif}
 .start{max-width:1100px;margin:auto;padding:28px 16px 60px}
 .hero{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;align-items:center;margin-bottom:24px}
 .hero h2{font-size:48px;font-weight:800;line-height:1.02}
-.hero h2 span{background:var(--sol);padding:0 8px;border:3px solid var(--line);border-radius:12px;display:inline-block;transform:rotate(-1.5deg)}
+.hero h2 span{background:#eba9a0;color:#15152e;padding:0 8px;border:3px solid var(--line);border-radius:12px;display:inline-block;transform:rotate(-1.5deg)}
 .hero p{font-size:16px;color:var(--text2);max-width:58ch}
 .how{display:grid;gap:10px}
 .how>div{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:2.5px solid var(--line);border-radius:14px;padding:10px 12px;box-shadow:3px 3px 0 var(--edge)}
@@ -332,9 +333,9 @@ const REG = [
   {k:'Patagonia', n:'Del Colorado al Fuego', w:.07, area:'pata'},
 ];
 const TRAITS = {
-  aparato:    'Aparato: «Organizar el territorio» rinde 40% más.',
+  aparato:    'Aparato: «Visitar la unidad básica» rinde 40% más.',
   billetera:  'Billetera: +10 fondos al inicio y +3 extra por semana.',
-  viral:      'Viral: entrevistas y redes rinden 40% más, pero los golpes a la imagen pegan 30% más.',
+  viral:      'Viral: paneles de TV y redes rinden 40% más, pero los golpes a la imagen pegan 30% más.',
   militancia: 'Militancia: descansar recupera 35 de energía en vez de 25.',
   territorial:'Territorial: las acciones en tus bastiones rinden 25% más.',
   prestigio:  'Prestigio: todo lo que suma imagen suma 50% más.',
@@ -411,9 +412,9 @@ const SCEN = {
 };
 const SCEN_ORDER = ['2027','2023','2019','2015','custom'];
 const DIFF = {
-  facil:  {l:'Viento a favor', d:'Rivales más lentos y más fondos.', riv:.85, f:70, inc:8, bonus:1.5},
-  normal: {l:'Realista',       d:'Sin ventajas para nadie.',        riv:1.25, f:55, inc:6, bonus:0},
-  dificil:{l:'Contra viento y marea', d:'Rivales agresivos y poca plata.', riv:1.45, f:45, inc:5, bonus:-1.5},
+  facil:  {l:'Fácil', d:'Rivales más lentos y más fondos.', riv:.85, f:70, inc:8, bonus:1.5},
+  normal: {l:'Normal',       d:'Sin ventajas para nadie.',        riv:1.25, f:55, inc:6, bonus:0},
+  dificil:{l:'Difícil', d:'Rivales agresivos y poca plata.', riv:1.45, f:45, inc:5, bonus:-1.5},
 };
 const T1 = 12, DEB1 = 8, T2 = 4, DEB2 = 3;
 const MES = ['ENE','FEB','MAR','ABR','MAY','JUN','JUL','AGO','SEP','OCT','NOV','DIC'];
@@ -448,10 +449,9 @@ function buildScenario(key){
   const cands=src.cands.map((c,i)=>{
     const valid=t[i]/(100-und)*100;
     const win=custom?valid>=Math.min(20,sorted[1]/(100-und)*100*.8):!!c.win;
-    const goal=win?{type:'win'}:{type:"pct",v:Math.round((valid+5.5)*2)/2};
+    const goal={type:'win'};
     let diff;
-    if(!win) diff='Desafío propio';
-    else if(t[i]>=sorted[0]-.01) diff='Accesible'; else if(sorted[0]-t[i]<6) diff='Parejo'; else if(sorted[0]-t[i]<14) diff='Cuesta arriba'; else diff='Muy difícil';
+    if(t[i]>=sorted[0]-.01) diff='Accesible'; else if(sorted[0]-t[i]<6) diff='Parejo'; else if(sorted[0]-t[i]<14) diff='Cuesta arriba'; else if(t[i]>=8) diff='Muy difícil'; else diff='Épica';
     return {...c, start:t[i], goal, diff, str:clamp(.3+t[i]/45,.4,1.1),
       aff:c.prof.map(p=>clamp(.55+.45*p,.7,1.45)), traitTxt:TRAITS[c.trait]};
   });
@@ -539,7 +539,7 @@ const POOL = [
  {id:'sondeo', tag:'Clima', t:'Una encuesta te da por muerto', txt:'Una consultora te ubica mucho más abajo que el resto. Tu equipo está golpeado.',
   opts:[{l:'Redoblar la agenda', d:'Mostrar que estás vivo.', eff:{e:-12,nat:.6}},
         {l:'Bajar un cambio y reagrupar', d:'Recuperar aire.', eff:{e:12,i:1}},
-        {l:'Encargar tu propio sondeo', d:'Saber dónde estás parado.', eff:{f:-8,precise:3}}]},
+        {l:'Cambiar al jefe de campaña', d:'Señal de renovación.', eff:{f:-6,i:2,e:6}}]},
  {id:'stream', tag:'Medios', t:'Te invitan al stream más visto del país', txt:'Formato descontracturado, preguntas filosas, cero guion.',
   opts:[{l:'Ir y jugarse', d:'Alto riesgo, mucha exposición.', viral:true, ch:'yt', risk:{p:.6, ok:{nat:1.1}, ko:{i:-6}, okT:'Te muestran humano. Clips por todos lados.', koT:'Un furcio se vuelve meme nacional.'}},
         {l:'Mandar a tu vocera', d:'Sin riesgos.', eff:{nat:.2}}]},
@@ -761,7 +761,7 @@ const blankNow=()=>{const n=national();return Math.max(0,100-n.reduce((a,b)=>a+b
 /* posturas de las respuestas a noticias (−1 izquierda, +1 derecha) y temas que corren la agenda */
 const TILT={dolar:[1,0,0],paro:[-1,1,0],segur:[1,-1,0],tarifas:[-1,0,1],campo:[1,0,-1],uni:[-1,0,1],frio:[0,-1],humo:[-1,0],jubil:[-1,0]};
 const AGENDA={segur:.06,dolar:.04,jubil:-.05,uni:-.04,tarifas:-.03,humo:-.02,campo:.02,paro:-.02};
-const tiltOf=(ev,i)=>{const o=ev.opts[i];return o.tilt!=null?o.tilt:((TILT[ev.id]||[])[i]||0)};
+const tiltOf=(ev,i)=>{const o=ev.opts[i];return o.tilt!=null?o.tilt:o.pos?Math.sign(o.pos):((TILT[ev.id]||[])[i]||0)};
 /* audiencias: cuánto rinde cada canal según el electorado de cada fuerza [TikTok, YouTube, tele] */
 const MED={Milei:[1.6,1.4,.8],Kicillof:[.9,.9,1.2],Macri:[.8,1,1.2],Pullaro:[.6,.8,1.3],Bregman:[1.3,1.1,.8],Massa:[.8,.9,1.25],Bullrich:[.9,1.1,1.15],
   Schiaretti:[.55,.75,1.3],'Fernández':[.85,.9,1.2],Lavagna:[.5,.8,1.35],'Del Caño':[1.25,1.1,.8],'Gómez Centurión':[.8,1.05,1.1],Espert:[1.2,1.45,.9],
@@ -904,7 +904,7 @@ function newGame(){
   const d=DIFF[setup.diff];
   S={p:Math.min(p,C.length-1), dk:setup.diff, d, round:1, turn:1, phase:'event',
      sh:SC.base.map(r=>r.slice()), active:C.map((_,i)=>i),
-     res:{f:d.f, e:85, i:55}, prep:0, fiscal:0, precise:0,
+     res:{f:d.f, e:85, i:55}, team:0, fiscal:0, precise:0,
      ap:2, apMax:2, luck:null, medOv:{}, sel:0, recent:[], hist:[], log:[], used:new Set(),
      ev:null, evRes:null, weekLog:[], r1:null, over:false,
      bias:[], pact:new Set(), allied:new Set(), pending:[],
@@ -914,6 +914,7 @@ function newGame(){
      massa:SC.key==='2023'?{mode:null}:null,
      fus:(SC.key==='2027'&&(setup.forceFus||rnd()<.25))?{turn:3,done:false}:null,
      out:(['2019','2023','2027'].includes(SC.key)&&(setup.forceOut||rnd()<.2))?{turn:3+Math.floor(rnd()*4),done:false}:null,
+     black:(SC.key==='2027'&&(setup.forceBlack||rnd()<.05))?{turn:3+Math.floor(rnd()*5),done:false,wave:setup.forceWave!=null?setup.forceWave:rnd()<.2}:null,
      notes:[], later:[], aiMil:[], tieCtx:null, alivio:null, platita:null, nafta:(SC.key==='2023'&&(setup.forceNafta||rnd()<.7)),
      mom:[], prevNat:null, wd:{}, swans:new Set(), swanN:0, forced:null, congress:null, transfers:null, resultHTML:'', resultHead:''};
   S.bias=C.map(()=>randn()*2.4); {const mb=S.bias.reduce((a,b)=>a+b,0)/C.length; S.bias=S.bias.map(b=>b-mb);}
@@ -952,42 +953,50 @@ function pickEvent0(){
 }
 
 /* ---------- debate ---------- */
-function debateScore(style,r=rnd(),z=randn()){
-  let s=S.prep*.45+S.res.i*.3+S.res.e*.1+z*7; // z: cómo le va al rival y al moderador
+/* equipo de comunicación y PR para los debates: se contrata una sola vez y vale para toda la campaña */
+const TEAM=[{n:'Sin equipo',cost:0,b:0,q:0},{n:'Equipo básico',cost:30,b:10,q:.35,d:'Un par de asesores y un media training.'},
+  {n:'Consultora profesional',cost:55,b:18,q:.65,d:'Ensayos con cámaras, investigación de rivales y libretos.'},
+  {n:'Equipo de élite internacional',cost:85,b:26,q:.9,d:'Los estrategas que ganaron campañas en medio continente.'}];
+const team=()=>TEAM[S.team||0];
+/* penalidad por responder algo lejos de tu ideología: tu equipo te ayuda a que suene creíble */
+function ideoPen(o){ if(!o||o.pos==null) return 0; const d=Math.abs(o.pos-S.pos[S.p]); return Math.max(0,d-.3)*30*(1-team().q) }
+function debateScore(style,r=rnd(),z=randn(),o=null){
+  let s=6+team().b+S.res.i*.3+S.res.e*.1+z*7-ideoPen(o); // z: cómo le va al rival y al moderador
   if(style==='ataque') s+=-14+r*60;
-  else if(style==='propuesta') s+=-4+S.prep*.1+r*44;
+  else if(style==='propuesta') s+=-4+team().b*.3+r*44;
   else s+=2+r*32;
   return s;
 }
+function hireTeam(t){const T=TEAM[t]; if(S.team||S.res.f<T.cost) return; S.res.f-=T.cost; S.team=t; toast(`🎙️ Contrataste: ${T.n}`); render()}
 const DEB_FX = {
   ataque:{b:{nat:2.4,riv:1.2,i:3}, c:{nat:.6,i:-2}, f:{nat:-1.4,i:-8}},
   propuesta:{b:{nat:2,i:5}, c:{nat:.8,i:2}, f:{nat:-.8,i:-4}},
   calma:{b:{nat:1.2,i:4}, c:{nat:.4,i:2}, f:{nat:-.5,i:-2}},
 };
 const ZQ=[-1.6,-1,-.6,-.3,0,.3,.6,1,1.6];
-function debateOdds(style,bon=0){let b=0,f=0,t=0;for(let k=0;k<100;k++)for(const z of ZQ){const s=debateScore(style,(k+.5)/100,z)+bon;t++;if(s>=64)b++;else if(s<44)f++}return {b:Math.round(b/t*100),f:Math.round(f/t*100)}}
+function debateOdds(style,bon=0,o=null){let b=0,f=0,t=0;for(let k=0;k<100;k++)for(const z of ZQ){const s=debateScore(style,(k+.5)/100,z,o)+bon;t++;if(s>=64)b++;else if(s<44)f++}return {b:Math.round(b/t*100),f:Math.round(f/t*100)}}
 /* debate en bloques: cada pregunta se juega por separado y el resultado final depende de todas */
 const DEBQ={
  eco:{tema:'Economía', q:()=>'El moderador abre con la pregunta de todos: ¿cómo vas a bajar la inflación y hacer crecer los salarios?', opts:[
-   {l:'Culpar a los rivales por la crisis', d:'Ir al choque desde el primer minuto.', style:'ataque'},
-   {l:'Presentar tu plan con números', d:'Metas, plazos y equipo económico.', style:'propuesta'},
-   {l:'Prometer estabilidad y acuerdos', d:'Transmitir calma.', style:'calma'}]},
+   {l:'Controles de precios y suba de salarios', d:'El Estado ordena la economía.', style:'ataque', pos:-.6},
+   {l:'Un plan de estabilización con metas y acuerdos', d:'Plazos, equipo y consensos.', style:'propuesta', pos:0},
+   {l:'Ajuste fiscal y apertura de la economía', d:'Equilibrio de las cuentas y mercado.', style:'calma', pos:.6}]},
  seg:{tema:'Seguridad', q:()=>'Segundo bloque: ¿qué vas a hacer con la inseguridad?', opts:[
-   {l:'Mano dura y más policías', d:'Mensaje firme y simple.', style:'ataque', tilt:1},
-   {l:'Un plan integral con metas', d:'Prevención, tecnología y justicia rápida.', style:'propuesta'},
-   {l:'Prevención, inclusión y consensos', d:'Abordaje social.', style:'calma', tilt:-1}]},
+   {l:'Mano dura y más policías', d:'Mensaje firme y simple.', style:'ataque', pos:.6},
+   {l:'Un plan integral con metas', d:'Prevención, tecnología y justicia rápida.', style:'propuesta', pos:0},
+   {l:'Prevención, inclusión y consensos', d:'Abordaje social.', style:'calma', pos:-.6}]},
  edu:{tema:'Educación y salud', q:()=>'Segundo bloque: ¿cómo vas a financiar escuelas, universidades y hospitales?', opts:[
-   {l:'Defender la educación pública sin vueltas', d:'Más presupuesto, y que se note.', style:'ataque', tilt:-1},
-   {l:'Un plan de calidad con evaluación', d:'Resultados medibles.', style:'propuesta', tilt:1},
-   {l:'Un gran acuerdo educativo federal', d:'Consenso con las provincias.', style:'calma'}]},
+   {l:'Defender la educación pública sin vueltas', d:'Más presupuesto, y que se note.', style:'ataque', pos:-.6},
+   {l:'Un plan de calidad con evaluación', d:'Resultados medibles.', style:'propuesta', pos:.6},
+   {l:'Un gran acuerdo educativo federal', d:'Consenso con las provincias.', style:'calma', pos:0}]},
  fed:{tema:'Federalismo', q:()=>'Segundo bloque, desde el interior: ¿qué les toca a las provincias?', opts:[
    {l:'Denunciar el centralismo porteño', d:'Hablarle al interior.', style:'ataque'},
    {l:'Una nueva ley de coparticipación', d:'Propuesta técnica.', style:'propuesta'},
    {l:'Diálogo permanente con los gobernadores', d:'Moderación.', style:'calma'}]},
  trab:{tema:'Trabajo', q:()=>'Segundo bloque: ¿qué hacés con el empleo informal y los salarios?', opts:[
-   {l:'Reforma laboral profunda', d:'Bajar costos para contratar.', style:'ataque', tilt:1},
-   {l:'Formalización gradual con incentivos', d:'Simplificar y premiar al que contrata.', style:'propuesta'},
-   {l:'Proteger derechos y paritarias', d:'Defensa del trabajador.', style:'calma', tilt:-1}]},
+   {l:'Reforma laboral profunda', d:'Bajar costos para contratar.', style:'ataque', pos:.6},
+   {l:'Formalización gradual con incentivos', d:'Simplificar y premiar al que contrata.', style:'propuesta', pos:0},
+   {l:'Proteger derechos y paritarias', d:'Defensa del trabajador.', style:'calma', pos:-.6}]},
 cruce:{tema:'Cruce', bon:{calma:6,ataque:-4}, q:()=>`${esc(C[rivals().filter(c=>c!==S.deb.absent).sort((a,b)=>natOf(b)-natOf(a))[0]].name)} se da vuelta y te acusa: «vos sos parte del problema». Tenés 30 segundos.`, opts:[
    {l:'Contraatacar con lo peor de su pasado', d:'Ojo por ojo.', style:'ataque'},
    {l:'Responder con datos', d:'Desarmar la acusación.', style:'propuesta'},
@@ -1008,7 +1017,7 @@ function debateEvent(){
     txt:()=>{if(S.deb.ask) return 'Llegás primero en las encuestas. Tu equipo está dividido: unos dicen que el favorito no tiene nada que ganar en un debate; otros, que faltar se paga caro. Si faltás, tu atril queda vacío y los demás te pegan sin respuesta.';
       const prog=qs.map((q,i)=>i<S.deb.res.length?`<span class="dq done">${TIER_IC[S.deb.res[i].tier]} ${q.tema}</span>`:i===S.deb.q?`<span class="dq now">▶ ${q.tema}</span>`:`<span class="dq">${q.tema}</span>`).join('');
       const last=S.deb.res.length?S.deb.res[S.deb.res.length-1]:null;
-      return `<span class="dprog">${prog}</span>${last?`<span class="dlast">Bloque anterior: ${TIER_IC[last.tier]} ${last.tier==='b'?'muy bien':last.tier==='c'?'correcto':'flojo'} ${last.chips}</span>`:`<span class="dlast">Cámaras, atriles y millones de personas mirando. Preparación: <b>${S.prep}/100</b>. Cada bloque suma o resta; al final se define quién ganó el debate.</span>`}${S.deb.absent!=null?`<span class="dlast">🪑 <b>${esc(C[S.deb.absent].name)} no vino al debate:</b> su atril está vacío.</span>`:''}<br>${val(qs[S.deb.q].q)}`},
+      return `<span class="dprog">${prog}</span>${last?`<span class="dlast">Bloque anterior: ${TIER_IC[last.tier]} ${last.tier==='b'?'muy bien':last.tier==='c'?'correcto':'flojo'} ${last.chips}</span>`:`<span class="dlast">Cámaras, atriles y millones de personas mirando. Tu equipo: <b>${team().n}</b>. Cada bloque suma o resta; responder algo muy lejos de tu ideología suena poco creíble. Al final se define quién ganó el debate.</span>`}${S.deb.absent!=null?`<span class="dlast">🪑 <b>${esc(C[S.deb.absent].name)} no vino al debate:</b> su atril está vacío.</span>`:''}<br>${val(qs[S.deb.q].q)}`},
     get opts(){return S.deb.ask?[
       {l:'Ir al debate', d:'Jugártela en los bloques.', ask:true, go:true, preview:cp('neu','🎤 se juega bloque por bloque')},
       {l:'Faltar: atril vacío', d:'Sin riesgo de un mal debate, pero te pegan sin respuesta.', ask:true, preview:chips({nat:-.6,i:-3})+cp('neg','▼▼ momentum: quedás último en el ranking')}]:qs[S.deb.q].opts},
@@ -1060,7 +1069,7 @@ function evPacto(c){
   return {id:'neg', tag:'🤝 Negociación', t:'Propuesta de pacto de no agresión',
     txt:()=>`Operadores de ${esc(C[c].party)} proponen que ${esc(C[c].name)} y vos dejen de atacarse hasta la elección para concentrar el fuego en los demás.`,
     opts:[
-      {l:'Aceptar el pacto', d:`Deja de atacarte, pero no podés usar «Contraste» contra su candidatura. Puede romperlo.`, preview:cp('pos','🛡️ sin ataques de ese rival')+cp('neu','⚔️ no podés contrastarlo')+cp('risk','🎲 puede traicionarte'),
+      {l:'Aceptar el pacto', d:`Deja de atacarte, pero no podés hacerle «Campaña negativa». Puede romperlo.`, preview:cp('pos','🛡️ sin ataques de ese rival')+cp('neu','⚔️ no podés contrastarlo')+cp('risk','🎲 puede traicionarte'),
         fn:()=>{S.pact.add(c);return {title:'🤝 Pacto sellado',text:`${esc(C[c].name)} no debería atacarte. Veremos si cumple.`,chips:'',good:true}}},
       {l:'Filtrar la propuesta a la prensa', d:'Exponer la «rosca» del rival.', preview:cp('pos','~−1,0 pts al rival')+cp('risk','🎲 50%: te acusan de desleal (−2 ⭐, −0,6 pts)'),
         fn:()=>{if(rnd()<.5){const g=vol(1);natShift(c,-g);return {title:'📰 La filtración funcionó',text:'El rival queda expuesto.',chips:cp('pos',`−${fmt(g)} pts a ${esc(sn(c))}`),good:true}}
@@ -1157,6 +1166,7 @@ function scenarioEvent(fixed){
     note('⚖️ La Justicia rechazó el planteo: Cristina Fernández de Kirchner sigue detenida y no podrá competir.','⚖️ Fallo judicial');}
   if(S.fus&&!S.fus.done&&S.turn>=S.fus.turn){S.fus.done=true; const a=idxOf('LLA'),b=idxOf('PRO');
     if(a>=0&&b>=0&&S.active.includes(a)&&S.active.includes(b)){ if(S.p===a||S.p===b) return evFusion(a,b); doFusion(a,b); return evFusionNews(); }}
+  if(S.black&&!S.black.done&&S.turn>=S.black.turn){S.black.done=true; return evBlack(spawnBlack())}
   if(S.out&&!S.out.done&&S.turn>=S.out.turn){S.out.done=true; return evOutsider(spawnOutsider())}
   if(SC.key==='2019'&&!S.alivio&&S.turn>=2){const j=idxOf('JxC'); S.alivio={done:true};
     if(j>=0&&S.active.includes(j)){ if(S.p===j) return evAlivio(j);
@@ -1330,6 +1340,41 @@ function evOutsider(k){
       {l:'Copiarle el tono fresco', d:'Más redes, menos solemnidad.', eff:{nat:.5,i:-1}, viral:true},
     ]};
 }
+/* 2027 · Wilheim Black y Patria y Moral */
+const pjNow=()=>S.active.filter(c=>['FP','K'].includes(C[c].sig));
+function spawnBlack(){
+  const k=U, prof=[1.25,.75,.95,1,1.2,1.05];
+  C.push({sig:'PyM', party:'Patria y Moral', name:'Wilheim Black', short:'Black', vp:'fórmula a definir', color:'#7f5539',
+    lean:.05, trait:'aparato', traitTxt:TRAITS.aparato, prof, aff:prof.map(x=>clamp(.55+.45*x,.7,1.45)), str:.85, hot:true,
+    start:0, goal:{type:'pct',v:0}, diff:'—', pitch:'Peronista de la primera hora; denuncia que el peronismo fue cooptado por progresistas y posmodernos.'});
+  insertParty(k); S.medOv[k]=[.7,.9,1.45]; S.mom[k]=S.black.wave?1.4:.6;
+  pjNow().forEach(pj=>transfer(pj,k,.12));
+  S.sh.forEach(s=>{const v=s[U]*.08;s[U]-=v;s[k]+=v});
+  S.prevNat=national(); S.black.k=k; return k;
+}
+function blackStep(lines){
+  if(!S.black||!S.black.wave||S.black.k==null||!S.active.includes(S.black.k)) return;
+  const k=S.black.k; let moved=0;
+  pjNow().forEach(pj=>{moved+=transfer(pj,k,.2)});
+  S.mom[k]=clamp(Math.max(S.mom[k]||0,1.1),-1.2,1.4);
+  if(moved>.3) lines.push(`🧉 <b style="color:${C[k].color}">Wilheim Black</b> sigue arrastrando al peronismo: +${fmt(moved)} pts que se le van al resto del peronismo`);
+}
+function evBlack(k){
+  const pj=pjNow(), mePJ=pj.includes(S.p);
+  return {id:'black', tag:'🧉 Irrumpe un peronista de los de antes', t:'Wilheim Black lanza Patria y Moral',
+    txt:()=>`<b>Wilheim Black</b>, peronista de la primera hora, de bigote frondoso y con anécdotas de Perón para cada ocasión, tira postas en cada entrevista: dice que el peronismo «fue cooptado por progresistas y posmodernos» y lanza su propio partido, <b>Patria y Moral</b>. Arranca con ≈ ${fmt(natOf(k))}%, sacándole votos sobre todo al peronismo.${S.black.wave?' Los actos están desbordados: algo grande está pasando.':''}`,
+    opts: mePJ ? [
+      {l:'Reivindicar la doctrina y la liturgia', d:'Disputarle la mística peronista.', tilt:1, eff:{nat:.6,i:-1}},
+      {l:'Tratarlo como un nostálgico', d:'Marcar que el peronismo es futuro, no pasado.', tilt:-1, preview:cp('pos','~−1 pt a Black')+cp('risk','🎲 35%: el peronismo de base se ofende'),
+        fn:()=>{if(rnd()<.35){natShift(S.p,-1);return {title:'😬 Le pegaste a la base',text:'Muchos peronistas se sintieron tratados de viejos.',chips:chips({nat:-1},false),good:false}}
+          const g=vol(1);natShift(k,-g);S.mom[k]=clamp((S.mom[k]||0)-.4,-1.2,1.4);return {title:'🛑 Lo bajaste',text:'Black pierde algo de envión.',chips:cp('pos',`−${fmt(g)} pts a Black`),good:true}}},
+      {l:'Invitarlo a una mesa de unidad', d:'Ofrecerle lugares en las listas.', eff:{i:-1,f:-5}, preview:cp('neu','abre la puerta a un acuerdo más adelante')},
+    ] : [
+      {l:'Celebrar la división del peronismo', d:'Que se peleen entre ellos.', eff:{nat:.4,i:-1}},
+      {l:'Ignorarlo', d:'No darle entidad.', eff:{e:4}},
+      {l:'Ir por el votante peronista desencantado', d:'Hablarle al que ya no se siente representado.', eff:{f:-6,reg:[[0,1],[4,.8]]}},
+    ]};
+}
 function spawnCFK(){
   const k0=C.findIndex(c=>c.sig==='FP'), b0=C.findIndex(c=>c.sig==='FIT-U'), k=U;
   const prof=[1.45,.6,.65,.7,1.15,1];
@@ -1409,7 +1454,7 @@ function chooseOpt(i){
     S.log.unshift({lbl:'🪑 Atril vacío', items:['Faltaste al debate.']});
   } else if(ev.debate){
     if(S.deb.q===0) S.res.e=clamp(S.res.e-8,0,100);
-    const sc=debateScore(o.style)+(ev.bon[o.style]||0); const tier=sc>=64?'b':sc>=44?'c':'f';
+    const sc=debateScore(o.style,rnd(),randn(),o)+(ev.bon[o.style]||0); const tier=sc>=64?'b':sc>=44?'c':'f';
     const fx={b:{nat:.5},c:{nat:.1},f:{nat:-.4}}[tier]; if(o.style==='ataque'&&tier==='b') fx.riv=.4; if(o.style==='ataque'&&tier==='f') fx.i=-2;
     const real=applyEff(fx); S.deb.res.push({tier,chips:chips(real,false)});
     const tl=tiltOf(ev,i);
@@ -1447,15 +1492,13 @@ function chooseOpt(i){
    ACCIONES
    ========================================================= */
 const ACT = [
-  {id:'acto', ico:'📣', n:'Acto en la región', d:'Llenás una plaza. Gana votos en la región elegida.', f:12, e:15, reg:true},
-  {id:'spot', ico:'📺', n:'Pauta publicitaria', d:'Spots locales y redes. Cansa poco, cuesta caro. Algo de alcance nacional.', f:20, e:4, reg:true},
-  {id:'org',  ico:'🧭', n:'Organizar el territorio', d:'Voluntarios y locales: suma votos en la región y militancia, que fiscaliza la elección y defiende tu campaña.', f:9, e:8, reg:true},
-  {id:'entrevista', ico:'🎙️', n:'Entrevista nacional', d:'Alcance en todo el país y mejora tu imagen. 15% de riesgo de furcio.', f:3, e:10},
-  {id:'contraste', ico:'⚔️', n:'Contraste con el rival', d:'Golpeás al rival mejor ubicado. Le resta votos, pero te cuesta imagen.', f:6, e:12},
-  {id:'recaudar', ico:'💰', n:'Cena de recaudación', d:'Recuperás 22 de fondos.', f:0, e:12},
+  {id:'acto', ico:'📣', n:'Llenar una plaza', d:'Un acto masivo con micros, bombos y escenario. Gana votos en la región elegida.', f:12, e:15, reg:true},
+  {id:'spot', ico:'🪧', n:'Pegar carteles en la calle', d:'Afiches, pasacalles y pintadas en toda la región. Cansa poco, cuesta caro. Algo de alcance nacional.', f:20, e:4, reg:true},
+  {id:'org',  ico:'🏠', n:'Visitar la unidad básica', d:'Mate, choripán y charla con los referentes del barrio: suma votos en la región y militancia, que fiscaliza la elección y defiende tu campaña.', f:9, e:8, reg:true},
+  {id:'entrevista', ico:'📺', n:'Ir a panel de debate', d:'Una mesa de televisión con panelistas filosos. Alcance en todo el país y mejora tu imagen. 15% de riesgo de furcio.', f:3, e:10},
+  {id:'contraste', ico:'⚔️', n:'Campaña negativa', d:'Spots y operaciones contra el rival mejor ubicado. Le resta votos, pero te cuesta imagen.', f:6, e:12},
+  {id:'recaudar', ico:'💼', n:'Reunión con empresarios', d:'Café, promesas y aportes de campaña: recuperás 22 de fondos.', f:0, e:12},
   {id:'descanso', ico:'😴', n:'Descansar', d:'Recuperás energía. Con poca energía todo rinde menos.', f:0, e:0},
-  {id:'debate', ico:'🎯', n:'Preparar el debate', d:'Ensayos y asesores: +30 de preparación para el próximo debate.', f:6, e:8},
-  {id:'encuesta', ico:'📊', n:'Encuesta propia', d:'Durante 3 semanas, tus encuestas tienen margen ±0,5 en vez de ±1,6.', f:10, e:2},
 ];
 function repFactor(r){const n=S.recent.filter(x=>x.r===r&&x.t>=S.turn-1&&x.round===S.round).length;return Math.pow(.6,n)}
 function actGain(a,r=S.sel){
@@ -1495,14 +1538,14 @@ function doAction(id){
   const g=vol(actGain(a)), r=S.sel; let msg='';
   S.res.f-=a.f; S.res.e=clamp(S.res.e-a.e,0,100);
   switch(id){
-    case 'acto': shift(r,S.p,g); msg=g<0?`📣 Acto deslucido en ${REG[r].k}: ${sgn(g)} pts`:`📣 Acto en ${REG[r].k}: ${sgn(g)} pts en la región`; break;
-    case 'spot': shift(r,S.p,g); natShift(S.p,.15*power()); msg=`📺 Pauta en ${REG[r].k}: ${sgn(g)} pts`; break;
-    case 'org': shift(r,S.p,g); S.fiscal+=1; msg=`🧭 Territorio en ${REG[r].k}: ${sgn(g)} pts y +1 militancia`; break;
+    case 'acto': shift(r,S.p,g); msg=g<0?`📣 Plaza semivacía en ${REG[r].k}: ${sgn(g)} pts`:`📣 Plaza llena en ${REG[r].k}: ${sgn(g)} pts en la región`; break;
+    case 'spot': shift(r,S.p,g); natShift(S.p,.15*power()); msg=`🪧 Carteles en ${REG[r].k}: ${sgn(g)} pts`; break;
+    case 'org': shift(r,S.p,g); S.fiscal+=1; msg=`🏠 Unidad básica en ${REG[r].k}: ${sgn(g)} pts y +1 militancia`; break;
     case 'entrevista':
-      if(rnd()<(S.res.i<35?.25:.15)){natShift(S.p,-.4);const d=imgDelta(-5);S.res.i=clamp(S.res.i+d,0,100);msg=`🎙️ ¡Furcio en la entrevista! −0,4 pts y ${fmt(d,0)} imagen`}
-      else {natShift(S.p,g);const d=imgDelta(3);S.res.i=clamp(S.res.i+d,0,100);msg=`🎙️ Buena entrevista: ${sgn(g)} pts y +${fmt(d,0)} imagen`} break;
-    case 'contraste': {const t=topRival(); if(rnd()<.2){natShift(S.p,-Math.abs(g)*.6);S.res.i=clamp(S.res.i+imgDelta(-6),0,100);msg=`⚔️ El ataque a ${C[t].name} rebotó: −${fmt(Math.abs(g)*.6)} pts para vos`;break} natShift(t,-g); natShift(S.p,g*.3); S.res.i=clamp(S.res.i+imgDelta(-4),0,100); msg=`⚔️ Golpe a ${C[t].name}: −${fmt(g)} pts`; break;}
-    case 'recaudar': S.res.f=clamp(S.res.f+22,0,100); msg='💰 Recaudaste 22 de fondos'; break;
+      if(rnd()<(S.res.i<35?.25:.15)){natShift(S.p,-.4);const d=imgDelta(-5);S.res.i=clamp(S.res.i+d,0,100);msg=`📺 ¡Furcio en el panel! −0,4 pts y ${fmt(d,0)} imagen`}
+      else {natShift(S.p,g);const d=imgDelta(3);S.res.i=clamp(S.res.i+d,0,100);msg=`📺 Buen panel: ${sgn(g)} pts y +${fmt(d,0)} imagen`} break;
+    case 'contraste': {const t=topRival(); if(rnd()<.2){natShift(S.p,-Math.abs(g)*.6);S.res.i=clamp(S.res.i+imgDelta(-6),0,100);msg=`⚔️ El ataque a ${C[t].name} rebotó: −${fmt(Math.abs(g)*.6)} pts para vos`;break} natShift(t,-g); natShift(S.p,g*.3); S.res.i=clamp(S.res.i+imgDelta(-4),0,100); msg=`⚔️ Campaña negativa contra ${C[t].name}: −${fmt(g)} pts`; break;}
+    case 'recaudar': S.res.f=clamp(S.res.f+22,0,100); msg='💼 Los empresarios aportaron 22 de fondos'; break;
     case 'descanso': {const v=restAmt(); S.res.e=clamp(S.res.e+v,0,100); msg=`😴 Recuperaste ${v} de energía`; break;}
     case 'debate': S.prep=Math.min(100,S.prep+30); msg=`🎯 Preparación del debate: ${S.prep}/100`; break;
     case 'encuesta': S.precise=3; msg='📊 Encuestas precisas por 3 semanas'; break;
@@ -1567,6 +1610,7 @@ function endWeek(){
    S.pos=np; S.mu=nmu; S.pol=npol; S.muPend=0; S.polPend=0; S.disc=0; S.tilt=0;}
   // dato de inflación (2023) y momentum
   inflationStep(rivalLines);
+  blackStep(rivalLines);
   momentumStep(rivalLines);
   // las encuestadoras corrigen (o no) su sesgo
   S.bias=S.bias.map(b=>b*.96+randn()*.3);
@@ -1766,6 +1810,7 @@ function autoWeek(){
    S.active.forEach(c=>{const opts=[-.04,0,.04].map(dx=>clamp(S.pos[c]+dx,C[c].lean-.22,C[c].lean+.22));let best=opts[1],bv=-1e9;
      opts.forEach(x=>{const pm=np.slice();pm[c]=x;const v=spEval(cal,pm)[cal.act.indexOf(c)];if(v>bv){bv=v;best=x}});np[c]=best});
    const nmu=clamp(S.mu+randn()*.02,-.6,.6); applyNatDelta(cal.act,spEval(cal,np,nmu,S.pol)); S.pos=np; S.mu=nmu;}
+  blackStep(lines);
   momentumStep(lines);
   S.bias=S.bias.map(x=>x*.96+randn()*.3);
   S.sh.forEach(s=>{const mv=s[U]*.15;const tot=S.active.reduce((x,c)=>x+s[c],0);S.active.forEach(c=>s[c]+=mv*s[c]/tot);s[U]-=mv});
@@ -1779,7 +1824,7 @@ function autoWeek(){
 function render(){
   const app=$('#app');
   if(!S){app.innerHTML=renderStart();custSum();return}
-  app.innerHTML=renderHeader()+renderRes()+`<div class="layout"><main>${renderStepper()}${renderEvent()}${renderAgenda()}${renderLog()}</main><aside>${renderCount()}${renderChart()}${renderPolls()}${renderIdeo()}</aside></div>`;
+  app.innerHTML=renderHeader()+renderRes()+`<div class="layout"><main>${renderStepper()}${renderEvent()}${renderAgenda()}</main><aside>${renderCount()}${renderChart()}${renderPolls()}${renderIdeo()}</aside></div>`;
 }
 
 function scenLabel(k){return k==='custom'?'✏️ Personalizada':k==='2027'?'2027 · hipotética':k}
@@ -1792,17 +1837,16 @@ function renderStart(){
     if(setup.cand>=C.length) setup.cand=0;
     cards=`<div class="cands">`+C.map((c,i)=>`<button class="cand ${setup.cand===i?'sel':''}" onclick="setup.cand=${i};render()">
      <div class="hd" style="background:${c.color}"><small>${c.sig}</small><b>${c.name}</b><span style="font-size:12px;font-weight:600">${c.party}</span></div>
-     <div class="bd">${c.vp?`<span style="color:var(--muted)">Fórmula con ${c.vp}</span>`:''}<span class="df">Arranca con ${fmt(c.start)}% · Dificultad: ${c.diff}</span><span>${c.pitch}</span><span style="color:var(--muted)"><b>Rasgo.</b> ${c.traitTxt}</span><span style="color:var(--muted)"><b>Audiencia.</b> ${medTxt(i)}</span>
-     <span><b>Objetivo:</b> ${c.goal.type==='win'?'ganar la presidencia':'superar el '+fmt(c.goal.v)+'%'}</span></div></button>`).join('')+`</div>`;
+     <div class="bd">${c.vp?`<span style="color:var(--muted)">Fórmula con ${c.vp}</span>`:''}<span class="df">Arranca con ${fmt(c.start)}% · Dificultad: ${c.diff}</span><span>${c.pitch}</span><span style="color:var(--muted)"><b>Rasgo.</b> ${c.traitTxt}</span><span style="color:var(--muted)"><b>Audiencia.</b> ${medTxt(i)}</span></div></button>`).join('')+`</div>`;
   }
   const ds=Object.entries(DIFF).map(([k,d])=>`<button class="${setup.diff===k?'on':''}" onclick="setup.diff='${k}';render()" title="${d.d}">${d.l}</button>`).join('');
-  return `<header class="top"><div class="top-in"><div class="logo"><div class="sun">☀️</div><div><small>Simulador electoral · Argentina</small><h1>Rumbo a la Rosada</h1></div></div><div class="spacer"></div>${themeBtn()}</div></header>
+  return `<header class="top"><div class="top-in"><div class="logo"><div class="sun">☀️</div><div><small>Simulador electoral · Argentina</small><h1>SimElectoral</h1></div></div><div class="spacer"></div>${themeBtn()}</div></header>
   <div class="start">
-    <div class="hero"><div><h2>¿Llegás a la <span>Casa Rosada</span>?</h2>
+    <div class="hero"><div><h2>Llegar a la <span>Casa Rosada</span> no es tan fácil</h2>
       <p>Doce semanas de campaña hasta la primera vuelta y cuatro más si hay balotaje. Cada semana respondés a una noticia, armás tu agenda y mirás cómo se mueven las encuestas.</p></div>
       <div class="how">
         <div><span class="n">1</span><div><b>📰 Noticia de la semana</b><span>Pasa algo en el país. Elegís cómo responder y ves el efecto antes de decidir.</span></div></div>
-        <div><span class="n">2</span><div><b>🗓️ Tu agenda: 2 acciones</b><span>Elegís región y actividades: actos, pauta, entrevistas, recaudar o descansar.</span></div></div>
+        <div><span class="n">2</span><div><b>🗓️ Tu agenda: 2 acciones</b><span>Elegís región y actividades: llenar plazas, pegar carteles, visitar la unidad básica, ir a paneles, reunirte con empresarios o descansar.</span></div></div>
         <div><span class="n">3</span><div><b>📈 Cerrás la semana</b><span>Los rivales mueven, sale una encuesta nueva y el gráfico se actualiza.</span></div></div>
       </div></div>
     <h2 class="disp" style="font-size:24px;margin-bottom:10px">1. Elegí la elección</h2>
@@ -1852,7 +1896,7 @@ function renderCustomEditor(){
       <button class="hbtn" onclick="custNormalize()">Ajustar a 100%</button>
       <button class="hbtn" onclick="setup.custom=JSON.parse(JSON.stringify(CUSTOM_DEFAULT));setup.customPlayer=0;render()">Restablecer</button>
     </div>
-    <p class="rule">Hasta 6 partidos. Quien arranque con al menos 20% de los votos válidos juega para ganar la presidencia; el resto tiene un objetivo de porcentaje. Los rasgos se asignan solos. La ideología define dónde se ubica cada partido en el mapa ideológico.</p></div>
+    <p class="rule">Hasta 6 partidos. Todos juegan para ganar la presidencia. Los rasgos se asignan solos. La ideología define dónde se ubica cada partido en el mapa ideológico.</p></div>
 `;
 }
 function cust(i,k,v){setup.custom.cands[i][k]=k==='pct'||k==='base'||k==='lean'?+v:v; if(k==='pct')custSum(); saveCustom()}
@@ -1864,7 +1908,7 @@ function custNormalize(){const cc=setup.custom;const s=cc.cands.reduce((a,c)=>a+
 function renderHeader(){
   const c=C[S.p];
   return `<header class="top"><div class="top-in">
-    <div class="logo"><div class="sun">☀️</div><div><small>Simulador electoral · ${SC.custom?'personalizado':SC.y+(SC.hypo?' (hipotético)':'')}</small><h1>Rumbo a la Rosada</h1></div></div>
+    <div class="logo"><div class="sun">☀️</div><div><small>Simulador electoral · ${SC.custom?'personalizado':SC.y+(SC.hypo?' (hipotético)':'')}</small><h1>SimElectoral</h1></div></div>
     <div class="who"><span class="dot" style="background:${c.color}"></span><div><b>${esc(c.name)}</b><br><span>${esc(c.party)} · ${S.d.l}</span></div></div>
     <div class="spacer"></div>
     <span class="weekchip">${S.round===1?'1ª vuelta':'Balotaje'} · Semana <em>${S.turn}</em> de ${totalTurns()} · ${fdate(weekDate())}</span>
@@ -1880,11 +1924,11 @@ function renderRes(){
   const dots=Array.from({length:S.apMax},(_,i)=>i).map(i=>`<i class="${i<S.ap&&S.phase!=='event'?'on':''}"></i>`).join('');
   const showPrep=S.turn<debateTurn()||(S.turn===debateTurn()&&S.phase==='event');
   return `<div class="resbar"><div class="resbar-in">
-    ${item('💰','Fondos',r.f,'var(--sol)',`Pagan actos, pauta y algunas respuestas. Recibís ${S.d.inc+(trait('billetera')?3:0)} por semana; «Cena de recaudación» suma 22. Máximo 100.`)}
+    ${item('💰','Fondos',r.f,'var(--sol)',`Pagan plazas, carteles y algunas respuestas. Recibís ${S.d.inc+(trait('billetera')?3:0)} por semana; «Reunión con empresarios» suma 22. Máximo 100.`)}
     ${item('⚡','Energía',r.e,low?'var(--rojo)':'var(--verde)',`Cada actividad cansa. <b>Por debajo de 20 todo rinde 40% menos.</b> «Descansar» recupera ${restAmt()}. Sumás 4 por semana.`,low)}
     ${item('⭐','Imagen',r.i,'var(--cel2)',`Multiplica todo lo que hacés: con 50 rendís normal, con 80 rendís 27% más, con 20 un 27% menos. También mejora las apuestas arriesgadas.`)}
     <div class="mini"><span class="pill">Acciones <span class="apdots">${dots}</span></span>
-      ${showPrep?`<span class="pill" title="Preparación para el debate de la semana ${debateTurn()}">🎯 ${S.prep}</span>`:''}</div>
+      ${S.team?`<span class="pill" title="Equipo de comunicación para los debates">🎙️ ${TEAM[S.team].n.split(' ')[0]}</span>`:''}</div>
     <div class="mini"><span class="pill" title="Militancia: fiscaliza la elección y frena operaciones en tu contra">🛡️ ${S.fiscal}</span>${S.precise>0?`<span class="pill" title="Encuestas precisas">📊 ${S.precise}</span>`:''}</div>
   </div></div>`;
 }
@@ -1911,7 +1955,7 @@ function renderEvent(){
     body=`<div class="opts">`+ev.opts.map((o,i)=>{
       let detail='', dis=false;
       if(ev.debate&&o.ask){detail=`<div class="chips">${o.preview}</div>`}
-      else if(ev.debate){const od=debateOdds(o.style,ev.bon[o.style]||0);detail=`<div class="chips"><span class="chip pos">🌟 muy bien ${od.b}%</span><span class="chip neg">😬 flojo ${od.f}%</span>${S.deb.q===0?'<span class="chip neg">−8 ⚡ energía (todo el debate)</span>':''}</div>`}
+      else if(ev.debate){const od=debateOdds(o.style,ev.bon[o.style]||0,o);const pen=ideoPen(o);detail=`<div class="chips"><span class="chip pos">🌟 muy bien ${od.b}%</span><span class="chip neg">😬 flojo ${od.f}%</span>${pen>1?`<span class="chip neg">🧭 lejos de tu ideología${team().q>0?' (tu equipo lo suaviza)':''}</span>`:''}${S.deb.q===0?'<span class="chip neg">−8 ⚡ energía (todo el debate)</span>':''}</div>`}
       else if(o.risk){const p=Math.round(clamp(o.risk.p+(S.res.i-50)/250,.1,.9)*100);
         detail=`<div class="chips"><span class="chip risk">🎲 ${p}% de que salga bien</span></div><div class="riskrow">Bien: <span class="chips">${chips(o.ch?scaleEff(o.risk.ok,chF(o.ch)):o.risk.ok)}</span></div><div class="riskrow">Mal: <span class="chips">${chips(o.risk.ko)}</span></div>`;
         dis=!affordable(o.risk.ok)}
@@ -1920,7 +1964,7 @@ function renderEvent(){
       if(o.ch) detail+=`<div class="chips" style="margin-top:4px">${chChip(o.ch)}</div>`;
       const tc=tiltChip(tiltOf(ev,i)); if(tc) detail+=`<div class="chips" style="margin-top:4px">${tc}</div>`;
       return `<button class="opt" ${dis?'disabled title="No te alcanzan los fondos"':''} onclick="chooseOpt(${i})"><span class="k">${'ABC'[i]}</span><span><b>${o.l}</b><p>${o.d}</p>${detail}</span></button>`;
-    }).join('')+`</div><p class="rule">Atajo: teclas 1, 2, 3. Los puntos (~) son estimaciones: según cómo caiga, pueden rendir bastante más, bastante menos o incluso jugarte en contra.</p>`;
+    }).join('')+`</div><p class="rule">Los puntos (~) son estimaciones: según cómo caiga, pueden rendir bastante más, bastante menos o incluso jugarte en contra.</p>`;
   } else {
     const r=S.evRes;
     body=`<div class="resolved ${r.good?'':'bad'}"><div class="eyebrow">Elegiste: ${r.opt}</div><b>${r.title}</b>${r.text?` — ${r.text}`:''}<div class="chips" style="margin-top:6px">${r.chips}</div></div>`;
@@ -1951,12 +1995,21 @@ function renderAgenda(){
     <div class="regions">${tiles}</div>
     <div class="sub"><span class="num">2</span><h3>Elegí hasta ${S.apMax} acciones</h3><span>Se aplican al instante. Debajo de cada una ves cuánto rendiría ahora.</span></div>
     <div class="acts">${acts}</div>
+    ${renderTeam()}
     ${renderDisc(locked)}
     <div class="closebar"><button class="big ${S.ap===0&&!locked?'pulse':''}" ${locked?'disabled':''} onclick="endWeek()">${S.turn===totalTurns()?'Cerrar campaña e ir a votar 🗳️':'Cerrar la semana →'}</button>
       <span style="font-size:13px;color:var(--muted)">${!locked&&S.ap>0?`Te ${S.ap===1?'queda 1 acción':'quedan '+S.ap+' acciones'} sin usar.`:''} Al cerrar, los rivales hacen campaña y sale una encuesta nueva.</span></div></div>
   </section>`;
 }
 
+function renderTeam(){
+  const left=(S.round===1&&S.turn<=DEB1)||(S.round===2&&S.turn<=DEB2);
+  if(S.team) return `<p class="rule" style="margin-top:14px">🎙️ Equipo de comunicación para los debates: <b>${TEAM[S.team].n}</b>.</p>`;
+  if(!left) return '';
+  return `<div class="sub"><span class="num">🎙️</span><h3>Equipo para el debate</h3><span>Se contrata una sola vez y sirve para todos los debates. Mejora tus chances y hace que puedas defender posturas lejanas a tu ideología sin que suene falso. No gasta acciones.</span></div>
+    <div class="acts">${TEAM.slice(1).map((T,k)=>`<button class="act" ${S.res.f<T.cost||S.phase!=='agenda'?'disabled':''} onclick="hireTeam(${k+1})"><span class="t"><span class="i">${['🎤','🎬','🌐'][k]}</span>${T.n}</span>
+      <div class="chips"><span class="chip neg">−${T.cost} 💰</span></div><p>${T.d}</p><span class="pv">+${T.b} al puntaje · −${Math.round(T.q*100)}% de penalidad ideológica</span>${S.res.f<T.cost?'<span class="why">Te faltan fondos</span>':''}</button>`).join('')}</div>`;
+}
 function renderDisc(locked){
   const opts=[[-2,'⬅⬅','Giro fuerte a la izquierda'],[-1,'⬅','Hacia la izquierda'],[0,'●','Mantener'],[1,'➡','Hacia la derecha'],[2,'➡➡','Giro fuerte a la derecha']];
   const me=S.pos[S.p];
@@ -2092,7 +2145,7 @@ function showHelp(first){
    </div>
    <ul class="mlist">
      <li><b>💰 Fondos</b> pagan la campaña. <b>⚡ Energía</b> baja con cada actividad: debajo de 20 todo rinde 40% menos. <b>⭐ Imagen</b> multiplica todo lo que hacés.</li>
-     <li>En la semana ${DEB1} hay <b>🎤 debate</b> en cuatro bloques (economía, un tema social, un cruce con un rival y el minuto final); en el balotaje, tres. Prepararlo antes mejora mucho tus chances.</li>
+     <li>En la semana ${DEB1} hay <b>🎤 debate</b> en cuatro bloques (economía, un tema social, un cruce con un rival y el minuto final); en el balotaje, tres. Un equipo de comunicación y PR, que se contrata una sola vez y es caro, mejora mucho tus chances y te deja defender posturas lejanas a tu ideología sin que suene falso.</li>
      <li><b>🛡️ Militancia</b> fiscaliza la elección (cuida votos) y sale a desmentir operaciones en tu contra, como un deepfake en la veda.</li>
      <li><b>🎲 Nada es seguro:</b> los efectos marcados con ~ son estimaciones y pueden salir mucho mejor, mucho peor o al revés. Hay sorpresas semanales y las encuestas pueden tener un sesgo que no ves hasta la noche electoral.</li>
      <li><b>🧭 Discurso:</b> cada semana elegís si correrte a la izquierda o a la derecha, y algunas respuestas a noticias también te corren. Los votantes están repartidos en un eje que se mueve con la agenda: acercarte a donde hay más votantes suma, pero los giros bruscos o alejarte mucho de tu identidad cuestan imagen. En el balotaje, los votantes de los eliminados eligen al finalista más cercano, o votan en blanco.</li>
@@ -2109,10 +2162,6 @@ function showHelp(first){
 
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&$('#modal').dataset.closable){closeModal();return}
-  if(['INPUT','SELECT','TEXTAREA'].includes(document.activeElement?.tagName)) return;
-  if(!S||!$('#modal').classList.contains('hidden')){ if(e.key==='Enter'&&S&&!$('#modal').classList.contains('hidden')){const b=$('#modal .big');if(b)b.click()} return }
-  if(S.phase==='event'&&['1','2','3'].includes(e.key)){const i=+e.key-1;if(S.ev.opts[i]){const btn=document.querySelectorAll('.opt')[i];if(btn&&!btn.disabled)chooseOpt(i)}}
-  if(S.phase==='agenda'&&e.key==='Enter'&&S.ap===0) endWeek();
 });
 render();
 
