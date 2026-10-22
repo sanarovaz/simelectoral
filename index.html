@@ -264,6 +264,13 @@ svg text{font-family:Inter,sans-serif}
 .er.on{opacity:1;background:var(--midbg)}.er.ok{opacity:1;background:var(--okbg)}
 @media (max-width:640px){.escreg{grid-template-columns:1fr}}
 .swan.luck{box-shadow:4px 4px 0 var(--verde)}.swan.luck .eyebrow{color:#5fe0ad}
+.testp{margin-top:20px;border-style:dashed}
+.tgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:8px}
+.tck{display:flex;gap:6px;align-items:flex-start;font-size:13.5px;margin:5px 0}
+.tck input{flex:none;margin-top:3px}
+.tck.tsel{flex-wrap:wrap;align-items:center}
+.tck select{font:inherit;font-size:13px;color:var(--ink);background:var(--surface);border:2px solid var(--line);border-radius:8px;padding:3px 6px;max-width:100%}
+@media (max-width:900px){.tgrid{grid-template-columns:1fr}}
 .simbox{margin-top:12px;background:var(--midbg);border:2.5px solid var(--line);border-radius:14px;padding:12px 14px;font-size:14px}
 .simbox .big{padding:10px 14px;font-size:14px}
 .realbox{margin-top:10px;background:#eef6ff;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:13.5px}
@@ -609,6 +616,8 @@ const POOL = [
    UTILIDADES
    ========================================================= */
 let S = null;
+/* modo de prueba: entrando con ?escenarios en la dirección se pueden forzar los eventos raros */
+const TEST=(()=>{try{return new URLSearchParams(location.search).has('escenarios')}catch(e){return false}})();
 /* tema claro / oscuro */
 function initTheme(){let t=null;try{t=localStorage.getItem('rosada_theme')}catch(e){}if(!t)t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';document.documentElement.dataset.theme=t}
 function toggleTheme(){const t=document.documentElement.dataset.theme==='dark'?'light':'dark';document.documentElement.dataset.theme=t;try{localStorage.setItem('rosada_theme',t)}catch(e){}render()}
@@ -1149,7 +1158,7 @@ function scenarioEvent(fixed){
     if(S.massa&&!S.massa.mode&&sig==='UxP') return evMassa1();
     if(S.cfk) note('⚖️ Trascendió que la Justicia podría resolver la semana que viene un planteo de la defensa de Cristina Fernández de Kirchner. Si queda libre y habilitada, podría competir.','⚖️ Rumor judicial');
     if(S.planV&&!S.planV.done){S.planV.done=true; const j=idxOf('JxC');
-      if(rnd()<.5){swapVidal(j); note('🔁 <b>Plan V:</b> Juntos por el Cambio reemplazó a Macri por María Eugenia Vidal como candidata presidencial.','🔁 Plan V')}
+      if(setup.forcePVSwap||rnd()<.5){swapVidal(j); note('🔁 <b>Plan V:</b> Juntos por el Cambio reemplazó a Macri por María Eugenia Vidal como candidata presidencial.','🔁 Plan V')}
       else note('🔁 Juntos por el Cambio discutió reemplazar a Macri por Vidal («Plan V»), pero Macri sigue siendo el candidato.','🔁 Plan V')}
     if(S.massa&&!S.massa.mode){const r=rnd(); S.massa.mode=r<.5?'stay':r<.75?'half':'out'; const m=idxOf('UxP');
       if(S.massa.mode==='out'&&rnd()<.4) natShift(m,-1.5);
@@ -1158,10 +1167,10 @@ function scenarioEvent(fixed){
   }
   if(fixed) return null;
   if(S.cfk&&!S.cfk.decided&&S.turn>=2){S.cfk.decided=true;
-    if(rnd()<S.cfk.p){S.cfk.released=true; const fp=idxOf('FP');
+    if(setup.forceCFKRel||rnd()<S.cfk.p){S.cfk.released=true; const fp=idxOf('FP');
       S.log.unshift({lbl:'🔓 Escenario hipotético · Cristina queda libre',items:['Un fallo le devuelve la libertad y la habilitación para competir.']});
       if(S.p===fp) return evCFKAxel(fp);
-      if(fp>=0&&S.active.includes(fp)&&rnd()<.4){swapCristina(fp);note('🔁 Kicillof le cedió la candidatura de Fuerza Patria a Cristina.','🔁 Fuerza Patria');return evCFK2(true)}
+      if(fp>=0&&S.active.includes(fp)&&(setup.forceCede!=null?setup.forceCede==='1':rnd()<.4)){swapCristina(fp);note('🔁 Kicillof le cedió la candidatura de Fuerza Patria a Cristina.','🔁 Fuerza Patria');return evCFK2(true)}
       spawnCFK(); note('🆕 Kicillof no le cedió el lugar: Cristina compite con un partido propio, el Kirchnerismo.','🆕 Kirchnerismo'); return evCFK2(false)}
     note('⚖️ La Justicia rechazó el planteo: Cristina Fernández de Kirchner sigue detenida y no podrá competir.','⚖️ Fallo judicial');}
   if(S.fus&&!S.fus.done&&S.turn>=S.fus.turn){S.fus.done=true; const a=idxOf('LLA'),b=idxOf('PRO');
@@ -1318,7 +1327,7 @@ const OUTSIDERS=[
 ];
 OUTSIDERS.forEach(o=>MED[o.short]=o.med);
 function spawnOutsider(){
-  const o=OUTSIDERS[Math.floor(rnd()*OUTSIDERS.length)], k=U;
+  const o=OUTSIDERS[setup.outPick!=null?+setup.outPick:Math.floor(rnd()*OUTSIDERS.length)], k=U;
   C.push({sig:o.sig, party:o.party, name:o.name, short:o.short, role:o.role, story:o.story, vp:'fórmula a definir', color:o.color,
     lean:o.lean, nodeal:!!o.nodeal, trait:'viral', traitTxt:TRAITS.viral, prof:o.prof, aff:o.prof.map(x=>clamp(.55+.45*x,.7,1.45)), str:.75, hot:true,
     start:0, goal:{type:'pct',v:0}, diff:'—', pitch:`Outsider: ${o.role}.`});
@@ -1592,7 +1601,7 @@ function endWeek(){
   }
   // cisnes negros: raros, pero cambian todo
   let swan=null;
-  if(S.swanN<2&&(S.debugSwan||rnd()<.045)){S.debugSwan=false;const pool=SWANS.filter(w=>!S.swans.has(w.id));if(pool.length){const w=pool[Math.floor(rnd()*pool.length)];S.swans.add(w.id);S.swanN++;swan={ico:w.ico,t:w.t,txt:w.fx(),resp:!!w.resp};if(w.resp)S.forced={id:'sw_'+w.id,...w.resp}}}
+  const fsw=setup.forceSwan&&!S.swans.size; if(S.swanN<2&&(S.debugSwan||fsw||rnd()<.045)){S.debugSwan=false;const pool=SWANS.filter(w=>!S.swans.has(w.id));if(pool.length){const w=(fsw&&pool.find(x=>x.id===setup.forceSwan))||pool[Math.floor(rnd()*pool.length)];S.swans.add(w.id);S.swanN++;swan={ico:w.ico,t:w.t,txt:w.fx(),resp:!!w.resp};if(w.resp)S.forced={id:'sw_'+w.id,...w.resp}}}
   if(!swan) swan=luckStep();
   // ideología: tu discurso, la agenda y el reposicionamiento de los rivales
   {const cal=spCalib(); const np=S.pos.slice(); const move=S.disc*STEP+S.tilt; np[S.p]=clamp(S.pos[S.p]+move,-1.3,1.3);
@@ -1854,12 +1863,31 @@ function renderStart(){
     <p class="scintro">${SC.intro}${(SC.hypo||SC.custom)?'':' Las intenciones de voto iniciales parten de las PASO, con las distancias algo achicadas para que los partidos chicos tengan chances.'}</p>
     <h2 class="disp" style="font-size:24px;margin:18px 0 12px">2. ${SC.custom?'Armá los partidos':'Elegí tu candidatura'}</h2>
     ${cards}
+    ${renderTest()}
     <div class="row"><div><div class="eyebrow" style="margin-bottom:6px">Dificultad</div><div class="seg">${ds}</div></div>
       <label style="display:flex;gap:8px;align-items:center;font-weight:600;font-size:14px"><input type="checkbox" ${setup.tut?'checked':''} onchange="setup.tut=this.checked"> Mostrar la guía al empezar</label>
       <div class="spacer"></div>
       <button class="big" onclick="startFromSetup()">Empezar la campaña →</button></div>
     <p class="note">Es un juego. ${SC.custom?'':'Las candidaturas son reales, pero '}${SC.custom?'L':'l'}as encuestas, las noticias y los hechos de campaña son inventados. Las regiones y sus pesos electorales son aproximados.</p>
   </div>`;
+}
+function renderTest(){
+  if(!TEST) return '';
+  const ck=(k,l)=>`<label class="tck"><input type="checkbox" ${setup[k]?'checked':''} onchange="setup.${k}=this.checked?true:null"> ${l}</label>`;
+  const sel=(k,opts)=>`<select onchange="setup.${k}=this.value===''?null:this.value">${opts.map(([v,t])=>`<option value="${v}" ${String(setup[k]??'')===String(v)?'selected':''}>${t}</option>`).join('')}</select>`;
+  return `<div class="card testp"><h3>🧪 Modo de prueba</h3><p class="rule">Forzá los eventos raros para verlos sin jugar decenas de partidas. Cada uno se aplica solo en la elección que corresponde.</p>
+    <div class="tgrid">
+      <div><div class="eyebrow">2027</div>${ck('forceCFK','Rumor de liberación de Cristina')}${ck('forceCFKRel','… y que quede libre')}
+        <label class="tck tsel">Kicillof ${sel('forceCede',[['','decide al azar'],['1','le cede el lugar'],['0','no se lo cede']])}</label>
+        ${ck('forceFus','Propuesta de fusión LLA–PRO')}${ck('forceBlack','Aparece Wilheim Black')}${ck('forceWave','… con la ola peronista')}</div>
+      <div><div class="eyebrow">2019</div>${ck('forcePlanV','Discusión del Plan V')}${ck('forcePVSwap','… y Vidal reemplaza a Macri (si no jugás con JxC)')}
+        <div class="eyebrow" style="margin-top:10px">2023</div>${ck('forceNafta','Faltante de combustible en el balotaje')}
+        <div class="eyebrow" style="margin-top:10px">2019 · 2023 · 2027</div>${ck('forceOut','Irrumpe un outsider (semanas 3–6)')}
+        <label class="tck tsel">¿Cuál? ${sel('outPick',[['','al azar'],...OUTSIDERS.map((o,i)=>[i,o.name])])}</label></div>
+      <div><div class="eyebrow">Todas las elecciones</div>
+        <label class="tck tsel">Cisne negro en la semana 1: ${sel('forceSwan',[['','no forzar'],['any','al azar'],...SWANS.map(w=>[w.id,w.t])])}</label>
+        ${ck('forceLuck','Golpe de suerte en la semana 1')}${ck('forceDeep','Deepfake en la veda')}${ck('forceTie','Empate 50-50 en el balotaje')}${ck('fastEscr','Saltar la animación del escrutinio')}</div>
+    </div></div>`;
 }
 function pickScen(k){setup.scen=k;setup.cand=0;if(k!=='custom'){const s=SCEN[k];let b=0;s.cands.forEach((c,i)=>{if(c.win&&c.pct>s.cands[b].pct)b=i});setup.cand=b}render()}
 function startFromSetup(){
@@ -1913,6 +1941,7 @@ function renderHeader(){
     <div class="spacer"></div>
     <span class="weekchip">${S.round===1?'1ª vuelta':'Balotaje'} · Semana <em>${S.turn}</em> de ${totalTurns()} · ${fdate(weekDate())}</span>
     ${themeBtn()}
+    ${TEST?'<span class="pill" title="Modo de prueba activo">🧪 prueba</span>':''}
     <button class="hbtn" onclick="showHelp()">❓ Cómo jugar</button>
     <button class="hbtn" onclick="if(confirm('¿Abandonar esta campaña?')){S=null;render()}">↺ Salir</button>
   </div></header>`;
